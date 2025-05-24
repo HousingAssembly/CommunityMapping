@@ -77,7 +77,7 @@ const Header = () => {
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{margin:"10px",height:'80px'}}
+          style={{margin:"10px",height:'50px'}}
         />
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
