@@ -60,33 +60,31 @@
   margin: 0 10px;
 }
 
-/*  Anything narrower than 900 px (tweak as you prefer)  */
 @media (max-width: 800px) {
   .main-container {
-    flex-direction: column;         /* stack vertically */
-    align-items: center;            /* optional: center the cards */
+    flex-direction: column;        
+    align-items: center;            
     width: 100%;
-    height: auto;                   /* let page grow in height */
+    height: auto;                   
   }
 
-  /* Each card keeps its natural width, but won’t exceed the viewport */
   .map-section,
   .contacts-section,
   .actions-section {
-    flex: 0 0 auto;                /* stop them from shrinking */
-    width: 100%;                   /* full width of the column */
-    max-width: 600px;              /* OPTIONAL cap so they don’t force horizontal scroll */
+    flex: 0 0 auto;               
+    width: 100%;               
+    max-width: 600px;             
   }
   .sidebar{
     width:100%;
   }
 
-  /* Sidebar parts stack too (they already use column direction) */
   .contacts-section {
-    height: 300px;                  /* drop the fixed 70 vh on mobile */
+    height: 300px;       
   }
     .map-section {
       height: 500px;
     }
   }
 
+ 
