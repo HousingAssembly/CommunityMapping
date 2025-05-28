@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import HAlogo from '../assets/HAlogo.jpg'
-import { Button, Navbar, Image ,Modal, Form } from 'react-bootstrap';
+import { Button, Navbar, Image ,Modal, Form,  } from 'react-bootstrap';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../assets/ui/toaster"
@@ -72,13 +72,17 @@ const Header = () => {
 
 
   return (
+    
     <Navbar style={{background:'red', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
+        
         <Image
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{margin:"10px",height:'50px'}}
+          style={{margin:"10px",height:'50px', display:'flex', justifyContent:'left' }}
         />
+
+        <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
             <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleShow}>
@@ -90,6 +94,8 @@ const Header = () => {
         {loggedIn && <p style={{height:'50%', marginRight:'10px', fontSize:'20px', color: 'white'}} >
           Admin Logged In
         </p> }
+
+        
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton className="bg-danger text-white">
             <Modal.Title>Housing Assembly Admin Login</Modal.Title>
@@ -130,6 +136,8 @@ const Header = () => {
             </Form>
             </Modal.Body>
         </Modal>
+
+        
     </Navbar>
   )
 }
