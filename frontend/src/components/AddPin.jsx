@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap'
 
 const AddPin = () => {
   return (
-    <Button variant='danger'>AddPin</Button>
+    <Button variant='danger'>Add Pin</Button>
   )
 }
 
