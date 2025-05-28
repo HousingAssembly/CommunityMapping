@@ -1,72 +1,64 @@
-import React from 'react'
-import { MapContainer, TileLayer, Circle, Tooltip } from 'react-leaflet'
+import React, { useRef, useState } from 'react';
+import { MapContainer, TileLayer, Circle, Tooltip, useMap } from 'react-leaflet';
+import { AdminState } from "./context/Context";
 
+const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
+  const map = useMap();
+
+  return (
+    <Circle
+      center={center}
+      radius={radius}
+      pathOptions={{ color, weight: 2, fillOpacity: 0.15 }}
+      eventHandlers={{
+        click: () => {
+          map.flyTo(center, zoomLevel, { duration: 1.4 }); 
+          onSelect?.(name);                                
+        },
+      }}
+    >
+      {(!selectedDistrict || selectedDistrict !== name) && <Tooltip direction="top">{name}</Tooltip>}
+    </Circle>
+  );
+};
 
 const Map = () => {
+  const { selectedDistrict, setSelectedDistrict } = AdminState();
+  const districts = [
+    { name: 'Khayelitsha',      pos: [-34.035, 18.675], radius: 4200,  color: 'red'    },
+    { name: 'Athlone',          pos: [-33.92, 18.48],   radius: 11000, color: 'blue'   },
+    { name: 'Mitchells Plain',  pos: [-34.04, 18.59],   radius: 4800,  color: 'green'  },
+    { name: 'Northern Suburbs', pos: [-33.955, 18.64],  radius: 6000,  color: 'purple' },
+    { name: 'Southern Suburbs', pos: [-34.10, 18.43],   radius: 11600, color: 'orange' },
+    { name: 'Malmesbury',       pos: [-33.52, 18.68],   radius: 10500, color: 'teal'   },
+    { name: 'Ceres',            pos: [-33.40, 19.26],   radius: 7000,  color: 'brown'  },
+  ];
 
-  const khayelitshapos = [-34.035, 18.675]
-  const athlonepos = [-33.92, 18.48]
-  const mitchellsplainpos = [-34.04, 18.59]
-  const northernsuburbspos = [-33.955, 18.64]
-  const southernsuburbspos = [-34.10, 18.43]
-  const cerespos = [-33.40, 19.26]
-  const malmesburypos = [-33.52, 18.68]
   return (
-     <MapContainer
+    <MapContainer
       center={[-33.9, 18.7]}
-      zoom={10}                 
-      scrollWheelZoom          
-      style={{
-        height: "100%",        
-        width: "100%"
-      }}
+      zoom={10}
+      scrollWheelZoom
+      style={{ height: '100%', width: '100%' }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-      
 
-      //Khayelitsha
-      <Circle center={khayelitshapos} radius={4200} pathOptions={{color:'red', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Khayelitsha </Tooltip>
-      </Circle>
-
-      //Athlone
-      <Circle center={athlonepos} radius={9000} pathOptions={{color:'blue', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Athlone </Tooltip>
-      </Circle>
-
-      //Mitchells Plain
-      <Circle center={mitchellsplainpos} radius={4800} pathOptions={{color:'green', weight:2, fillOpacity:0.15}} >
-      <Tooltip direction="top" > Mitchells Plain </Tooltip>
-      </Circle>
-
-
-      //Northern Suburbs
-      <Circle center={northernsuburbspos} radius={6000} pathOptions={{color:'purple', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Northern Suburbs </Tooltip>
-      </Circle>
-
-      //Southern Suburbs
-      <Circle center={southernsuburbspos} radius={11600} pathOptions={{color:'orange', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Southern Suburbs </Tooltip>
-      </Circle>
-
-      //Malmesbury
-      <Circle center={malmesburypos} radius={10500} pathOptions={{color:'teal', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Malmesbury </Tooltip>
-      </Circle>
-
-      //Ceres
-      <Circle center={cerespos} radius={7000} pathOptions={{color:'brown', weight:2, fillOpacity:0.15}}>
-      <Tooltip direction="top" > Ceres </Tooltip>
-      </Circle>
-
+      {districts.map((d) => (
+        <ZoomableCircle
+          key={d.name}
+          center={d.pos}
+          radius={d.radius}
+          color={d.color}
+          name={d.name}
+          onSelect={setSelectedDistrict}
+          selectedDistrict={selectedDistrict}  
+        />
+      ))}
     </MapContainer>
-  )
-}
+  );
+};
 
- 
-
-export default Map
+export default Map;
