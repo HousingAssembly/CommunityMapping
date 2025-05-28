@@ -12,10 +12,13 @@ const Header = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [openSignup, setopenSignup] = useState(false)
     const history = useNavigate();
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
+    const handleSignup = () => setopenSignup(true)
     const { loggedIn,setLoggedIn } = AdminState();
+    
 
      const handleSubmit = async (e) => {
         e.preventDefault();
@@ -88,7 +91,6 @@ const Header = () => {
             <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleShow}>
             HA Admin Login
             </Button> 
-            <SignUp/>
         </div>
         }
         {loggedIn && <p style={{height:'50%', marginRight:'10px', fontSize:'20px', color: 'white'}} >
@@ -124,19 +126,31 @@ const Header = () => {
 
                 />
                 </Form.Group>
-
-                <div className="d-flex justify-content-end mt-4">
-                <Button variant="light" onClick={handleClose} className="me-2">
-                    Cancel
-                </Button>
-                <Button variant="danger" type="submit" onClick={handleSubmit} loading={`${loading}`}>
-                    Submit
-                </Button>
+                
+               <div style={{display:'flex', justifyContent:'space-between', alignItems:'end'}}>
+                    <Button variant='secondary' style={{height:'50%', marginRight:'10px'}} onClick={() => {
+                    handleClose();
+                    handleSignup();
+                }}>
+                        Create New Account
+                    </Button>
+                    <div className="d-flex justify-content-end mt-4">     
+                        <Button variant="light" onClick={handleClose} className="me-2">
+                            Cancel
+                        </Button>
+                        <Button variant="danger" type="submit" onClick={handleSubmit} loading={`${loading}`}>
+                            Submit
+                        </Button>
+                    </div>
                 </div>
             </Form>
             </Modal.Body>
         </Modal>
 
+
+        {
+            openSignup && <SignUp show={openSignup} setShow={setopenSignup}/>
+        }
         
     </Navbar>
   )

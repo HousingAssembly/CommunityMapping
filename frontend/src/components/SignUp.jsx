@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../assets/ui/toaster"
 import { AdminState } from "../context/Context";
 
-const SignUp = () => {
-    const [show, setShow] = useState(false);
+const SignUp = ({show, setShow}) => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,7 +21,7 @@ const SignUp = () => {
         setLoading(true);
         if ( !email || !password || !cpassword) {
             toaster.create({
-                title: "Please Fill All Feilds",
+                title: "Please Fill All Fields",
                 status: "warning",
                 duration: 5000,
                 isClosable: true,
@@ -96,11 +95,6 @@ const SignUp = () => {
         }
     }
   return (
-    <>
-        <Button variant='light' style={{height:'50%', marginRight:'10px'}} onClick={handleShow}>
-            HA Admin Signup
-        </Button>
-    
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton className="bg-danger text-white">
             <Modal.Title>Housing Assembly Admin Signup</Modal.Title>
@@ -150,8 +144,6 @@ const SignUp = () => {
             </Form>
             </Modal.Body>
         </Modal>
-
-    </>
   )
 }
 
