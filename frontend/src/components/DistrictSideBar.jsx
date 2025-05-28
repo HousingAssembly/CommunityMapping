@@ -1,15 +1,48 @@
 import React, { useState, useEffect } from 'react'
-import {Button} from 'react-bootstrap/';
+import {CloseButton, Button} from 'react-bootstrap';
 import { AdminState } from "../context/Context";
 
 const DistrictSideBar = ({show}) => {
-    const { selectedDistrict } = AdminState();
+    const { selectedDistrict, setSelectedDistrict } = AdminState();
+    const subcouncilInfo = [
+        { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'    },
+        { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11'   },
+        { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12'  },
+        { name: 'Northern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=5'},
+        { name: 'Southern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=18'},
+        { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php'  },
+        { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us' },
+        { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database' },
 
+    ]
+
+    const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
   return (
     <>
-     will implement next part of figma here
+        <div size='3s' style={{display:'flex', justifyContent:'flex-end', marginTop:'20px', marginRight:'20px'}}>
+        <CloseButton onClick={()=>setSelectedDistrict(null)}/>
+        </div>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
+            <u><h1>{selectedDistrict}</h1></u>
+            <Button variant='danger' style={{margin:'20px'}}>+ Add Issue</Button>
+            <div style={{
+                border: '2px solid #ccc',
+                borderRadius: '8px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                width:'100%',
+                height: '100%',
+                display:'flex',
+                flexDirection:'column',
+            }}>
+                <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Contact Info</h2>
+                 <div style={{marginLeft:'10px'}}>        
+                    {current && <a href={current.info}>{current.name+' Subcouncil Contact Info'}</a>}
+                </div>
+                <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Emergency Services</h2>
+            </div>
+
+        </div>        
     </>
-  )
-}
+)}
 
 export default DistrictSideBar
