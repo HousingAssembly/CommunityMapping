@@ -4,12 +4,12 @@ import { AdminState } from "./context/Context";
 
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
-
+  
   return (
     <Circle
       center={center}
       radius={radius}
-      pathOptions={{ color, weight: 2, fillOpacity: 0.15 }}
+      pathOptions={{ color, weight: 2, fillOpacity: 0.07 }}
       eventHandlers={{
         click: () => {
           map.flyTo(center, zoomLevel, { duration: 1.4 }); 
@@ -26,12 +26,12 @@ const Map = () => {
   const { selectedDistrict, setSelectedDistrict } = AdminState();
   const districts = [
     { name: 'Khayelitsha',      pos: [-34.035, 18.675], radius: 4200,  color: 'red'    },
-    { name: 'Athlone',          pos: [-33.92, 18.48],   radius: 11000, color: 'blue'   },
-    { name: 'Mitchells Plain',  pos: [-34.04, 18.59],   radius: 4800,  color: 'green'  },
-    { name: 'Northern Suburbs', pos: [-33.955, 18.64],  radius: 6000,  color: 'purple' },
-    { name: 'Southern Suburbs', pos: [-34.10, 18.43],   radius: 11600, color: 'orange' },
-    { name: 'Malmesbury',       pos: [-33.52, 18.68],   radius: 10500, color: 'teal'   },
-    { name: 'Ceres',            pos: [-33.40, 19.26],   radius: 7000,  color: 'brown'  },
+    { name: 'Athlone',          pos: [-33.92, 18.48],   radius: 11000, color: 'red'   },
+    { name: 'Mitchells Plain',  pos: [-34.04, 18.59],   radius: 4800,  color: 'red'  },
+    { name: 'Northern Suburbs', pos: [-33.955, 18.64],  radius: 6000,  color: 'red' },
+    { name: 'Southern Suburbs', pos: [-34.10, 18.43],   radius: 11600, color: 'red' },
+    { name: 'Malmesbury',       pos: [-33.52, 18.68],   radius: 10500, color: 'red'   },
+    { name: 'Ceres',            pos: [-33.40, 19.26],   radius: 7000,  color: 'red'  },
   ];
 
   return (

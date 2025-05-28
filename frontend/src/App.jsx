@@ -4,8 +4,7 @@ import { Toaster } from "./assets/ui/toaster"
 import { AdminState } from "./context/Context";
 import Map from './Map'
 import Contacts from './components/Contacts'
-import AddPin from './components/AddPin'
-import AddProject from './components/AddProject'
+import Districts from './components/Districts'
 import "./index.css"
 
 function App() {
@@ -24,8 +23,7 @@ function App() {
           </div>
 
           <div className="actions-section">
-            <AddPin />
-            {loggedIn && <AddProject />}
+            <Districts />
           </div>
         </div>
       </div>
