@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
-import { MapContainer, TileLayer, Circle, Tooltip, useMap } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents } from 'react-leaflet';
 import { AdminState } from "./context/Context";
+import './index.css'
 
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
@@ -21,6 +22,31 @@ const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect,
     </Circle>
   );
 };
+
+const MapClickHandler = () => {
+  const { communityDraft, setCommunityCoords, cancelCommunityPlacement } = AdminState();
+  const map = useMapEvents({});
+  useEffect(() => {
+      console.log("sidebar sees draft", communityDraft);
+      const container = map.getContainer();
+      if (communityDraft) {
+      container.classList.add("add-community-cursor");
+    } else {
+      container.classList.remove("add-community-cursor");
+    }
+    }, [communityDraft, map]);
+
+  useMapEvents({
+    click(e) {
+      if (!communityDraft) return;           
+
+      const { lat, lng } = e.latlng;
+      setCommunityCoords(lat, lng);           
+    },
+  });
+  useEffect(() => console.log("draft changed", communityDraft), [communityDraft]);
+  return null; 
+}
 
 const Map = () => {
   const { selectedDistrict, setSelectedDistrict } = AdminState();
@@ -45,7 +71,6 @@ const Map = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-
       {districts.map((d) => (
         <ZoomableCircle
           key={d.name}
@@ -57,6 +82,7 @@ const Map = () => {
           selectedDistrict={selectedDistrict}  
         />
       ))}
+      <MapClickHandler />
     </MapContainer>
   );
 };
