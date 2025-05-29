@@ -53,7 +53,7 @@ const DistrictSideBar = () => {
 
     const handleSave = async () => {
     try {
-      await axios.post("/api/communities", {
+      await axios.post("http://localhost:8000/addcom", {
         name: form.name,
         districtName: selectedDistrict,
         // population etc,
