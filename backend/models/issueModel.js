@@ -14,7 +14,7 @@ const issueModel = mongoose.Schema(
             OTHER: "Other",
         },
         required: true},
-        setttlement: {type: String, required: true},
+        community: {type: String, required: true},
     },{
         timestamps: true, // Adds created at, updated at fields
     }
