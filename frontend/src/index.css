@@ -1,5 +1,93 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
+@import "leaflet/dist/leaflet.css";
+
+.main-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  width:100vw;
+  flex-direction: row;
 }
+
+.map-section {
+  flex: 6 1 0;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contacts-section{
+    flex: 1;
+      margin: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+    
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.actions-section{
+  flex: 1;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  flex: 4 1 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-section {
+  flex: 7 1 0;
+  overflow-y: auto;
+}
+
+.actions-section {
+  flex: 3 1 0;
+  justify-content: space-evenly;
+}
+
+.actions-section>* {
+  margin: 0 10px;
+}
+
+@media (max-width: 800px) {
+  .main-container {
+    flex-direction: column;        
+    align-items: center;            
+    width: 100%;
+    height: auto;                   
+  }
+
+  .map-section,
+  .contacts-section,
+  .actions-section {
+    flex: 0 0 auto;               
+    width: 100%;               
+    max-width: 600px;             
+  }
+  .sidebar{
+    width:100%;
+  }
+
+  .contacts-section {
+    height: 300px;       
+  }
+    .map-section {
+      height: 500px;
+    }
+  }
+
+ 

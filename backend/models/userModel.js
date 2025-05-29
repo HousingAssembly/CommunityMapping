@@ -1,20 +1,22 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs'); // Handles hashing 
 
 const userModel = mongoose.Schema(
     {
         email: {type: String, required: true, unique:true},
         password: {type: String, required: true},
     },{
-        timestamps: true,
+        timestamps: true, // Adds created at, updated at fields
     }
 );
 
-userModel.methods.matchPassword= async function(enteredPassword){
-    return await bcrypt.compare(enteredPassword, this.password)
+// Compare plain-text password to the hashed one in the DB
+userModel.methods.matchPassword= async function(enteredPassword){ // Method adds custom function on model instances
+    return await bcrypt.compare(enteredPassword, this.password) // This is the encrypted pw
 }
 
-userModel.pre('save', async function(next){
+// Checks for password modifications or new users to regenerate hashing
+userModel.pre('save', async function(next){ // save is the event name (before saving a user to the DB, run this function)
     if (!this.isModified) {
         next();
     }

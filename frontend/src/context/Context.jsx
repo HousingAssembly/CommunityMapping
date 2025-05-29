@@ -4,12 +4,15 @@ const Context = createContext();
 
 const AdminProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedDistrict, setSelectedDistrict] = useState(null); 
 
   return (
     <Context.Provider
       value={{
         loggedIn,
         setLoggedIn,
+        selectedDistrict, 
+        setSelectedDistrict
       }}
     >
       {children}
