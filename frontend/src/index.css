@@ -1,5 +1,14 @@
 @import "leaflet/dist/leaflet.css";
 
+
+.add-community-cursor {
+  cursor: crosshair !important;
+}
+
+.add-community-cursor .leaflet-interactive {
+  cursor: crosshair !important;
+}
+
 .main-container {
   display: flex;
   flex-wrap: wrap;
