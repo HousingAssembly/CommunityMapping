@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown} from 'react-bootstrap';
+import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, FormGroup } from 'react-bootstrap';
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
 
@@ -90,7 +90,7 @@ const DistrictSideBar = () => {
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>
             <div>
-                <Dropdown >
+                <Dropdown>
                   <Dropdown.Toggle variant='danger' id="dropdown-basic" >
                     + Add Issue
                     </Dropdown.Toggle>
@@ -98,7 +98,7 @@ const DistrictSideBar = () => {
                     <Dropdown.Menu>
                       
                       {current.townships.map((value, index) => (
-                          <Dropdown.Item key={index} href={'#/item-${index}'}>
+                          <Dropdown.Item key={index} href={'#/item-${index}'} onClick={handleAddIssueClick}>
                             {value}
                             
                           </Dropdown.Item>
@@ -106,13 +106,7 @@ const DistrictSideBar = () => {
                        
                       }
                       
-                      
-                      
-                      
-                      
-                      
                     
-                     
                     </Dropdown.Menu>
                     </Dropdown>
                 {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
@@ -136,17 +130,88 @@ const DistrictSideBar = () => {
         </div>   
 
        
-        <Modal show={showIssueModal} onHide={handleModalClose2}>
-            <Modal.Header closeButton style={{background:'red', color:'white'}}> <h1>Add Issue</h1></Modal.Header>
-            <Modal.Body>
-              <Form>
+        <Offcanvas show={showIssueModal} onHide={handleModalClose2} placement="end">
+          <div style={{display:"flex", justifyContent:"right"}}>
+          <CloseButton style={{marginTop:"10px", marginRight:"10px"}} onClick={handleModalClose2}>
 
-                <Form.Label>
+          </CloseButton>
+          </div>
+          <div>
+            <h1 style={{display:"flex", justifyContent:"center"}}><u><strong> Add Issue </strong></u></h1>
+             <br />
+            
+           
 
-                </Form.Label>
-              </Form>
-            </Modal.Body>
-        </Modal>
+            <Form>
+              <FormGroup >
+                <Form.Label style={{marginLeft:'10px'}}>Issue Title:</Form.Label>
+                                <Form.Control
+                                    type="title"
+                                    name="title"
+                                    placeholder="Enter Issue Title"
+                                    required
+                                    onChange={(e)=>setEmail(e.target.value)}
+                                />
+              </FormGroup>
+
+            </Form>
+            <br />
+            <br />
+            <Dropdown>
+                <Dropdown.Toggle variant="dark" id="dropdown-basic" style={{marginLeft:'10px'}}>
+                  Choose Issue Category
+
+                      <Dropdown.Menu>
+                      
+                      
+                          <Dropdown.Item href="#/action1"> Food/Water/Electricity </Dropdown.Item>
+                          <Dropdown.Item href="#/action2"> GBV </Dropdown.Item>
+                          <Dropdown.Item href="#/action3"> Eviction </Dropdown.Item>
+                          <Dropdown.Item href="#/action4"> Crime </Dropdown.Item>
+                          <Dropdown.Item href="#/action5"> Natural Disaster </Dropdown.Item>
+                          <Dropdown.Item href="#/action6"> Poor Housing Conditions </Dropdown.Item>
+                          <Dropdown.Item href="#/action7"> Other </Dropdown.Item>
+
+                           
+                    
+                       
+                      
+                      
+                    
+                    </Dropdown.Menu>
+                </Dropdown.Toggle>
+
+            </Dropdown>
+
+            <br />
+            <br />
+            <Form>
+              <FormGroup >
+                <Form.Label style={{marginLeft:'10px'}}>Issue Description:</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    type="title"
+                                    name="title"
+                                    placeholder="Enter Issue Description"
+                                    required
+                                    onChange={(e)=>setEmail(e.target.value)}
+                                />
+              </FormGroup>
+
+            </Form>
+
+            </div>
+
+            <br />
+            <br />
+            <div style={{display:"flex", justifyContent:"center"}}>
+            <Button variant="danger" size="lg" onClick={handleModalClose2}>
+                    Submit
+
+            </Button>
+            </div>
+        </Offcanvas>
         
         <Modal show={showCommunityModal} onHide={handleModalClose}>
             <Modal.Header closeButton style={{background:'red', color:'white'}}>
