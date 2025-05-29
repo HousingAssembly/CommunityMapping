@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
 import { AdminState } from "./context/Context";
 import './index.css'
 
@@ -48,6 +48,32 @@ const MapClickHandler = () => {
   return null; 
 }
 
+const DistrictPinsLayer = () => {
+  const { selectedDistrict, communities, fetchCommunities } = AdminState();
+  
+  useEffect(() => {
+    fetchCommunities(selectedDistrict);
+    console.log( communities);
+  }, [selectedDistrict]);
+
+  return (
+    <>
+      {communities.map((c) => (
+        <Marker
+          key={c._id}
+          position={[c.coords.lat, c.coords.long]}
+          color={'red'}
+        >
+          <Popup>
+            <strong>{c.name}</strong>
+            {/* TODO: more info */}
+          </Popup>
+        </Marker>
+      ))}
+    </>
+  );
+}
+
 const Map = () => {
   const { selectedDistrict, setSelectedDistrict } = AdminState();
   const districts = [
@@ -83,6 +109,7 @@ const Map = () => {
         />
       ))}
       <MapClickHandler />
+      <DistrictPinsLayer />
     </MapContainer>
   );
 };

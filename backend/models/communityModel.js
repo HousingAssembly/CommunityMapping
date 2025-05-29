@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const communityModel = mongoose.Schema(
     {
         name: {type: String, required: true, unique:true},
+        districtName: {type: String, required: true},
         waitingListSize: {type: Number, required: false},
         demographics: {type: [Number], required: false}, 
         // Make sure demographic info is ordered/accessed the same way every time!!
