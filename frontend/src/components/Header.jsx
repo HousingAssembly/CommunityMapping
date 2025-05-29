@@ -20,7 +20,7 @@ const Header = () => {
     const { loggedIn,setLoggedIn } = AdminState();
     
 
-     const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setLoading(true);
@@ -73,6 +73,19 @@ const Header = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("userInfo")
+        setLoggedIn(false)
+        toaster.create({
+            title: "Logout Successful",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+        window.location.reload();
+    };
+
 
   return (
     
@@ -93,9 +106,11 @@ const Header = () => {
             </Button> 
         </div>
         }
-        {loggedIn && <p style={{height:'50%', marginRight:'10px', fontSize:'20px', color: 'white'}} >
-          Admin Logged In
-        </p> }
+        {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
+            <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
+            HA Admin Logout
+            </Button> 
+        </div> }
 
         
         <Modal show={show} onHide={handleClose} centered>
