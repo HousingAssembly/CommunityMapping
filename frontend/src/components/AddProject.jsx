@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap'
 
 const AddProject = () => {
   return (
-    <Button variant='danger'>AddProj</Button>
+    <Button variant='danger'>Add Project</Button>
   )
 }
 

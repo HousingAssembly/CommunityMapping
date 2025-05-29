@@ -1,15 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import { Toaster } from "./assets/ui/toaster"
 import { AdminState } from "./context/Context";
 import Map from './Map'
 import Contacts from './components/Contacts'
-import AddPin from './components/AddPin'
-import AddProject from './components/AddProject'
+import Districts from './components/Districts'
+import DistrictSideBar from './components/DistrictSideBar'
 import "./index.css"
 
 function App() {
-    const { loggedIn } = AdminState();
+  const { selectedDistrict } = AdminState();
+  const[view,setView]=useState('main')
+  
+  useEffect(()=>{
+    if(selectedDistrict){
+      setView('district')
+    }else{
+      setView('main')
+    }
+  }, [selectedDistrict])
   return (
     <>
       <Header/>
@@ -18,15 +27,17 @@ function App() {
           <Map />
         </div>
 
-        <div className="sidebar">
+        <div className="sidebar" >
+         {(view==='main') &&
+          (<>
           <div className="contacts-section">
             <Contacts />
           </div>
-
           <div className="actions-section">
-            <AddPin />
-            {loggedIn && <AddProject />}
+            <Districts />
           </div>
+          </>)}
+          {view==='district'&&<DistrictSideBar /> }
         </div>
       </div>
       <Toaster />
