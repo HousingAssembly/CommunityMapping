@@ -1,8 +1,9 @@
 const express = require('express')
-const { createCom } = require('../controllers/comController')
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+const { createCom, allComs } = require('../controllers/comController')
+
 const router = express.Router()
 
 router.route('/').post(createCom)
+router.get('/fetch', allComs)
 
 module.exports = router
