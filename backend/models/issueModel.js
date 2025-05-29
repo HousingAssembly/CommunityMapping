@@ -7,7 +7,7 @@ const issueModel = mongoose.Schema(
         tag: {type: HousingType = {
             GBV: "GBV",
             EVICTIONS: "Eviction",
-            FOOD: "Need Food/Water",
+            FOOD: "Need Food/Water/Electricity",
             CRIME: "Crime",
             NATLDISTASER: "Natural Disaster",
             CONDITIONS: "Poor Housing Conditions",
