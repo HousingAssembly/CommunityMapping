@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
+import{CloseButton, Modal} from 'react-bootstrap'
 import { AdminState } from "./context/Context";
 import './index.css'
 
@@ -48,9 +49,36 @@ const MapClickHandler = () => {
   return null; 
 }
 
+const FullScreenOverlay = ({ show, onHide, community }) => {
+  return (
+    <Modal
+      show={show}
+      onHide={onHide}
+      dialogClassName="modal-fullscreen-custom"
+      backdrop="static"
+      keyboard={true}
+    >
+      <Modal.Body
+        style={{
+          background: "#fff",
+          height: "100%",
+          padding: "2rem",
+        }}
+      >
+        <CloseButton onClick={onHide} style={{ position: "absolute", top: 20, right: 20 }}>
+        </CloseButton>
+        <h1>{community?.name +' ('+community?.districtName+')'}</h1>
+        {/* TODO: add issue form, stats, etc. */}
+      </Modal.Body>
+    </Modal>
+  );
+}
+
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
-  
+  const [activeCommunity, setActiveCommunity] = useState(null);  // the selected one
+  const handleOpenIssue = (c) => setActiveCommunity(c);
+  const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
     console.log( communities);
@@ -62,14 +90,17 @@ const DistrictPinsLayer = () => {
         <Marker
           key={c._id}
           position={[c.coords.lat, c.coords.long]}
-          color={'red'}
         >
-          <Popup>
-            <strong>{c.name}</strong>
-            {/* TODO: more info */}
+          <Popup >
+            <div style={{display:'flex',justifyContent:'center'}}>
+              <button onClick={() => handleOpenIssue(c)}>
+                {c.name}
+              </button>
+            </div>
           </Popup>
         </Marker>
       ))}
+        <FullScreenOverlay show={!!activeCommunity} onHide={handleCloseIssue} community={activeCommunity} />
     </>
   );
 }
