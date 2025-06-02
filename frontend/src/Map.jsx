@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
+import{CloseButton, Modal, Button, Form} from 'react-bootstrap'
 import { AdminState } from "./context/Context";
+import axios from "axios";
 import './index.css'
+import {toaster} from './assets/ui/toaster'
+
 
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
@@ -24,7 +28,7 @@ const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect,
 };
 
 const MapClickHandler = () => {
-  const { communityDraft, setCommunityCoords, cancelCommunityPlacement } = AdminState();
+  const { communityDraft, setCommunityCoords } = AdminState();
   const map = useMapEvents({});
   useEffect(() => {
       console.log("sidebar sees draft", communityDraft);
@@ -48,9 +52,146 @@ const MapClickHandler = () => {
   return null; 
 }
 
+const FullScreenOverlay = ({ show, onHide, community }) => {
+  const { fetchCommunities, loggedIn } = AdminState();
+  const [form, setForm]= useState({
+    name: community?.name || "",
+    lat: community?.coords.lat || "",
+    long: community?.coords.long || "",
+  })
+  const [showEditModal, setShowEditModal]= useState(false)
+  const handleModalClose = () => setShowEditModal(false)
+  const handleModalOpen = () => {
+    setShowEditModal(true)
+  }
+
+  useEffect(() => {
+    if (community) {
+      setForm({
+        name: community.name,
+        lat: community.coords.lat,
+        long: community.coords.long,
+      });
+    }
+  }, [community]);
+
+
+
+  const handleDeleteCom = async () => {
+    if (!community?._id) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/addcom/${community._id}`);
+      fetchCommunities(community.districtName)
+      toaster.create({
+              title: "Community Successfully Deleted",
+              type: "success",
+              duration: 5000,
+              isClosable: true,
+              position: "bottom",
+          });
+      onHide(); 
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+    }
+
+  const handleSave = async () => {
+    if (!community?._id) return;
+
+  try {
+    await axios.put(`http://localhost:8000/addcom/${community._id}`, {
+      name: form.name,
+      coords: {
+        lat: form.lat,
+        long: form.long,
+      },
+    });
+    fetchCommunities(community.districtName);
+    toaster.create({
+            title: "Community Successfully Updated",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+    handleModalClose(); 
+  } catch (err) {
+    console.error("Delete failed", err);
+  }
+  }
+
+  return (
+    <>
+    <Modal
+      show={show}
+      onHide={onHide}
+      dialogClassName="modal-fullscreen-custom"
+      backdrop="static"
+      keyboard={true}
+    >
+      <Modal.Body
+        style={{
+          background: "#fff",
+          height: "100%",
+          padding: "2rem",
+        }}
+      >
+        <CloseButton onClick={onHide} style={{ position: "absolute", top: 20, right: 20 }}>
+        </CloseButton>
+        <h1>{community?.name +' ('+community?.districtName+')'}</h1>
+        {/* TODO: add issue form, stats, etc. */}
+      </Modal.Body>
+      {loggedIn && <Modal.Footer>
+        <Button variant="secondary" onClick={handleModalOpen}>
+                Edit
+            </Button>
+            <Button variant='danger' onClick={handleDeleteCom}>
+                Delete
+            </Button>
+      </Modal.Footer>}
+    </Modal>
+    <Modal show={showEditModal} onHide={handleModalClose}>
+            <Modal.Header closeButton style={{background:'red', color:'white'}}>
+            <Modal.Title>Edit {community?.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Form>
+                <Form.Group>
+                <Form.Label>Community name</Form.Label>
+                <Form.Control
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                </Form.Group>
+                <Form.Group className="mt-3">
+                <Form.Label>Latitude</Form.Label>
+                <Form.Control value={form.lat} onChange={(e) => setForm({ ...form, lat: e.target.value })} />
+                </Form.Group>
+                <Form.Group className="mt-3">
+                <Form.Label>Longitude</Form.Label>
+                <Form.Control value={form.long} onChange={(e) => setForm({ ...form, long: e.target.value })} />
+                </Form.Group>
+            </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>
+                Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={!form.name.trim()} variant='danger'>
+                Save
+            </Button>
+            </Modal.Footer>
+        </Modal>
+    </>
+  );
+}
+
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
-  
+  const [activeCommunity, setActiveCommunity] = useState(null);  // the selected one
+  const handleOpenIssue = (c) => setActiveCommunity(c);
+  const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
     console.log( communities);
@@ -62,14 +203,17 @@ const DistrictPinsLayer = () => {
         <Marker
           key={c._id}
           position={[c.coords.lat, c.coords.long]}
-          color={'red'}
         >
-          <Popup>
-            <strong>{c.name}</strong>
-            {/* TODO: more info */}
+          <Popup >
+            <div style={{display:'flex',justifyContent:'center'}}>
+              <button onClick={() => handleOpenIssue(c)}>
+                {c.name}
+              </button>
+            </div>
           </Popup>
         </Marker>
       ))}
+        <FullScreenOverlay show={!!activeCommunity} onHide={handleCloseIssue} community={activeCommunity} />
     </>
   );
 }
