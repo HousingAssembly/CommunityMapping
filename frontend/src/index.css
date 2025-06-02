@@ -1,5 +1,14 @@
 @import "leaflet/dist/leaflet.css";
 
+
+.add-community-cursor {
+  cursor: crosshair !important;
+}
+
+.add-community-cursor .leaflet-interactive {
+  cursor: crosshair !important;
+}
+
 .main-container {
   display: flex;
   flex-wrap: wrap;
@@ -90,4 +99,15 @@
     }
   }
 
- 
+ .modal-fullscreen-custom {
+   width: 90vw !important;
+   height: 90vh !important;
+   margin: auto !important;
+   max-width: none !important;
+ }
+
+ .modal-fullscreen-custom .modal-content {
+   border: none;
+   border-radius: 0;
+   height: 100%;
+ }

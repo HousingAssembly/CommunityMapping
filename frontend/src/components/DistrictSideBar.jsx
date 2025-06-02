@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import {CloseButton, Button} from 'react-bootstrap';
+import {CloseButton, Button, Modal, Form} from 'react-bootstrap';
 import { AdminState } from "../context/Context";
+import {toaster} from '../assets/ui/toaster'
+import axios from 'axios'
 
-const DistrictSideBar = ({show}) => {
-    const { selectedDistrict, setSelectedDistrict } = AdminState();
+const DistrictSideBar = () => {
+    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement, fetchCommunities} = AdminState();
+
+    const [showCommunityModal, setShowCommunityModal] = useState(false);
+    const [form, setForm] = useState({ name: "", lat: "", lng: "" });
+
     const subcouncilInfo = [
         { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'    },
         { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11'   },
@@ -17,6 +23,64 @@ const DistrictSideBar = ({show}) => {
     ]
 
     const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
+
+    const handleAddCommunityClick = () => {
+        startCommunityPlacement(selectedDistrict);
+        toaster.create({
+            title: "Select Community!",
+            description: 'Click on the map where to create community.',
+            duration: 10000,
+            isClosable: true,
+            placement: "top",
+            type: 'info'
+        });
+
+    };
+
+    useEffect(() => {
+        if (
+        communityDraft &&
+        communityDraft.district === selectedDistrict &&
+        communityDraft.lat !== null
+        ) {
+        setForm({
+            name: "",
+            lat: communityDraft.lat.toFixed(6),
+            lng: communityDraft.lng.toFixed(6),
+        });
+        setShowCommunityModal(true);
+        }
+    }, [communityDraft, selectedDistrict]);
+
+    const handleSave = async () => {
+    try {
+      await axios.post("http://localhost:8000/addcom", {
+        name: form.name,
+        districtName: selectedDistrict,
+        coords: {lat:form.lat,long:form.lng},
+      });
+      toaster.create({
+            title: "Community Successfully Created",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+      fetchCommunities(selectedDistrict)
+      setShowCommunityModal(false);
+      setForm({ name: "", lat: "", lng: "" });      
+      cancelCommunityPlacement()
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowCommunityModal(false);
+    cancelCommunityPlacement();
+    };
+
+   if (!selectedDistrict) return null;
   return (
     <>
         <div size='3s' style={{display:'flex', justifyContent:'flex-end', marginTop:'20px', marginRight:'20px'}}>
@@ -24,7 +88,10 @@ const DistrictSideBar = ({show}) => {
         </div>
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>
-            <Button variant='danger' style={{margin:'20px'}}>+ Add Issue</Button>
+            <div>
+                <Button variant='danger' style={{margin:'20px'}}>+ Add Issue</Button>
+                {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
+            </div>
             <div style={{
                 border: '2px solid #ccc',
                 borderRadius: '8px',
@@ -41,7 +108,39 @@ const DistrictSideBar = ({show}) => {
                 <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Emergency Services</h2>
             </div>
 
-        </div>        
+        </div>   
+        <Modal show={showCommunityModal} onHide={handleModalClose}>
+            <Modal.Header closeButton style={{background:'red', color:'white'}}>
+            <Modal.Title>Add a Community</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Form>
+                <Form.Group>
+                <Form.Label>Community name</Form.Label>
+                <Form.Control
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                </Form.Group>
+                <Form.Group className="mt-3">
+                <Form.Label>Latitude</Form.Label>
+                <Form.Control value={form.lat} readOnly />
+                </Form.Group>
+                <Form.Group className="mt-3">
+                <Form.Label>Longitude</Form.Label>
+                <Form.Control value={form.lng} readOnly />
+                </Form.Group>
+            </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>
+                Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={!form.name.trim()} variant='danger'>
+                Save
+            </Button>
+            </Modal.Footer>
+        </Modal>    
     </>
 )}
 

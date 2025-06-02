@@ -20,18 +20,51 @@ const Contacts = () => {
   return (
     <>
     <h1 style={{
-            display:'flex',
-            justifyContent:'center',
-            width:'100%',
-            height:'50px'
-        }}>
-           Contact Information
+        display:'flex',
+        justifyContent:'center',
+        width:'100%',
+        height:'30px',
+        fontFamily: 'Arial, sans-serif'
+    }}>
+      Contact Information
     </h1>
-    <div>        
-         <a href={subcouncilInfo[7].info}>City of Cape Town Waiting List Registration</a>
+
+    <div style = {{
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '45px 0',
+      fontFamily: 'Arial, sans-serif'
+    }}>        
+      <a
+        style={{ margin: '10px 0' }}
+        href={subcouncilInfo[7].info}
+        target= "_blank"
+        rel="noopener noreferrer"
+        >
+          City of Cape Town Waiting List Registration
+      </a>
+
+      <a 
+        style={{ marginBottom: '10px' }} 
+        href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        City of Cape Town About Informal Settlements 
+      </a>
     </div>
-    <div>        
-         {current && <a href={current.info}>{current.name+' Subcouncil Contact Info'}</a>}
+
+    <div style = {{
+      padding: '10px 0'
+    }}>        
+      {current && 
+      <a
+        href={current.info}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {current.name+' Subcouncil Contact Info'}
+      </a>}
     </div>
     </>
   )
