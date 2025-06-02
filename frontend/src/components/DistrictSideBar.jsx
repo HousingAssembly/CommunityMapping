@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, FormGroup} from 'react-bootstrap';
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
+import axios from 'axios'
 
 const DistrictSideBar = () => {
-    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement} = AdminState();
+    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement, fetchCommunities} = AdminState();
 
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [showIssueModal, setShowIssueModal] = useState(false)
@@ -60,15 +61,21 @@ const DistrictSideBar = () => {
 
     const handleSave = async () => {
     try {
-      await axios.post("/api/communities", {
+      await axios.post("http://localhost:8000/addcom", {
         name: form.name,
         districtName: selectedDistrict,
-        // population etc,
-        location: { coordinates: [form.lat, form.lng] },
+        coords: {lat:form.lat,long:form.lng},
       });
-
+      toaster.create({
+            title: "Community Successfully Created",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+      fetchCommunities(selectedDistrict)
       setShowCommunityModal(false);
-      setCommunityName("");
+      setForm({ name: "", lat: "", lng: "" });      
       cancelCommunityPlacement()
     } catch (err) {
       console.error(err);

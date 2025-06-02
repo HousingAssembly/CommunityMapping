@@ -99,4 +99,19 @@
     }
   }
 
- 
+ .modal-fullscreen-custom {
+   width: 90vw !important;
+   height: 90vh !important;
+   margin: auto !important;
+   max-width: none !important;
+ }
+
+ .modal-fullscreen-custom .modal-content {
+   border: none;
+   border-radius: 0;
+   height: 100%;
+ }
+
+ .leaflet-interactive:focus {
+  outline: none;
+}

@@ -1,8 +1,9 @@
 const express = require('express')
 const dotenv = require("dotenv")
-const cors    = require('cors');
+const cors  = require('cors');
 const connectDB = require('./config/databaseconfig')
 const adminAuth = require("./routes/adminAuth");
+const communityRoute = require("./routes/communityRoute");
 
 dotenv.config()
 connectDB()
@@ -19,6 +20,7 @@ app.get('/', (req, res) =>{
 })
 
 app.use('/admin', adminAuth)
+app.use('/addcom', communityRoute)
 
 
 const port = 8000

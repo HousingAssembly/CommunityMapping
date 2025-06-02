@@ -20,7 +20,7 @@ const Header = () => {
     const { loggedIn,setLoggedIn } = AdminState();
     
 
-     const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setLoading(true);
@@ -73,6 +73,19 @@ const Header = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("userInfo")
+        setLoggedIn(false)
+        toaster.create({
+            title: "Logout Successful",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+        window.location.reload();
+    };
+
 
   return (
     
@@ -82,7 +95,7 @@ const Header = () => {
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{margin:"10px",height:'50px', display:'flex', justifyContent:'left' }}
+          style={{margin:"10px",height:'50px', display:'flex', marginLeft:'20px', justifyContent:'left' }}
         />
 
         <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
@@ -93,9 +106,11 @@ const Header = () => {
             </Button> 
         </div>
         }
-        {loggedIn && <p style={{height:'50%', marginRight:'10px', fontSize:'20px', color: 'white'}} >
-          Admin Logged In
-        </p> }
+        {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
+            <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
+            HA Admin Logout
+            </Button> 
+        </div> }
 
         
         <Modal show={show} onHide={handleClose} centered>
