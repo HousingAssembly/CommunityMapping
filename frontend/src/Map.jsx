@@ -6,7 +6,21 @@ import axios from "axios";
 import './index.css'
 import {toaster} from './assets/ui/toaster'
 
+    // -- helper: zoom the map out when no district is selected --
+  function ResetMapView() {
+    const map = useMap();                 // live Leaflet map instance
+    const { selectedDistrict } = AdminState();
 
+    React.useEffect(() => {
+      if (selectedDistrict == null) {
+        // pick your own "zoomed-out" position + zoom ↓↓↓
+        map.flyTo([-33.9, 18.7], 10, { duration: 1.2 });
+      }
+    }, [selectedDistrict, map]);
+
+    return null;                          // renders nothing
+  }
+  
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
 
@@ -194,7 +208,7 @@ const DistrictPinsLayer = () => {
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
-    console.log( communities);
+    console.log(communities);
   }, [selectedDistrict]);
 
   return (
@@ -254,6 +268,7 @@ const Map = () => {
       ))}
       <MapClickHandler />
       <DistrictPinsLayer />
+        <ResetMapView />
     </MapContainer>
   );
 };

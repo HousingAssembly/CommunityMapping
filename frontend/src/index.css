@@ -111,3 +111,7 @@
    border-radius: 0;
    height: 100%;
  }
+
+ .leaflet-interactive:focus {
+  outline: none;
+}
