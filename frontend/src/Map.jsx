@@ -9,12 +9,12 @@ import {toaster} from './assets/ui/toaster'
 
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
-  
+
   return (
     <Circle
       center={center}
       radius={radius}
-      pathOptions={{ color, weight: 2, fillOpacity: 0.07 }}
+      pathOptions={{color, weight: selectedDistrict === name ? 4 : 2, fillOpacity: 0.07 }}
       eventHandlers={{
         click: () => {
           map.flyTo(center, zoomLevel, { duration: 1.4 }); 
