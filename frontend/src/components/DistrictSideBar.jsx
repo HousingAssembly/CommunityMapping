@@ -11,20 +11,41 @@ const DistrictSideBar = () => {
     const [showIssueModal, setShowIssueModal] = useState(false)
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
     const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
+    const [subcouncils, setSubcouncils]= useState([])
+      
+    const loadTownships = async () => {
+        const base= [
+                { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9' },
+                { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11'},
+                { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12'},
+                { name: 'Northern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=5' },
+                { name: 'Southern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=18'},
+                { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php'},
+                { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us'},
+                { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database'}
+            ]
 
-    const subcouncilInfo = [
-        { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'   , townships:["Site C", "Mandela Park", "Site B", "Town Two"] },
-        { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11'   , townships:["Manenberg", "Heideveld", "Bontehuewel", "Bishop Lavis", "Lunga", "Nayanga East"," Marakana", "Valhalla Park", "Kalksteenfontein", "Maitland", "Bridgetown"," Q Town", "Silvertown", "Woodstock", "Salt River", "Guguletu", "Cape Town Waterfront"]},
-        { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12'   ,townships:["Samora", "Tafelsig", "Eastridge", "Lentegur", "Crossroads", "Phillippi", "Heinz Park"]},
-        { name: 'Northern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=5' ,townships:["Delft", "Wesbank", "Elsie's River", "Conifers", "Goodwood", "Eerster River", "Paarl", "Belhar"]},
-        { name: 'Southern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=18' ,townships:["Parkwood", "Hillview", "Pelican Park", "Ocean Park", "Grassy Park", "Wynberg"]},
-        { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php', townships:["Silvertown", "Chatsworth"]  },
-        { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us' ,townships:["Wolseley"]},
-        { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database' , townships:["N/A"]}
+        const updated = await Promise.all(
+            base.map(async (s) => {
+            if (!s.name) return { ...s, townships: ['N/A'] }
+            try {
+                const { data } = await axios.get(`http://localhost:8000/addcom/fetch?district=${s.name}`);
+                return { ...s, townships: data.map((c) => c.name) };
+            } catch (err) {
+                console.error(`Failed to fetch communities for ${s.name}`, err);
+                return { ...s, townships: [] };
+            }
+            })
+        );
 
-    ]
+        setSubcouncils(updated);
+    };
 
-    const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
+    useEffect(() => {
+        loadTownships();
+    }, []);
+
+    const current = subcouncils.find((sc) => sc.name === selectedDistrict);
 
     const handleAddCommunityClick = () => {
         startCommunityPlacement(selectedDistrict);
@@ -40,6 +61,7 @@ const DistrictSideBar = () => {
     };
 
     const handleAddIssueClick = () => {
+      
       setIssueForm({title:'',category:'',description:''})
       setShowIssueModal(true)
     }
@@ -104,14 +126,14 @@ const DistrictSideBar = () => {
                     + Add Issue
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {current.townships.map((value, index) => (
-                          <Dropdown.Item key={index} href={'#/item-${index}'} onClick={handleAddIssueClick}>
+                      {current?.townships.map((value, index) => (
+                          <Dropdown.Item key={index}  onClick={handleAddIssueClick}>
                             {value}
                           </Dropdown.Item>
                       )) 
                       }
                     </Dropdown.Menu>
-                    </Dropdown>
+                </Dropdown>
                 {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
             </div>
             <div style={{

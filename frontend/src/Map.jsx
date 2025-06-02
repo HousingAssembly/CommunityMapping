@@ -208,7 +208,6 @@ const DistrictPinsLayer = () => {
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
-    console.log(communities);
   }, [selectedDistrict]);
 
   return (
