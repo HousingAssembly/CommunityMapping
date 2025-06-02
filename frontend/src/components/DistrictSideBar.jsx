@@ -12,6 +12,7 @@ const DistrictSideBar = () => {
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
     const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
     const [subcouncils, setSubcouncils]= useState([])
+    const [selectedCom, setSelectedCom]=useState('')
       
     const loadTownships = async () => {
         const base= [
@@ -60,8 +61,8 @@ const DistrictSideBar = () => {
 
     };
 
-    const handleAddIssueClick = () => {
-      
+    const handleAddIssueClick = (com) => {
+      setSelectedCom(com)
       setIssueForm({title:'',category:'',description:''})
       setShowIssueModal(true)
     }
@@ -104,6 +105,28 @@ const DistrictSideBar = () => {
     }
   };
 
+  const handleSubmitIssue = async () => {
+    try {
+      await axios.post("http://localhost:8000/addissue", {
+        title: issueForm.title,
+        description: issueForm.description,
+        category: issueForm.category,
+        community: selectedCom
+      });
+      toaster.create({
+            title: "Issue Successfully Added",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+      setShowIssueModal(false);
+      setForm({ name: "", lat: "", lng: "" });      
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const handleModalClose = () => {
     setShowCommunityModal(false);
     cancelCommunityPlacement();
@@ -127,7 +150,7 @@ const DistrictSideBar = () => {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {current?.townships.map((value, index) => (
-                          <Dropdown.Item key={index}  onClick={handleAddIssueClick}>
+                          <Dropdown.Item key={index} onClick={()=>handleAddIssueClick(value)}>
                             {value}
                           </Dropdown.Item>
                       )) 
@@ -211,7 +234,7 @@ const DistrictSideBar = () => {
             <br />
             <br />
             <div style={{display:"flex", justifyContent:"center"}}>
-            <Button variant="danger" size="lg" onClick={handleFormClose}>
+            <Button variant="danger" size="lg" onClick={handleSubmitIssue}>
               Submit
             </Button>
             </div>
