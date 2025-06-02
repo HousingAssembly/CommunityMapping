@@ -5,7 +5,7 @@ import {toaster} from '../assets/ui/toaster'
 import axios from 'axios'
 
 const DistrictSideBar = () => {
-    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement} = AdminState();
+    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement, fetchCommunities} = AdminState();
 
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
@@ -57,10 +57,16 @@ const DistrictSideBar = () => {
       await axios.post("http://localhost:8000/addcom", {
         name: form.name,
         districtName: selectedDistrict,
-        // population etc,
-         coords: {lat:form.lat,long:form.lng},
+        coords: {lat:form.lat,long:form.lng},
       });
-
+      toaster.create({
+            title: "Community Successfully Created",
+            type: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        });
+      fetchCommunities(selectedDistrict)
       setShowCommunityModal(false);
       setForm({ name: "", lat: "", lng: "" });      
       cancelCommunityPlacement()

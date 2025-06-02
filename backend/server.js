@@ -20,7 +20,6 @@ app.get('/', (req, res) =>{
 })
 
 app.use('/admin', adminAuth)
-
 app.use('/addcom', communityRoute)
 
 

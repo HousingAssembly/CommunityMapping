@@ -41,4 +41,46 @@ const allComs = asyncHandler(async (req, res) => {
     }
 })
 
-module.exports =  {createCom, allComs}
+const updateCom = async (req, res) =>{
+    try {
+    const { name, coords } = req.body;
+
+    const updated = await Community.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...(name && { name }),
+        ...(coords && {
+          coords: {
+            lat: coords.lat,
+            long: coords.long,
+          },
+        }),
+      },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ msg: "Community not found" });
+    }
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const deleteCom = async (req, res) => {
+  try {
+    const community = await Community.findByIdAndDelete(req.params.id);
+    if (!community) return res.status(404).json({ msg: "Not found" });
+
+    res.json({ msg: "Deleted", id: req.params.id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "server error" });
+  }
+};
+
+
+module.exports =  {createCom, allComs, deleteCom, updateCom}
