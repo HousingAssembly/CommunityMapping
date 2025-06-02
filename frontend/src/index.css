@@ -99,4 +99,8 @@
     }
   }
 
+  .leaflet-interactive:focus {
+  outline: none;
+}
+
  

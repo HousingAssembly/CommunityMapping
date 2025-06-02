@@ -95,7 +95,7 @@ const Header = () => {
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{margin:"10px",height:'50px', display:'flex', justifyContent:'left' }}
+          style={{margin:"10px",height:'50px', display:'flex', marginLeft:'20px', justifyContent:'left' }}
         />
 
         <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
