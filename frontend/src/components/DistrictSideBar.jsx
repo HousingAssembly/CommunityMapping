@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, FormGroup } from 'react-bootstrap';
+import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, FormGroup} from 'react-bootstrap';
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
 
@@ -9,6 +9,7 @@ const DistrictSideBar = () => {
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [showIssueModal, setShowIssueModal] = useState(false)
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
+    const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
 
     const subcouncilInfo = [
         { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'   , townships:["Site C", "Mandela Park", "Site B", "Town Two"] },
@@ -16,8 +17,8 @@ const DistrictSideBar = () => {
         { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12'   ,townships:["Samora", "Tafelsig", "Eastridge", "Lentegur", "Crossroads", "Phillippi", "Heinz Park"]},
         { name: 'Northern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=5' ,townships:["Delft", "Wesbank", "Elsie's River", "Conifers", "Goodwood", "Eerster River", "Paarl", "Belhar"]},
         { name: 'Southern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=18' ,townships:["Parkwood", "Hillview", "Pelican Park", "Ocean Park", "Grassy Park", "Wynberg"]},
-        { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php', townships:["Wolseley"]  },
-        { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us' ,townships:["Silvertown", "Chatsworth"]},
+        { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php', townships:["Silvertown", "Chatsworth"]  },
+        { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us' ,townships:["Wolseley"]},
         { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database' , townships:["N/A"]}
 
     ]
@@ -38,6 +39,7 @@ const DistrictSideBar = () => {
     };
 
     const handleAddIssueClick = () => {
+      setIssueForm({title:'',category:'',description:''})
       setShowIssueModal(true)
     }
 
@@ -78,7 +80,7 @@ const DistrictSideBar = () => {
     cancelCommunityPlacement();
     };
 
-  const handleModalClose2 = () => {
+  const handleFormClose = () => {
     setShowIssueModal(false);
   }
    if (!selectedDistrict) return null;
@@ -94,19 +96,13 @@ const DistrictSideBar = () => {
                   <Dropdown.Toggle variant='danger' id="dropdown-basic" >
                     + Add Issue
                     </Dropdown.Toggle>
-                    
                     <Dropdown.Menu>
-                      
                       {current.townships.map((value, index) => (
                           <Dropdown.Item key={index} href={'#/item-${index}'} onClick={handleAddIssueClick}>
                             {value}
-                            
                           </Dropdown.Item>
-                      ))
-                       
+                      )) 
                       }
-                      
-                    
                     </Dropdown.Menu>
                     </Dropdown>
                 {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
@@ -126,89 +122,68 @@ const DistrictSideBar = () => {
                 </div>
                 <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Emergency Services</h2>
             </div>
-
         </div>   
 
        
-        <Offcanvas show={showIssueModal} onHide={handleModalClose2} placement="end">
+        <Offcanvas show={showIssueModal} onHide={handleFormClose} placement="end">
           <div style={{display:"flex", justifyContent:"right"}}>
-          <CloseButton style={{marginTop:"10px", marginRight:"10px"}} onClick={handleModalClose2}>
-
-          </CloseButton>
+            <CloseButton style={{marginTop:"10px", marginRight:"10px"}} onClick={handleFormClose}></CloseButton>
           </div>
           <div>
             <h1 style={{display:"flex", justifyContent:"center"}}><u><strong> Add Issue </strong></u></h1>
              <br />
-            
-           
-
             <Form>
               <FormGroup >
                 <Form.Label style={{marginLeft:'10px'}}>Issue Title:</Form.Label>
-                                <Form.Control
-                                    type="title"
-                                    name="title"
-                                    placeholder="Enter Issue Title"
-                                    required
-                                    onChange={(e)=>setEmail(e.target.value)}
-                                />
+                  <Form.Control
+                      type="title"
+                      name="title"
+                      maxLength="50"
+                      placeholder="Enter Issue Title (50 characters max)"
+                      required
+                      onChange={(e)=>setIssueForm({...issueForm, title: e.target.value})}
+                  />
               </FormGroup>
-
             </Form>
             <br />
             <br />
-            <Dropdown>
+            <Dropdown >
                 <Dropdown.Toggle variant="dark" id="dropdown-basic" style={{marginLeft:'10px'}}>
-                  Choose Issue Category
-
+                  {issueForm.category==='' ? 'Choose Issue Category' : issueForm.category}
                       <Dropdown.Menu>
-                      
-                      
-                          <Dropdown.Item href="#/action1"> Food/Water/Electricity </Dropdown.Item>
-                          <Dropdown.Item href="#/action2"> GBV </Dropdown.Item>
-                          <Dropdown.Item href="#/action3"> Eviction </Dropdown.Item>
-                          <Dropdown.Item href="#/action4"> Crime </Dropdown.Item>
-                          <Dropdown.Item href="#/action5"> Natural Disaster </Dropdown.Item>
-                          <Dropdown.Item href="#/action6"> Poor Housing Conditions </Dropdown.Item>
-                          <Dropdown.Item href="#/action7"> Other </Dropdown.Item>
-
-                           
-                    
-                       
-                      
-                      
-                    
+                          <Dropdown.Item href="#/action1" onClick={(e)=>setIssueForm({...issueForm, category: 'Food/Water/Electricity'})}> Food/Water/Electricity </Dropdown.Item>
+                          <Dropdown.Item href="#/action2" onClick={(e)=>setIssueForm({...issueForm, category: 'GBV'})}> GBV </Dropdown.Item>
+                          <Dropdown.Item href="#/action3" onClick={(e)=>setIssueForm({...issueForm, category: 'Eviction'})}> Eviction </Dropdown.Item>
+                          <Dropdown.Item href="#/action4" onClick={(e)=>setIssueForm({...issueForm, category: 'Crime'})}> Crime </Dropdown.Item>
+                          <Dropdown.Item href="#/action5" onClick={(e)=>setIssueForm({...issueForm, category: 'Natural Disaster'})}> Natural Disaster </Dropdown.Item>
+                          <Dropdown.Item href="#/action6" onClick={(e)=>setIssueForm({...issueForm, category: 'Poor Housing Conditions'})}> Poor Housing Conditions </Dropdown.Item>
+                          <Dropdown.Item href="#/action7" onClick={(e)=>setIssueForm({...issueForm, category: 'Other'})}> Other </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown.Toggle>
-
             </Dropdown>
-
             <br />
             <br />
             <Form>
               <FormGroup >
                 <Form.Label style={{marginLeft:'10px'}}>Issue Description:</Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    type="title"
-                                    name="title"
-                                    placeholder="Enter Issue Description"
-                                    required
-                                    onChange={(e)=>setEmail(e.target.value)}
-                                />
+                  <Form.Control
+                      as="textarea"
+                      rows={3}
+                      type="title"
+                      name="title"
+                      maxLength="500"
+                      placeholder="Enter Issue Description (500 characters max)"
+                      required
+                      onChange={(e)=>setIssueForm({...issueForm, description: e.target.value})}
+                  />
               </FormGroup>
-
             </Form>
-
             </div>
-
             <br />
             <br />
             <div style={{display:"flex", justifyContent:"center"}}>
-            <Button variant="danger" size="lg" onClick={handleModalClose2}>
-                    Submit
-
+            <Button variant="danger" size="lg" onClick={handleFormClose}>
+              Submit
             </Button>
             </div>
         </Offcanvas>
