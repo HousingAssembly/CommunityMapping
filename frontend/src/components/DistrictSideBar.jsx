@@ -98,7 +98,7 @@ const DistrictSideBar = () => {
         </div>
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>
-            <div>
+            <div style={{display:'flex', alignItems:'center'}}>
                 <Dropdown>
                   <Dropdown.Toggle variant='danger' id="dropdown-basic" >
                     + Add Issue
