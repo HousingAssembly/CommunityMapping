@@ -3,10 +3,10 @@ import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, Form
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
 import axios from 'axios'
+import { useMap } from 'react-leaflet';
 
 const DistrictSideBar = () => {
     const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities} = AdminState();
-
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [showIssueModal, setShowIssueModal] = useState(false)
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
@@ -116,7 +116,7 @@ const DistrictSideBar = () => {
   return (
     <>
         <div size='3s' style={{display:'flex', justifyContent:'flex-end', marginTop:'20px', marginRight:'20px'}}>
-        <CloseButton onClick={()=>setSelectedDistrict(null)}/>
+        <CloseButton onClick={()=>setSelectedDistrict(null)} />
         </div>
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>

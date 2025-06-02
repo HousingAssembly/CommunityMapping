@@ -17,6 +17,8 @@ const Contacts = () => {
   ]
 
     const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
+    console.log('Selected district is:', selectedDistrict);
+    console.log('Current:', current);
   return (
     <>
     <h1 style={{
@@ -45,7 +47,7 @@ const Contacts = () => {
       </a>
 
       <a 
-        style={{ marginBottom: '10px' }} 
+        style={{ marginBottom: '10px 0' }} 
         href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
         target="_blank"
         rel="noopener noreferrer"
