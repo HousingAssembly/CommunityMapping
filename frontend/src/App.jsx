@@ -38,7 +38,9 @@ function App() {
           </div>
           </>)}
           {view==='district'&&<DistrictSideBar /> }
+          {view==='issue'&&<AddIssueSideBar />}
         </div>
+
       </div>
       <Toaster />
     </>
