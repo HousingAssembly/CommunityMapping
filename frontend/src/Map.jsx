@@ -268,7 +268,7 @@ const Map = () => {
       ))}
       <MapClickHandler />
       <DistrictPinsLayer />
-        <ResetMapView />
+      <ResetMapView />
     </MapContainer>
   );
 };
