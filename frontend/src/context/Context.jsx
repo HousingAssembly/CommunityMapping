@@ -1,15 +1,20 @@
+//React hooks #1 lets you make a global data container, #2 lets components read from container
+//#3 stores state variables, #4 runs logic on component load like grbabing form local storage
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from 'axios'
 
+//global data container
 const Context = createContext();
 
+//gives all children access to shared data
 const AdminProvider = ({ children }) => {
+  //gives default state to state variables
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState(null); 
   const [communityDraft, setCommunityDraft] = useState(null);
   const [communities, setCommunities] = useState([]);
   const [user, setUser] = useState();
-
 
    useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -38,6 +43,7 @@ const AdminProvider = ({ children }) => {
   }
 };
 
+//now any component can read and update the selected district, communities, and logged-in user
   return (
     <Context.Provider
       value={{

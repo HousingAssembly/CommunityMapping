@@ -1,5 +1,8 @@
+//simplifies error handling
 const asyncHandler = require('express-async-handler')
+//make unique tokens
 const generateToken = require("../config/generateToken")
+//schema
 const User = require("../models/userModel.js");
 
 const registerUser = asyncHandler(async (req, res) => {
