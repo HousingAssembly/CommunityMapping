@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from 'axios'
 
 const Context = createContext();
@@ -8,6 +8,14 @@ const AdminProvider = ({ children }) => {
   const [selectedDistrict, setSelectedDistrict] = useState(null); 
   const [communityDraft, setCommunityDraft] = useState(null);
   const [communities, setCommunities] = useState([]);
+  const [user, setUser] = useState();
+
+
+   useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUser(userInfo);
+
+  }, []);
 
   const startCommunityPlacement = (district) =>{
     console.log("clicked addCommunity for", selectedDistrict);
@@ -43,6 +51,7 @@ const AdminProvider = ({ children }) => {
         cancelCommunityPlacement,
         communities,
         fetchCommunities,
+        user
       }}
     >
       {children}

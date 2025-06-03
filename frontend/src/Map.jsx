@@ -6,19 +6,17 @@ import axios from "axios";
 import './index.css'
 import {toaster} from './assets/ui/toaster'
 
-    // -- helper: zoom the map out when no district is selected --
   function ResetMapView() {
-    const map = useMap();                 // live Leaflet map instance
+    const map = useMap();                 
     const { selectedDistrict } = AdminState();
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (selectedDistrict == null) {
-        // pick your own "zoomed-out" position + zoom ↓↓↓
         map.flyTo([-33.9, 18.7], 10, { duration: 1.2 });
       }
     }, [selectedDistrict, map]);
 
-    return null;                          // renders nothing
+    return null;
   }
   
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
@@ -67,7 +65,7 @@ const MapClickHandler = () => {
 }
 
 const FullScreenOverlay = ({ show, onHide, community }) => {
-  const { fetchCommunities, loggedIn } = AdminState();
+  const { fetchCommunities, loggedIn, user } = AdminState();
   const [form, setForm]= useState({
     name: community?.name || "",
     lat: community?.coords.lat || "",
@@ -95,7 +93,12 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
     if (!community?._id) return;
 
     try {
-      await axios.delete(`http://localhost:8000/addcom/${community._id}`);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.delete(`http://localhost:8000/addcom/${community._id}`, config);
       fetchCommunities(community.districtName)
       toaster.create({
               title: "Community Successfully Deleted",
@@ -114,13 +117,18 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
     if (!community?._id) return;
 
   try {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
     await axios.put(`http://localhost:8000/addcom/${community._id}`, {
       name: form.name,
       coords: {
         lat: form.lat,
         long: form.long,
       },
-    });
+    }, config);
     fetchCommunities(community.districtName);
     toaster.create({
             title: "Community Successfully Updated",
@@ -208,7 +216,6 @@ const DistrictPinsLayer = () => {
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
-    console.log(communities);
   }, [selectedDistrict]);
 
   return (

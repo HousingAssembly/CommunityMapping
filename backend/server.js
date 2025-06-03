@@ -4,6 +4,8 @@ const cors  = require('cors');
 const connectDB = require('./config/databaseconfig')
 const adminAuth = require("./routes/adminAuth");
 const communityRoute = require("./routes/communityRoute");
+const issueRoutes = require("./routes/issueRoutes");
+
 
 dotenv.config()
 connectDB()
@@ -21,6 +23,7 @@ app.get('/', (req, res) =>{
 
 app.use('/admin', adminAuth)
 app.use('/addcom', communityRoute)
+app.use('/addissue', issueRoutes)
 
 
 const port = 8000
