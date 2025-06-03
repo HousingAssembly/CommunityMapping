@@ -27,6 +27,7 @@ app.use(cors({
 
 //express middleware that allows the server to parse incoming requests with JSON payloads
 //middleware are functions that intercept HTTP requests and responses
+app.use(express.json())
 
 //basic test route to see if API runs
 app.get('/', (req, res) =>{
