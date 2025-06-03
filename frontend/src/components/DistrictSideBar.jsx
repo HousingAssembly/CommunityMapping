@@ -13,9 +13,9 @@ const DistrictSideBar = () => {
     const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
 
     const subcouncilInfo = [
-        { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'   , townships:["Site C", "Mandela Park", "Site B", "Town Two"] },
-        { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11'   , townships:["Manenberg", "Heideveld", "Bontehuewel", "Bishop Lavis", "Lunga", "Nayanga East"," Marakana", "Valhalla Park", "Kalksteenfontein", "Maitland", "Bridgetown"," Q Town", "Silvertown", "Woodstock", "Salt River", "Guguletu", "Cape Town Waterfront"]},
-        { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12'   ,townships:["Samora", "Tafelsig", "Eastridge", "Lentegur", "Crossroads", "Phillippi", "Heinz Park"]},
+        { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9' , townships:["Site C", "Mandela Park", "Site B", "Town Two"] },
+        { name: 'Athlone',          info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=11' , townships:["Manenberg", "Heideveld", "Bontehuewel", "Bishop Lavis", "Lunga", "Nayanga East"," Marakana", "Valhalla Park", "Kalksteenfontein", "Maitland", "Bridgetown"," Q Town", "Silvertown", "Woodstock", "Salt River", "Guguletu", "Cape Town Waterfront"]},
+        { name: 'Mitchells Plain',  info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=12' ,townships:["Samora", "Tafelsig", "Eastridge", "Lentegur", "Crossroads", "Phillippi", "Heinz Park"]},
         { name: 'Northern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=5' ,townships:["Delft", "Wesbank", "Elsie's River", "Conifers", "Goodwood", "Eerster River", "Paarl", "Belhar"]},
         { name: 'Southern Suburbs', info: 'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=18' ,townships:["Parkwood", "Hillview", "Pelican Park", "Ocean Park", "Grassy Park", "Wynberg"]},
         { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php', townships:["Silvertown", "Chatsworth"]  },
@@ -98,7 +98,7 @@ const DistrictSideBar = () => {
         </div>
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>
-            <div style={{display:'flex', alignItems:'center'}}>
+            <div style={{display:'flex', alignItems:'center', padding: '10px'}}>
                 <Dropdown>
                   <Dropdown.Toggle variant='danger' id="dropdown-basic" >
                     + Add Issue
