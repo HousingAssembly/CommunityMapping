@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Circle, Tooltip, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
-import{CloseButton, Modal, Button, Form} from 'react-bootstrap'
+import{CloseButton, Modal, Button, Form, Accordion} from 'react-bootstrap'
 import { AdminState } from "./context/Context";
 import axios from "axios";
 import './index.css'
@@ -140,6 +140,132 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
         <CloseButton onClick={onHide} style={{ position: "absolute", top: 20, right: 20 }}>
         </CloseButton>
         <h1>{community?.name +' ('+community?.districtName+')'}</h1>
+        <br />
+        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-around'}}>
+          <h2 style={{color:'darkred'}}> <u>Statistical Info</u> </h2>
+          
+          
+          <h2 style={{color:'darkred'}}> <u> Local Reported Issues</u> </h2>
+          
+          
+          </div>
+          <br />
+
+          <div style={{display:'flex', flexDirection:'row', justifyContent:"space-around", marginLeft:"70px"}}>
+            <div style={{justifyContent:"left"}}>
+              <h2> <u> Housing Stats: </u></h2>
+            <h4> RDPs: </h4>  {/* Add Data here*/}
+            <h4> CRUs: </h4>  {/* Add Data here*/}
+            <h4> Backyard Dwellings: </h4>  {/* Add Data here*/}
+          <br />
+          <h2> <u>Demographic Stats:</u> </h2>
+            <h4> Total Population: </h4>  {/* Add Data here*/}
+            <h4> Black: </h4>  {/* Add Data here*/}
+            <h4> Coloured: </h4>  {/* Add Data here*/}
+            <h4> Asian: </h4>  {/* Add Data here*/}
+            <h4> White: </h4>  {/* Add Data here*/}
+            <h4> Other: </h4>  {/* Add Data here*/}
+            
+            </div>
+            
+          
+
+      <div >
+          <Accordion defaultActiveKey="0" style={{width:'600px'}}>
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>Food/Water/Electricity</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+           <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+           <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+           <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+           <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="1">
+        <Accordion.Header>GBV</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+        <Accordion.Item eventKey="2">
+        <Accordion.Header>Eviction</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+           <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="3">
+        <Accordion.Header>Crime</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="4">
+        <Accordion.Header>Natural Disaster</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="5">
+        <Accordion.Header>Poor Housing Conditions</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+         <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="6">
+        <Accordion.Header>Other</Accordion.Header>
+        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            <strong><u>Issue Title</u></strong>
+            <p style={{color:'grey'}}> Date Posted </p>
+          </div>
+          Issue Description
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+    </div>
+    </div>
         {/* TODO: add issue form, stats, etc. */}
       </Modal.Body>
       {loggedIn && <Modal.Footer>
