@@ -18,8 +18,8 @@ const Districts = () => {
     <ul
     style={{
       listStyleType: 'disc',}}>
-        <li>Kayelitsha</li>
-        <li>Athone</li>
+        <li>Khayelitsha</li>
+        <li>Athlone</li>
         <li>Mitchells Plain</li>
         <li>Northern Suburbs</li>
         <li>Southern Suburbs</li>
