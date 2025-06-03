@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useMap } from 'react-leaflet';
 
 const DistrictSideBar = () => {
-    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities} = AdminState();
+    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [showIssueModal, setShowIssueModal] = useState(false)
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
@@ -84,11 +84,16 @@ const DistrictSideBar = () => {
 
     const handleSave = async () => {
     try {
+        const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
       await axios.post("http://localhost:8000/addcom", {
         name: form.name,
         districtName: selectedDistrict,
         coords: {lat:form.lat,long:form.lng},
-      });
+      }, config);
       toaster.create({
             title: "Community Successfully Created",
             type: "success",
