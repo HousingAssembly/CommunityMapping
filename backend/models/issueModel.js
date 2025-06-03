@@ -4,16 +4,7 @@ const issueModel = mongoose.Schema(
     {
         title: {type: String, required: true},
         description: {type: String, required: true},
-        tag: {type: HousingType = {
-            GBV: "GBV",
-            EVICTIONS: "Eviction",
-            FOOD: "Need Food/Water/Electricity",
-            CRIME: "Crime",
-            NATLDISTASER: "Natural Disaster",
-            CONDITIONS: "Poor Housing Conditions",
-            OTHER: "Other",
-        },
-        required: true},
+        category: {type: String, required: true},
         community: {type: String, required: true},
     },{
         timestamps: true, // Adds created at, updated at fields

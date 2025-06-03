@@ -1,11 +1,12 @@
 const express = require('express')
 const { createCom, allComs, deleteCom, updateCom } = require('../controllers/comController')
+const { protect } = require("../middleware/authMiddleware")
 
 const router = express.Router()
 
-router.route('/').post(createCom)
 router.get('/fetch', allComs)
-router.put("/:id", updateCom);
-router.delete("/:id", deleteCom);
+router.route('/').post(protect, createCom)
+router.put("/:id",protect, updateCom);
+router.delete("/:id",protect, deleteCom);
 
 module.exports = router
