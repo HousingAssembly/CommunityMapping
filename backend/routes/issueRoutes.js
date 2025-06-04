@@ -1,9 +1,9 @@
 const express = require('express')
-const { createIssue } = require('../controllers/issueController')
+const { createIssue, allIssues } = require('../controllers/issueController')
 
 const router = express.Router()
 
 router.route('/').post(createIssue)
-
+router.get('/fetch', allIssues)
 
 module.exports = router

@@ -66,6 +66,8 @@ const MapClickHandler = () => {
 
 const FullScreenOverlay = ({ show, onHide, community }) => {
   const { fetchCommunities, loggedIn, user } = AdminState();
+  //state for issues
+  const [issues, setIssues] = useState([]);
   const [form, setForm]= useState({
     name: community?.name || "",
     lat: community?.coords.lat || "",
@@ -87,7 +89,43 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
     }
   }, [community]);
 
+  //fetch issues when community opens or changes
+  useEffect(() => {
+    const fetchIssuesForCommunity = async () => {
+      if (!community?.name) {
+        //clears issues if there's no community selected
+        setIssues([]);
+        return;
+      }
+      try {
+        //GET request for issues
+        const { data } = await axios.get(
+          `http://localhost:8000/addissue/fetch?community=${encodeURIComponent(community.name)}`
+        );
+        setIssues(data);
+      } catch (err) {
+        console.error("Failed to fetch issues:", err);
+        //clears issues array if no issues fetch
+        setIssues([]);
+      }
+    };
 
+    //refetches the backend issues whne community changes
+    fetchIssuesForCommunity();
+  }, [community]);
+
+  //group helper
+  const groupByCategory = (issueList) => {
+    return issueList.reduce((acc, issue) => {
+      const cat = issue.category || "Other";
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(issue);
+      return acc;
+    }, {});
+  };
+
+  //becomes an object where each cat has an array of issues
+  const issuesByCategory = groupByCategory(issues);
 
   const handleDeleteCom = async () => {
     if (!community?._id) return;
@@ -145,195 +183,179 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
 
   return (
     <>
-    <Modal
-      show={show}
-      onHide={onHide}
-      dialogClassName="modal-fullscreen-custom"
-      backdrop="static"
-      keyboard={true}
-    >
-      <Modal.Body
-        style={{
-          background: "#fff",
-          height: "100%",
-          padding: "2rem",
-        }}
+      <Modal
+        show={show}
+        onHide={onHide}
+        dialogClassName="modal-fullscreen-custom"
+        backdrop="static"
+        keyboard={true}
       >
-        <CloseButton onClick={onHide} style={{ position: "absolute", top: 20, right: 20 }}>
-        </CloseButton>
-        <h1>{community?.name +' ('+community?.districtName+')'}</h1>
-        <br />
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-around'}}>
-          <h2 style={{color:'darkred'}}> <u>Statistical Info</u> </h2>
-          
-          
-          <h2 style={{color:'darkred'}}> <u> Local Reported Issues</u> </h2>
-          
-          
+        <Modal.Body
+          style={{
+            background: '#fff',
+            height: '100%',
+            padding: '2rem',
+          }}
+        >
+          <CloseButton
+            onClick={onHide}
+            style={{ position: 'absolute', top: 20, right: 20 }}
+          />
+          <h1>{community?.name + ' (' + community?.districtName + ')'}</h1>
+          <br />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}
+          >
+            <h2 style={{ color: 'darkred' }}>
+              <u>Statistical Info</u>
+            </h2>
+            <h2 style={{ color: 'darkred' }}>
+              <u>Local Reported Issues</u>
+            </h2>
           </div>
           <br />
-
-          <div style={{display:'flex', flexDirection:'row', justifyContent:"space-around", marginLeft:"70px"}}>
-            <div style={{justifyContent:"left"}}>
-              <h2> <u> Housing Stats: </u></h2>
-            <h4> RDPs: </h4>  {/* Add Data here*/}
-            <h4> CRUs: </h4>  {/* Add Data here*/}
-            <h4> Backyard Dwellings: </h4>  {/* Add Data here*/}
-          <br />
-          <h2> <u>Demographic Stats:</u> </h2>
-            <h4> Total Population: </h4>  {/* Add Data here*/}
-            <h4> Black: </h4>  {/* Add Data here*/}
-            <h4> Coloured: </h4>  {/* Add Data here*/}
-            <h4> Asian: </h4>  {/* Add Data here*/}
-            <h4> White: </h4>  {/* Add Data here*/}
-            <h4> Other: </h4>  {/* Add Data here*/}
-            
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginLeft: '70px',
+            }}
+          >
+            <div style={{ justifyContent: 'left' }}>
+              <h2>
+                <u>Housing Stats: </u>
+              </h2>
+              <h4>RDPs: </h4>
+              <h4>CRUs: </h4>
+              <h4>Backyard Dwellings: </h4>
+              <br />
+              <h2>
+                <u>Demographic Stats:</u>
+              </h2>
+              <h4>Total Population: </h4>
+              <h4>Black: </h4>
+              <h4>Coloured: </h4>
+              <h4>Asian: </h4>
+              <h4>White: </h4>
+              <h4>Other: </h4>
             </div>
-            
-          
 
-      <div >
-          <Accordion defaultActiveKey="0" style={{width:'600px'}}>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Food/Water/Electricity</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+            <div>
+              <Accordion defaultActiveKey="-1" style={{ width: '600px' }}>
+                {Object.entries(issuesByCategory).map(
+                  ([categoryName, issueList], index) => (
+                    <Accordion.Item eventKey={String(index)} key={categoryName}>
+                      <Accordion.Header>{categoryName}</Accordion.Header>
+                      <Accordion.Body
+                        style={{ overflowY: 'auto', height: '250px' }}
+                      >
+                        {issueList.map((iss) => (
+                          <div
+                            key={iss._id}
+                            style={{
+                              marginBottom: '1rem',
+                              borderBottom: '1px solid #eee',
+                              paddingBottom: '0.5rem',
+                            }}
+                          >
+                            <div
+                              style={{ display: 'flex', justifyContent: 'space-between' }}
+                            >
+                              <strong>
+                                <u>{iss.title}</u>
+                              </strong>
+                              <p style={{ color: 'grey' }}>
+                                {new Date(iss.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <p>{iss.description}</p>
+                          </div>
+                        ))}
+                        {issueList.length === 0 && (
+                          <p style={{ color: 'grey' }}>No issues in this category.</p>
+                        )}
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  )
+                )}
+                {Object.keys(issuesByCategory).length === 0 && (
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header> No Issues Reported </Accordion.Header>
+                    <Accordion.Body style={{ textAlign: 'center' }}>
+                      <em>
+                        There are currently no reported issues for this community.
+                      </em>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                )}
+              </Accordion>
+            </div>
+          </div>
+        </Modal.Body>
 
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>GBV</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-        <Accordion.Item eventKey="2">
-        <Accordion.Header>Eviction</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="3">
-        <Accordion.Header>Crime</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="4">
-        <Accordion.Header>Natural Disaster</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="5">
-        <Accordion.Header>Poor Housing Conditions</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-         <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="6">
-        <Accordion.Header>Other</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
-    </div>
-    </div>
-        {/* TODO: add issue form, stats, etc. */}
-      </Modal.Body>
-      {loggedIn && <Modal.Footer>
-        <Button variant="secondary" onClick={handleModalOpen}>
-                Edit
+        {loggedIn && (
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalOpen}>
+              Edit
             </Button>
-            <Button variant='danger' onClick={handleDeleteCom}>
-                Delete
+            <Button variant="danger" onClick={handleDeleteCom}>
+              Delete
             </Button>
-      </Modal.Footer>}
-    </Modal>
-    <Modal show={showEditModal} onHide={handleModalClose}>
-            <Modal.Header closeButton style={{background:'red', color:'white'}}>
-            <Modal.Title>Edit {community?.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            <Form>
-                <Form.Group>
-                <Form.Label>Community name</Form.Label>
-                <Form.Control
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Latitude</Form.Label>
-                <Form.Control value={form.lat} onChange={(e) => setForm({ ...form, lat: e.target.value })} />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Longitude</Form.Label>
-                <Form.Control value={form.long} onChange={(e) => setForm({ ...form, long: e.target.value })} />
-                </Form.Group>
-            </Form>
-            </Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleModalClose}>
-                Cancel
-            </Button>
-            <Button onClick={handleSave} disabled={!form.name.trim()} variant='danger'>
-                Save
-            </Button>
-            </Modal.Footer>
-        </Modal>
+          </Modal.Footer>
+        )}
+      </Modal>
+
+    
+      <Modal show={showEditModal} onHide={handleModalClose}>
+        <Modal.Header closeButton style={{ background: 'red', color: 'white' }}>
+          <Modal.Title>Edit {community?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Community name</Form.Label>
+              <Form.Control
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group className="mt-3">
+              <Form.Label>Latitude</Form.Label>
+              <Form.Control
+                value={form.lat}
+                onChange={(e) => setForm({ ...form, lat: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group className="mt-3">
+              <Form.Label>Longitude</Form.Label>
+              <Form.Control
+                value={form.long}
+                onChange={(e) => setForm({ ...form, long: e.target.value })}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={!form.name.trim()}
+            variant="danger"
+          >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
-}
+};
 
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
