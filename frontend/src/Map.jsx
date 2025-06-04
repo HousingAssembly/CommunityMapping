@@ -280,6 +280,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
                             </p>
                           </div>
                           <p>{iss.description}</p>
+                          {loggedIn && <Button variant="danger" onClick =  {() => handleDeleteIssue(iss)}> Delete This Issue </Button>}
                         </div>
                       ))}
                       {issueList.length === 0 && (
