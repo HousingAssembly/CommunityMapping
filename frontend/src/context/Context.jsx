@@ -15,12 +15,12 @@ const AdminProvider = ({ children }) => {
   const [communityDraft, setCommunityDraft] = useState(null);
   const [communities, setCommunities] = useState([]);
   const [user, setUser] = useState();
+  const [relogin, setRelogin] = useState(0)
 
    useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
-
-  }, []);
+  }, [relogin]);
 
   const startCommunityPlacement = (district) =>{
     console.log("clicked addCommunity for", selectedDistrict);
@@ -57,7 +57,9 @@ const AdminProvider = ({ children }) => {
         cancelCommunityPlacement,
         communities,
         fetchCommunities,
-        user
+        user,
+        setUser,
+        setRelogin
       }}
     >
       {children}
