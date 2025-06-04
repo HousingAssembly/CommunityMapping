@@ -129,6 +129,14 @@ const DistrictSideBar = () => {
       setForm({ name: "", lat: "", lng: "" });      
     } catch (err) {
       console.error(err);
+      toaster.create({
+        title: "Please Fill All Fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+        type: 'error'
+    });
     }
   }
 
