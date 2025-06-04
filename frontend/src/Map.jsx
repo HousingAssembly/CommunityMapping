@@ -231,94 +231,68 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'row',
+              flexWrap: 'wrap',
               justifyContent: 'space-around',
+              gap: '2rem',
             }}
           >
-            <h2 style={{ color: 'darkred' }}>
-              <u>Statistical Info</u>
-            </h2>
-            <h2 style={{ color: 'darkred' }}>
-              <u>Local Reported Issues</u>
-            </h2>
-          </div>
-          <br />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginLeft: '70px',
-            }}
-          >
-            <div style={{ justifyContent: 'left' }}>
-              <h2>
-                <u>Housing Stats: </u>
+            <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '500px' }}>
+              <h2 style={{ color: 'darkred', textAlign: 'center' }}>
+                <u>Statistical Info</u>
               </h2>
-              <h4>RDPs: </h4>
-              <h4>CRUs: </h4>
-              <h4>Backyard Dwellings: </h4>
-              <br />
-              <h2>
-                <u>Demographic Stats:</u>
-              </h2>
-              <h4>Total Population: </h4>
-              <h4>Black: </h4>
-              <h4>Coloured: </h4>
-              <h4>Asian: </h4>
-              <h4>White: </h4>
-              <h4>Other: </h4>
+              <div>
+                <h2><u>Housing Stats: </u></h2>
+                <h4>RDPs: </h4>
+                <h4>CRUs: </h4>
+                <h4>Backyard Dwellings: </h4>
+                <br />
+                <h2><u>Demographic Stats:</u></h2>
+                <h4>Total Population: </h4>
+                <h4>Black: </h4>
+                <h4>Coloured: </h4>
+                <h4>Asian: </h4>
+                <h4>White: </h4>
+                <h4>Other: </h4>
+              </div>
             </div>
-
-            <div>
-              <Accordion defaultActiveKey="-1" style={{ width: '600px' }}>
-                {Object.entries(issuesByCategory).map(
-                  ([categoryName, issueList], index) => (
-                    <Accordion.Item eventKey={String(index)} key={categoryName}>
-                      <Accordion.Header>{categoryName}</Accordion.Header>
-                      <Accordion.Body
-                        style={{ overflowY: 'auto', height: '250px' }}
-                      >
-                        {issueList.map((iss) => (
-                          <div
-                            key={iss._id}
-                            style={{
-                              marginBottom: '1rem',
-                              borderBottom: '1px solid #eee',
-                              paddingBottom: '0.5rem',
-                            }}
-                          >
-                            <div
-                              style={{ display: 'flex', justifyContent: 'space-between' }}
-                            >
-                              <strong>
-                                <u>{iss.title}</u>
-                              </strong>
-                              <p style={{ color: 'grey' }}>
-                                {new Date(iss.createdAt).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <p>{iss.description}</p>
-                            {loggedIn && 
-                            <Button variant="danger" onClick = {() => handleDeleteIssue(iss)}>
-                              Delete This Issue
-                            </Button>}
+            <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
+              <h2 style={{ color: 'darkred', textAlign: 'center' }}>
+                <u>Local Reported Issues</u>
+              </h2>
+              <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
+                {Object.entries(issuesByCategory).map(([categoryName, issueList], index) => (
+                  <Accordion.Item eventKey={String(index)} key={categoryName}>
+                    <Accordion.Header>{categoryName}</Accordion.Header>
+                    <Accordion.Body style={{ overflowY: 'auto', maxHeight: '250px' }}>
+                      {issueList.map((iss) => (
+                        <div
+                          key={iss._id}
+                          style={{
+                            marginBottom: '1rem',
+                            borderBottom: '1px solid #eee',
+                            paddingBottom: '0.5rem',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <strong><u>{iss.title}</u></strong>
+                            <p style={{ color: 'grey' }}>
+                              {new Date(iss.createdAt).toLocaleDateString()}
+                            </p>
                           </div>
-                        ))}
-                        {issueList.length === 0 && (
-                          <p style={{ color: 'grey' }}>No issues in this category.</p>
-                        )}
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  )
-                )}
+                          <p>{iss.description}</p>
+                        </div>
+                      ))}
+                      {issueList.length === 0 && (
+                        <p style={{ color: 'grey' }}>No issues in this category.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
                 {Object.keys(issuesByCategory).length === 0 && (
                   <Accordion.Item eventKey="1">
-                    <Accordion.Header> No Issues Reported </Accordion.Header>
+                    <Accordion.Header>No Issues Reported</Accordion.Header>
                     <Accordion.Body style={{ textAlign: 'center' }}>
-                      <em>
-                        There are currently no reported issues for this community.
-                      </em>
+                      <em>There are currently no reported issues for this community.</em>
                     </Accordion.Body>
                   </Accordion.Item>
                 )}
