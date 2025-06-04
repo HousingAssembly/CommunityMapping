@@ -21,5 +21,22 @@ const createIssue = asyncHandler(async (req, res) => {
         throw new Error("Failed Creating Issue")
     }
 })
+////////////////////////////
+const allIssues = asyncHandler(async (req, res) => {
+    const { community } = req.query
+    if (!community) {
+        return res.status(400).json({ msg: "community query parameter required" })
+    }
 
-module.exports = {createIssue}
+    try {
+        // Find all Issue docs where `community` matches the query string
+        const issues = await Issue.find({ community })
+        res.json(issues)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ msg: "Server error" })
+    }
+})
+
+
+module.exports = {createIssue, allIssues}
