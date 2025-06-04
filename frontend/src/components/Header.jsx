@@ -17,7 +17,7 @@ const Header = () => {
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const handleSignup = () => setopenSignup(true)
-    const { loggedIn,setLoggedIn, setUser, setRelogin, relogin} = AdminState();
+    const { loggedIn,setLoggedIn, setUser} = AdminState();
     
 
     const handleSubmit = async (e) => {
@@ -55,8 +55,8 @@ const Header = () => {
             position: "bottom",
         });
         setLoggedIn(true)
+        setUser(data)
         setLoading(false);
-        setRelogin(relogin+1)
         handleClose();
         } catch (error) {
         toaster.create({

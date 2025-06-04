@@ -38,5 +38,17 @@ const allIssues = asyncHandler(async (req, res) => {
     }
 })
 
+const deleteIssue = async (req, res) => {
+  try {
+    const {id} = req.body
+    const issue = await Issue.findByIdAndDelete(id);
+    if (!issue) return res.status(404).json({ msg: "Issue found" });
 
-module.exports = {createIssue, allIssues}
+    res.json({ msg: "Deleted", id: id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "server error" });
+  }
+};
+
+module.exports = {createIssue, allIssues, deleteIssue}
