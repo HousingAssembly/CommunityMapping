@@ -19,7 +19,6 @@ const AdminProvider = ({ children }) => {
    useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
-
   }, []);
 
   const startCommunityPlacement = (district) =>{
@@ -57,7 +56,8 @@ const AdminProvider = ({ children }) => {
         cancelCommunityPlacement,
         communities,
         fetchCommunities,
-        user
+        user,
+        setUser
       }}
     >
       {children}

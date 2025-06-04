@@ -181,6 +181,31 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
   }
   }
 
+  const handleDeleteIssue = async (iss) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        data : {
+          id: iss._id,
+        },
+      };
+      await axios.delete(`http://localhost:8000/addissue/delete`,config);
+
+      toaster.create({
+              title: "Issue Successfully Deleted",
+              type: "success",
+              duration: 5000,
+              isClosable: true,
+              position: "bottom",
+          });
+      onHide(); // This is a holdover from delete Com, so I'm just leavin it in for now
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+    }
+
   return (
     <>
       <Modal

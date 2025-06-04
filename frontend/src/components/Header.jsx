@@ -17,7 +17,7 @@ const Header = () => {
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const handleSignup = () => setopenSignup(true)
-    const { loggedIn,setLoggedIn } = AdminState();
+    const { loggedIn,setLoggedIn, setUser} = AdminState();
     
 
     const handleSubmit = async (e) => {
@@ -55,9 +55,8 @@ const Header = () => {
             position: "bottom",
         });
         setLoggedIn(true)
+        setUser(data)
         setLoading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        history("/");
         handleClose();
         } catch (error) {
         toaster.create({
@@ -75,6 +74,7 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("userInfo")
+        setUser(null)
         setLoggedIn(false)
         toaster.create({
             title: "Logout Successful",
