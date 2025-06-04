@@ -246,7 +246,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
             </div>
 
             <div>
-              <Accordion defaultActiveKey="0" style={{ width: '600px' }}>
+              <Accordion defaultActiveKey="-1" style={{ width: '600px' }}>
                 {Object.entries(issuesByCategory).map(
                   ([categoryName, issueList], index) => (
                     <Accordion.Item eventKey={String(index)} key={categoryName}>
@@ -284,7 +284,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
                   )
                 )}
                 {Object.keys(issuesByCategory).length === 0 && (
-                  <Accordion.Item eventKey="0">
+                  <Accordion.Item eventKey="1">
                     <Accordion.Header> No Issues Reported </Accordion.Header>
                     <Accordion.Body style={{ textAlign: 'center' }}>
                       <em>
