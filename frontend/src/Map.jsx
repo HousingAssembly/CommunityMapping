@@ -211,7 +211,6 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
               gap: '2rem',
             }}
           >
-            {/* Housing + Demographics Section */}
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '500px' }}>
               <h2 style={{ color: 'darkred', textAlign: 'center' }}>
                 <u>Statistical Info</u>
@@ -231,8 +230,6 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
                 <h4>Other: </h4>
               </div>
             </div>
-
-            {/* Issues Section */}
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
               <h2 style={{ color: 'darkred', textAlign: 'center' }}>
                 <u>Local Reported Issues</u>
