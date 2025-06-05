@@ -7,13 +7,20 @@ import { useMap } from 'react-leaflet';
 
 const DistrictSideBar = () => {
     const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
+    //whether "add community" modal shows
     const [showCommunityModal, setShowCommunityModal] = useState(false);
+    //whether the “Add Issue” offcanvas shows
     const [showIssueModal, setShowIssueModal] = useState(false)
+    //stores form data for a new community
     const [form, setForm] = useState({ name: "", lat: "", lng: "" });
+    //stores form data for a new issue
     const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
+    //holds list of districts + their townships after fetching from backend
     const [subcouncils, setSubcouncils]= useState([])
+    //Stores the chosen settlement/community for submitting an issue
     const [selectedCom, setSelectedCom]=useState('')
-      
+    
+    //load data
     const loadTownships = async () => {
         const base= [
                 { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9' },
@@ -26,6 +33,7 @@ const DistrictSideBar = () => {
                 { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database'}
             ]
 
+        //fetch townships by district
         const updated = await Promise.all(
             base.map(async (s) => {
             if (!s.name) return { ...s, townships: ['N/A'] }
@@ -33,21 +41,25 @@ const DistrictSideBar = () => {
                 const { data } = await axios.get(`http://localhost:8000/addcom/fetch?district=${s.name}`);
                 return { ...s, townships: data.map((c) => c.name) };
             } catch (err) {
-                console.error(`Failed to fetch communities for ${s.name}`, err);
+                console.error(`Failed to fetch townships for ${s.name}`, err);
                 return { ...s, townships: [] };
             }
             })
         );
 
+        //updates districts array
         setSubcouncils(updated);
     };
 
+    //runs only once to fetch data from backend
     useEffect(() => {
         loadTownships();
     }, []);
 
+    //finds curret district object that matches selected district
     const current = subcouncils.find((sc) => sc.name === selectedDistrict);
 
+    //calls context and toaster for add community
     const handleAddCommunityClick = () => {
         startCommunityPlacement(selectedDistrict);
         toaster.create({
@@ -61,12 +73,17 @@ const DistrictSideBar = () => {
 
     };
 
-    const handleAddIssueClick = (com) => {
+    //updates added issue and community
+    const handleAddIssueClick = (com = '') => {
       setSelectedCom(com)
       setIssueForm({title:'',category:'',description:''})
       setShowIssueModal(true)
     }
 
+    //watches community draft that it belongs to a selected district and has coordinates
+    //set sup the form data and open add community modal.
+
+    // CAN ADD SETTLEMENT OUTSIDE A DISTRICT
     useEffect(() => {
         if (
         communityDraft &&
@@ -110,6 +127,7 @@ const DistrictSideBar = () => {
     }
   };
 
+  //backend updates with issues
   const handleSubmitIssue = async () => {
     try {
       await axios.post("http://localhost:8000/addissue", {
@@ -140,6 +158,7 @@ const DistrictSideBar = () => {
     }
   }
 
+  //updates states
   const handleModalClose = () => {
     setShowCommunityModal(false);
     cancelCommunityPlacement();
@@ -151,30 +170,21 @@ const DistrictSideBar = () => {
    if (!selectedDistrict) return null;
   return (
     <>
+    {/* District Sidebar */}
         <div size='3s' style={{display:'flex', justifyContent:'flex-end', marginTop:'20px', marginRight:'20px'}}>
         <CloseButton onClick={()=>setSelectedDistrict(null)} />
         </div>
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
             <u><h1>{selectedDistrict}</h1></u>
             <div style={{display:'flex', alignItems:'center', padding: '10px'}}>
-                <Dropdown>
-                  <Dropdown.Toggle variant='danger' id="dropdown-basic" >
-                    + Add Issue
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {current?.townships.map((value, index) => (
-                          <Dropdown.Item key={index} onClick={()=>handleAddIssueClick(value)}>
-                            {value}
-                          </Dropdown.Item>
-                      )) 
-                      }
-                    </Dropdown.Menu>
-                </Dropdown>
+              <Button variant="danger" onClick={() => handleAddIssueClick()}>
+                + Add Issue
+              </Button>
                 {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
             </div>
             <div style={{
                 border: '2px solid #ccc',
-                borderRadius: '8px',
+                borderRadius: '20px',
                 boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
                 width:'100%',
                 height: '100%',
@@ -187,70 +197,131 @@ const DistrictSideBar = () => {
                 </div>
                 <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Emergency Services</h2>
             </div>
-        </div>   
+        </div> 
 
-       
-        <Offcanvas show={showIssueModal} onHide={handleFormClose} placement="end">
-          <div style={{display:"flex", justifyContent:"right"}}>
-            <CloseButton style={{marginTop:"10px", marginRight:"10px"}} onClick={handleFormClose}></CloseButton>
-          </div>
-          <div>
-            <h1 style={{display:"flex", justifyContent:"center"}}><u><strong> Add Issue </strong></u></h1>
-             <br />
+ {/* Sidebar for add Issue */}
+        <Offcanvas
+          show={showIssueModal}
+          onHide={handleFormClose}
+          placement="end"
+          backdrop={true}
+        >
+          <Offcanvas.Header style={{justifyContent: "center", position: "relative"}}>
+            <Offcanvas.Title
+              style={{
+                fontSize: '1.75rem',
+                fontWeight: '730',
+                color: '#d9534f', // red
+                letterSpacing: '0.5px',
+                margin: 0,
+              }}
+            >
+              ADD ISSUE
+            </Offcanvas.Title>
+
+            <CloseButton
+              onClick={handleFormClose}
+              style={{
+                position: "absolute",
+                right: "1rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            />
+          </Offcanvas.Header>
+
+          <Offcanvas.Body>
             <Form>
-              <FormGroup >
-                <Form.Label style={{marginLeft:'10px'}}>Issue Title:</Form.Label>
-                  <Form.Control
-                      type="title"
-                      name="title"
-                      maxLength="50"
-                      placeholder="Enter Issue Title (50 characters max)"
-                      required
-                      onChange={(e)=>setIssueForm({...issueForm, title: e.target.value})}
-                  />
-              </FormGroup>
+              {/* Choose Settlement */}
+              <Form.Group className="mb-4">
+                <Form.Label><strong>Choose Settlement</strong></Form.Label>
+                  <Dropdown>
+                        <Dropdown.Toggle
+                          variant="secondary"
+                          id="settlement-toggle"
+                          style={{ width: "100%" }}
+                        >
+                          {selectedCom || "Choose Settlement"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ width: "100%" }}>
+                          {current?.townships.map((settlement, idx) => (
+                            <Dropdown.Item
+                              key={idx}
+                              onClick={() => setSelectedCom(settlement)}
+                            >
+                              {settlement}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+              </Form.Group>
+
+              {/* Issue Title */}
+              <Form.Group className="mb-4">
+                <Form.Label><strong>Issue Title</strong></Form.Label>
+                <Form.Control
+                  type="text"
+                  maxLength="50"
+                  placeholder="Enter Issue Title (50 characters max)"
+                  required
+                  onChange={(e) =>
+                    setIssueForm({ ...issueForm, title: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              {/* Issue Category */}
+              <Form.Group className="mb-4">
+                <Form.Label><strong>Issue Category</strong></Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle 
+                    variant="secondary" id="category-toggle" style={{ width: "100%" }}>
+                    {issueForm.category || "Choose Issue Category"}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu style={{ width: "100%" }}>
+                    {[
+                      "Food/Water/Electricity",
+                      "GBV",
+                      "Eviction",
+                      "Crime",
+                      "Natural Disaster",
+                      "Poor Housing Conditions",
+                      "Other",
+                    ].map((cat) => (
+                      <Dropdown.Item
+                        key={cat}
+                        onClick={() => setIssueForm({ ...issueForm, category: cat })}
+                      >
+                        {cat}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Form.Group>
+
+              {/* Issue Description */}
+              <Form.Group className="mb-4">
+                <Form.Label><strong>Issue Description</strong></Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={8}
+                  maxLength="500"
+                  placeholder="Enter Issue Description (500 characters max)"
+                  required
+                  onChange={(e) =>
+                    setIssueForm({ ...issueForm, description: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              {/* Submit Button */}
+              <div className="d-grid">
+                <Button variant="danger" size="lg" onClick={handleSubmitIssue}>
+                  Submit
+                </Button>
+              </div>
             </Form>
-            <br />
-            <br />
-            <Dropdown >
-                <Dropdown.Toggle variant="dark" id="dropdown-basic" style={{marginLeft:'10px'}}>
-                  {issueForm.category==='' ? 'Choose Issue Category' : issueForm.category}
-                      <Dropdown.Menu>
-                          <Dropdown.Item href="#/action1" onClick={(e)=>setIssueForm({...issueForm, category: 'Food/Water/Electricity'})}> Food/Water/Electricity </Dropdown.Item>
-                          <Dropdown.Item href="#/action2" onClick={(e)=>setIssueForm({...issueForm, category: 'GBV'})}> GBV </Dropdown.Item>
-                          <Dropdown.Item href="#/action3" onClick={(e)=>setIssueForm({...issueForm, category: 'Eviction'})}> Eviction </Dropdown.Item>
-                          <Dropdown.Item href="#/action4" onClick={(e)=>setIssueForm({...issueForm, category: 'Crime'})}> Crime </Dropdown.Item>
-                          <Dropdown.Item href="#/action5" onClick={(e)=>setIssueForm({...issueForm, category: 'Natural Disaster'})}> Natural Disaster </Dropdown.Item>
-                          <Dropdown.Item href="#/action6" onClick={(e)=>setIssueForm({...issueForm, category: 'Poor Housing Conditions'})}> Poor Housing Conditions </Dropdown.Item>
-                          <Dropdown.Item href="#/action7" onClick={(e)=>setIssueForm({...issueForm, category: 'Other'})}> Other </Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown.Toggle>
-            </Dropdown>
-            <br />
-            <br />
-            <Form>
-              <FormGroup >
-                <Form.Label style={{marginLeft:'10px'}}>Issue Description:</Form.Label>
-                  <Form.Control
-                      as="textarea"
-                      rows={3}
-                      type="title"
-                      name="title"
-                      maxLength="500"
-                      placeholder="Enter Issue Description (500 characters max)"
-                      required
-                      onChange={(e)=>setIssueForm({...issueForm, description: e.target.value})}
-                  />
-              </FormGroup>
-            </Form>
-            </div>
-            <br />
-            <br />
-            <div style={{display:"flex", justifyContent:"center"}}>
-            <Button variant="danger" size="lg" onClick={handleSubmitIssue}>
-              Submit
-            </Button>
-            </div>
+          </Offcanvas.Body>
         </Offcanvas>
         
         <Modal show={showCommunityModal} onHide={handleModalClose}>
