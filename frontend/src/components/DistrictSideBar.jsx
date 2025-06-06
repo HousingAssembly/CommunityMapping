@@ -171,33 +171,80 @@ const DistrictSideBar = () => {
   return (
     <>
     {/* District Sidebar */}
-        <div size='3s' style={{display:'flex', justifyContent:'flex-end', marginTop:'20px', marginRight:'20px'}}>
-        <CloseButton onClick={()=>setSelectedDistrict(null)} />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginTop: "20px",
+          marginRight: "20px",
+        }}
+      >
+    <CloseButton onClick={() => setSelectedDistrict(null)} />
+      </div>
+
+      {/* District Header and Buttons */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "100%",
+          margin: "10px",
+          
+        }}
+      >
+        <u>
+          <h1>{selectedDistrict}</h1>
+        </u>
+
+        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+          <Button variant="danger" onClick={() => handleAddIssueClick()}>
+            + Add Issue
+          </Button>
+
+          {loggedIn && (
+            <Button
+              variant="danger"
+              style={{ marginLeft: "20px" }}
+              onClick={handleAddCommunityClick}
+            >
+              + Add Community
+            </Button>
+          )}
         </div>
-        <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'100%', margin:"10px"}}>
-            <u><h1>{selectedDistrict}</h1></u>
-            <div style={{display:'flex', alignItems:'center', padding: '10px'}}>
-              <Button variant="danger" onClick={() => handleAddIssueClick()}>
-                + Add Issue
-              </Button>
-                {loggedIn && <Button variant='danger' style={{margin:'20px'}} onClick={handleAddCommunityClick}>+ Add Community</Button>}
-            </div>
-            <div style={{
-                border: '2px solid #ccc',
-                borderRadius: '20px',
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                width:'100%',
-                height: '100%',
-                display:'flex',
-                flexDirection:'column',
-            }}>
-                <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Contact Info</h2>
-                 <div style={{marginLeft:'10px'}}>        
-                    {current && <a href={current.info}>{current.name+' Subcouncil Contact Info'}</a>}
-                </div>
-                <h2 style={{display:'flex', justifyContent:'center', margin:"10px"}}>Local Emergency Services</h2>
-            </div>
-        </div> 
+
+        {/* Info Box */}
+        <div
+          style={{
+            border: "2px solid #ccc",
+            borderRadius: "20px",
+            boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <h2
+            style={{ display: "flex", margin: "10px", padding: "10px" }}
+          >
+            Local Contact Info:
+          </h2>
+          <div style={{ marginLeft: "10px" }}>
+            {current && (
+              <a href={current.info}>
+                {current.name + " Subcouncil Contact Info"}
+              </a>
+            )}
+          </div>
+          <h2
+            style={{ display: "flex", margin: "10px", padding: "10px" }}
+          >
+            Local Emergency Services:
+          </h2>
+        </div>
+      </div>
 
  {/* Sidebar for add Issue */}
         <Offcanvas
