@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import {CloseButton, Button, Modal, Form, ModalDialog, Dropdown, Offcanvas, FormGroup} from 'react-bootstrap';
+import {CloseButton, Button, Modal, Form, Accordion, Dropdown, Offcanvas, FormGroup} from 'react-bootstrap';
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
 import axios from 'axios'
-import { useMap } from 'react-leaflet';
 
 const DistrictSideBar = () => {
     const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     const [showIssueModal, setShowIssueModal] = useState(false)
-    const [form, setForm] = useState({ name: "", lat: "", lng: "" });
+    const [form, setForm] = useState({
+    name: "",
+    lat: "",
+    lng: "",
+    housing: { RDPs: "", CRUs: "", backyardDwellings: "" },
+    demo:    {
+        total: "",
+        black: "",
+        coloured: "",
+        asian: "",
+        white: "",
+        other: "",
+    },});    
     const [issueForm, setIssueForm]=useState({title:'', category:'', description:''})
     const [subcouncils, setSubcouncils]= useState([])
     const [selectedCom, setSelectedCom]=useState('')
@@ -77,38 +88,49 @@ const DistrictSideBar = () => {
             name: "",
             lat: communityDraft.lat.toFixed(6),
             lng: communityDraft.lng.toFixed(6),
+            housing: { RDPs: "", CRUs: "", backyardDwellings: "" },
+            demo:    { total: "", black: "", coloured: "", asian: "", white: "", other: "" },
         });
         setShowCommunityModal(true);
         }
     }, [communityDraft, selectedDistrict]);
 
     const handleSave = async () => {
-    try {
-        const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      await axios.post("http://localhost:8000/addcom", {
-        name: form.name,
-        districtName: selectedDistrict,
-        coords: {lat:form.lat,long:form.lng},
-      }, config);
-      toaster.create({
-            title: "Community Successfully Created",
-            type: "success",
-            duration: 5000,
-            isClosable: true,
-            position: "bottom",
-        });
-      fetchCommunities(selectedDistrict)
-      setShowCommunityModal(false);
-      setForm({ name: "", lat: "", lng: "" });      
-      cancelCommunityPlacement()
-    } catch (err) {
-      console.error(err);
-    }
-  };
+        const payload = {
+            name: form.name,
+            districtName: selectedDistrict,
+            coords: { lat: form.lat, long: form.lng },
+            housingStats: form.housing,   
+            demographics: form.demo,
+        };
+        try {
+            const config = {
+            headers: {
+            Authorization: `Bearer ${user.token}`,
+            },
+            };
+            await axios.post("http://localhost:8000/addcom", payload, config);
+            toaster.create({
+                    title: "Community Successfully Created",
+                    type: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                });
+            fetchCommunities(selectedDistrict)
+            setShowCommunityModal(false);
+            setForm({
+                name: "",
+                lat: "",
+                lng: "",
+                housing: { RDPs: "", CRUs: "", backyardDwellings: "" },
+                demo:    { total: "", black: "", coloured: "", asian: "", white: "", other: "" },
+            });  
+            cancelCommunityPlacement()
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
   const handleSubmitIssue = async () => {
     try {
@@ -208,13 +230,13 @@ const DistrictSideBar = () => {
                 <Dropdown.Toggle variant="dark" id="dropdown-basic" style={{marginLeft:'10px'}}>
                   {issueForm.category==='' ? 'Choose Issue Category' : issueForm.category}
                       <Dropdown.Menu>
-                          <Dropdown.Item href="#/action1" onClick={(e)=>setIssueForm({...issueForm, category: 'Food/Water/Electricity'})}> Food/Water/Electricity </Dropdown.Item>
-                          <Dropdown.Item href="#/action2" onClick={(e)=>setIssueForm({...issueForm, category: 'GBV'})}> GBV </Dropdown.Item>
-                          <Dropdown.Item href="#/action3" onClick={(e)=>setIssueForm({...issueForm, category: 'Eviction'})}> Eviction </Dropdown.Item>
-                          <Dropdown.Item href="#/action4" onClick={(e)=>setIssueForm({...issueForm, category: 'Crime'})}> Crime </Dropdown.Item>
-                          <Dropdown.Item href="#/action5" onClick={(e)=>setIssueForm({...issueForm, category: 'Natural Disaster'})}> Natural Disaster </Dropdown.Item>
-                          <Dropdown.Item href="#/action6" onClick={(e)=>setIssueForm({...issueForm, category: 'Poor Housing Conditions'})}> Poor Housing Conditions </Dropdown.Item>
-                          <Dropdown.Item href="#/action7" onClick={(e)=>setIssueForm({...issueForm, category: 'Other'})}> Other </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Food/Water/Electricity'})}> Food/Water/Electricity </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'GBV'})}> GBV </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Eviction'})}> Eviction </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Crime'})}> Crime </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Natural Disaster'})}> Natural Disaster </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Poor Housing Conditions'})}> Poor Housing Conditions </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>setIssueForm({...issueForm, category: 'Other'})}> Other </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown.Toggle>
             </Dropdown>
@@ -245,38 +267,130 @@ const DistrictSideBar = () => {
             </div>
         </Offcanvas>
         
-        <Modal show={showCommunityModal} onHide={handleModalClose}>
-            <Modal.Header closeButton style={{background:'red', color:'white'}}>
-            <Modal.Title>Add a Community</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            <Form>
-                <Form.Group>
-                <Form.Label>Community name</Form.Label>
+       <Modal show={showCommunityModal} onHide={handleModalClose} centered>
+  <Modal.Header closeButton className="bg-danger text-white">
+    <Modal.Title>Add a Community</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    {/* ── REQUIRED FIELDS ───────────────────────── */}
+    <Form>
+      <Form.Group className="mb-3">
+        <Form.Label><strong>Community Name *</strong></Form.Label>
+        <Form.Control
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Enter Community Name (Required)"
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-2">
+        <Form.Label>Latitude</Form.Label>
+        <Form.Control value={form.lat} readOnly />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Longitude</Form.Label>
+        <Form.Control value={form.lng} readOnly />
+      </Form.Group>
+
+      {/* ── OPTIONAL STATS (collapsible) ─────────── */}
+      <Accordion flush>
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Housing Stats (optional)</Accordion.Header>
+          <Accordion.Body>
+            <Form.Group className="mb-2">
+              <Form.Label>RDPs</Form.Label>
+              <Form.Control
+                type="text"
+                value={form.housing.RDPs}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    housing: { ...form.housing, RDPs: e.target.value },
+                  })
+                }
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-2">
+              <Form.Label>CRUs</Form.Label>
+              <Form.Control
+                type="text"
+                value={form.housing.CRUs}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    housing: { ...form.housing, CRUs: e.target.value },
+                  })
+                }
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Backyard Dwellings</Form.Label>
+              <Form.Control
+                type="text"
+                value={form.housing.backyardDwellings}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    housing: {
+                      ...form.housing,
+                      backyardDwellings: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Form.Group>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Demographic Stats (optional)</Accordion.Header>
+          <Accordion.Body>
+            {[
+              ["Total Population", "total"],
+              ["Black", "black"],
+              ["Coloured", "coloured"],
+              ["Asian", "asian"],
+              ["White", "white"],
+              ["Other", "other"],
+            ].map(([label, key]) => (
+              <Form.Group className="mb-2" key={key}>
+                <Form.Label>{label}</Form.Label>
                 <Form.Control
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  type="text"
+                  value={form.demo[key]}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      demo: { ...form.demo, [key]: e.target.value },
+                    })
+                  }
                 />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Latitude</Form.Label>
-                <Form.Control value={form.lat} readOnly />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Longitude</Form.Label>
-                <Form.Control value={form.lng} readOnly />
-                </Form.Group>
-            </Form>
-            </Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleModalClose}>
-                Cancel
-            </Button>
-            <Button onClick={handleSave} disabled={!form.name.trim()} variant='danger'>
-                Save
-            </Button>
-            </Modal.Footer>
-        </Modal>    
+              </Form.Group>
+            ))}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </Form>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleModalClose}>
+      Cancel
+    </Button>
+    <Button
+      variant="danger"
+      disabled={!form.name.trim()}
+      onClick={handleSave}
+    >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+ 
     </>
 )}
 
