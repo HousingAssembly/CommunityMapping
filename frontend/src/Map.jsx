@@ -68,11 +68,13 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
   const { fetchCommunities, loggedIn, user } = AdminState();
   //state for issues
   const [issues, setIssues] = useState([]);
-  const [form, setForm]= useState({
-    name: community?.name || "",
-    lat: community?.coords.lat || "",
-    long: community?.coords.long || "",
-  })
+  const [form, setForm] = useState({
+  name: "",
+  lat: "",
+  long: "",
+  housing: { RDPs: "", CRUs: "", backyardDwellings: "" },
+  demo:    { total: "", black: "", coloured: "", asian: "", white: "", other: "" },
+});
   const [showEditModal, setShowEditModal]= useState(false)
   const handleModalClose = () => setShowEditModal(false)
   const handleModalOpen = () => {
@@ -80,14 +82,26 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
   }
 
   useEffect(() => {
-    if (community) {
-      setForm({
-        name: community.name,
-        lat: community.coords.lat,
-        long: community.coords.long,
-      });
-    }
-  }, [community]);
+    if (!community) return;
+    setForm({
+      name: community.name,
+      lat:  community.coords.lat,
+      long:  community.coords.long,
+      housing: {
+        RDPs:              community.housingStats?.RDPs              ?? "",
+        CRUs:              community.housingStats?.CRUs              ?? "",
+        backyardDwellings: community.housingStats?.backyardDwellings ?? "",
+      },
+      demo: {
+        total:    community.demographics?.total    ?? "",
+        black:    community.demographics?.black    ?? "",
+        coloured: community.demographics?.coloured ?? "",
+        asian:    community.demographics?.asian    ?? "",
+        white:    community.demographics?.white    ?? "",
+        other:    community.demographics?.other    ?? "",
+      },
+    });
+  }, [community, showEditModal]);
 
   //fetch issues when community opens or changes
   useEffect(() => {
@@ -166,6 +180,8 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
         lat: form.lat,
         long: form.long,
       },
+      housingStats: form.housing,
+      demographics: form.demo,
     }, config);
     fetchCommunities(community.districtName);
     toaster.create({
@@ -236,24 +252,39 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
               gap: '2rem',
             }}
           >
-            <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '500px' }}>
-              <h2 style={{ color: 'darkred', textAlign: 'center' }}>
-                <u>Statistical Info</u>
-              </h2>
-              <div>
-                <h2><u>Housing Stats: </u></h2>
-                <h4>RDPs: </h4>
-                <h4>CRUs: </h4>
-                <h4>Backyard Dwellings: </h4>
-                <br />
-                <h2><u>Demographic Stats:</u></h2>
-                <h4>Total Population: </h4>
-                <h4>Black: </h4>
-                <h4>Coloured: </h4>
-                <h4>Asian: </h4>
-                <h4>White: </h4>
-                <h4>Other: </h4>
-              </div>
+            <div>
+              <h2><u>Housing Stats:</u></h2>
+              <h4>RDPs:&nbsp;
+                {community?.housingStats?.RDPs || "Not Entered"}
+              </h4>
+              <h4>CRUs:&nbsp;
+                {community?.housingStats?.CRUs || "Not Entered"}
+              </h4>
+              <h4>Backyard Dwellings:&nbsp;
+                {community?.housingStats?.backyardDwellings || "Not Entered"}
+              </h4>
+
+              <br />
+
+              <h2><u>Demographic Stats:</u></h2>
+              <h4>Total Population:&nbsp;
+                {community?.demographics?.total || "Not Entered"}
+              </h4>
+              <h4>Black:&nbsp;
+                {community?.demographics?.black || "Not Entered"}
+              </h4>
+              <h4>Coloured:&nbsp;
+                {community?.demographics?.coloured || "Not Entered"}
+              </h4>
+              <h4>Asian:&nbsp;
+                {community?.demographics?.asian || "Not Entered"}
+              </h4>
+              <h4>White:&nbsp;
+                {community?.demographics?.white || "Not Entered"}
+              </h4>
+              <h4>Other:&nbsp;
+                {community?.demographics?.other || "Not Entered"}
+              </h4>
             </div>
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
               <h2 style={{ color: 'darkred', textAlign: 'center' }}>
@@ -321,29 +352,81 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group>
-              <Form.Label>Community name</Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label><strong>Community Name *</strong></Form.Label>
               <Form.Control
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </Form.Group>
-            <Form.Group className="mt-3">
+
+            <Form.Group className="mb-2">
               <Form.Label>Latitude</Form.Label>
               <Form.Control
                 value={form.lat}
                 onChange={(e) => setForm({ ...form, lat: e.target.value })}
               />
             </Form.Group>
-            <Form.Group className="mt-3">
+
+            <Form.Group className="mb-4">
               <Form.Label>Longitude</Form.Label>
               <Form.Control
                 value={form.long}
                 onChange={(e) => setForm({ ...form, long: e.target.value })}
               />
             </Form.Group>
+
+            <Accordion flush>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Housing Stats (optional)</Accordion.Header>
+                <Accordion.Body>
+                  {[
+                    ["RDPs", "RDPs"],
+                    ["CRUs", "CRUs"],
+                    ["Backyard Dwellings", "backyardDwellings"],
+                  ].map(([label, key]) => (
+                    <Form.Group key={key} className="mb-2">
+                      <Form.Label>{label}</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={form.housing[key]}
+                        onChange={(e) =>
+                          setForm({ ...form, housing: { ...form.housing, [key]: e.target.value }})
+                        }
+                      />
+                    </Form.Group>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Demographic Stats (optional)</Accordion.Header>
+                <Accordion.Body>
+                  {[
+                    ["Total Population", "total"],
+                    ["Black", "black"],
+                    ["Coloured", "coloured"],
+                    ["Asian", "asian"],
+                    ["White", "white"],
+                    ["Other", "other"],
+                  ].map(([label, key]) => (
+                    <Form.Group key={key} className="mb-2">
+                      <Form.Label>{label}</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={form.demo[key]}
+                        onChange={(e) =>
+                          setForm({ ...form, demo: { ...form.demo, [key]: e.target.value }})
+                        }
+                      />
+                    </Form.Group>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Form>
         </Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalClose}>
             Cancel
