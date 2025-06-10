@@ -406,6 +406,7 @@ const DistrictSideBar = () => {
         <Form.Label><strong>Community Name *</strong></Form.Label>
         <Form.Control
           value={form.name}
+          maxLength="75"
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           placeholder="Enter Community Name (Required)"
         />
