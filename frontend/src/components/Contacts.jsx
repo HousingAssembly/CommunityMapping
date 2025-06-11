@@ -27,7 +27,7 @@ const Contacts = () => {
         height:'30px',
         fontFamily: 'Arial, sans-serif'
     }}>
-      Contact Information
+      Contact Information:
     </h1>
 
     <div style = {{
@@ -71,6 +71,7 @@ const Contacts = () => {
           
           fontFamily: 'Arial, sans-serif'
         }}> <h3 style={{display:'flex', justifyContent:'left'}}> <u> Phone Numbers: </u> </h3>
+
         </div>
         <strong> Police Flying Squad: </strong> 10111 <br />
         <strong>Crime Stop: </strong> 0860 010 111 <br />
