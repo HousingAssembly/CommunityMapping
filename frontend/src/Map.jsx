@@ -5,6 +5,8 @@ import { AdminState } from "./context/Context";
 import axios from "axios";
 import './index.css'
 import {toaster} from './assets/ui/toaster'
+import home from './assets/home.png'
+import {shelters} from './assets/resourceData'
 
   function ResetMapView() {
     const map = useMap();                 
@@ -474,8 +476,38 @@ const DistrictPinsLayer = () => {
   );
 }
 
+const ShelterPinsLayer = () => {
+  const shelterIcon = L.icon({
+    iconUrl: home,
+    iconSize:    [30, 40],  
+    iconAnchor:  [20, 40],    
+    popupAnchor: [ 0, -32]  
+    });
+
+  return (
+    <>
+      {shelters.map((c) => (
+        <Marker
+          key={c._id}
+          position={[c.lat, c.lon]}
+          icon={shelterIcon}
+        >
+          <Popup >
+            <div style={{display:'flex',justifyContent:'center'}}>
+              <button>
+                {c.name}
+              </button>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+    </>
+  );
+}
+
+
 const Map = () => {
-  const { selectedDistrict, setSelectedDistrict } = AdminState();
+  const { selectedDistrict, setSelectedDistrict, showShelters } = AdminState();
   const districts = [
     { name: 'Khayelitsha',      pos: [-34.035, 18.675], radius: 4200,  color: 'red'    },
     { name: 'Athlone',          pos: [-33.92, 18.48],   radius: 11000, color: 'red'   },
@@ -510,6 +542,7 @@ const Map = () => {
       ))}
       <MapClickHandler />
       <DistrictPinsLayer />
+      {showShelters && <ShelterPinsLayer/>}
       <ResetMapView />
     </MapContainer>
   );

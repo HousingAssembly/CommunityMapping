@@ -34,9 +34,6 @@ function App() {
           <div className="contacts-section">
             <Contacts />
           </div>
-          <div className="actions-section">
-            <Districts />
-          </div>
           </>)}
           {view==='district'&&<DistrictSideBar /> }
           {view==='issue'&&<AddIssueSideBar />}

@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { AdminState } from "../context/Context";
+import{Button} from 'react-bootstrap'
 
 const Contacts = () => {
-    const { selectedDistrict } = AdminState();
+    const { selectedDistrict, showShelters, setShowShelters } = AdminState();
 
     const subcouncilInfo = [
     { name: 'Khayelitsha',      info:'https://www.capetown.gov.za/family%20and%20home/meet-the-city/city-council/subcouncils/subcouncil-profile?SubCouncilCode=9'    },
@@ -16,8 +17,7 @@ const Contacts = () => {
   ]
 
     const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
-    console.log('Selected district is:', selectedDistrict);
-    console.log('Current:', current);
+   
   return (
     <>
     <h1 style={{
@@ -34,7 +34,8 @@ const Contacts = () => {
       display: 'flex',
       flexDirection: 'column',
       padding: '45px 0',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: 'Arial, sans-serif',
+      justifyContent:'center'
     }}>        
       <a
         style={{ margin: '10px 0' }}
@@ -53,24 +54,24 @@ const Contacts = () => {
       >
         City of Cape Town About Informal Settlements 
       </a>
+      <Button variant={showShelters ? 'secondary' : 'danger'} onClick={()=>setShowShelters(!showShelters)}>{showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}</Button>
     </div>
       <div>
       <h1 style={{
         display:'flex',
         justifyContent:'center',
         width:'100%',
-        height:'30px',
         fontFamily: 'Arial, sans-serif'}}>
-
           Emergency Services:
         </h1>
-            <br /><br />
+            <br />
         <div style = {{
-      display: 'flex',
-      flexDirection: 'column',
-      
-      fontFamily: 'Arial, sans-serif'
-    }}> <h3 style={{display:'flex', justifyContent:'left'}}> <u> Phone Numbers: </u> </h3>
+          display: 'flex',
+          flexDirection: 'column',
+          
+          fontFamily: 'Arial, sans-serif'
+        }}> <h3 style={{display:'flex', justifyContent:'left'}}> <u> Phone Numbers: </u> </h3>
+
         </div>
         <strong> Police Flying Squad: </strong> 10111 <br />
         <strong>Crime Stop: </strong> 0860 010 111 <br />
@@ -86,7 +87,6 @@ const Contacts = () => {
         <b>Lifeline: </b>021 461 1113<br />
     
         </div>
-
     <div style = {{
       padding: '10px 0'
     }}>        
