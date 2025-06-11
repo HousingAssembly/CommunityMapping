@@ -2,7 +2,7 @@ const Community = require("../models/communityModel.js");
 const asyncHandler = require('express-async-handler')
 
 const createCom = asyncHandler(async (req, res) => {
-    const {name,districtName,coords} = req.body
+    const {name,districtName,coords, housingStats, demographics} = req.body
     
     const comExists = await Community.findOne({ name })
 
@@ -11,9 +11,15 @@ const createCom = asyncHandler(async (req, res) => {
         throw new Error("Community already exists")
     }
 
-    const com = await Community.create({
-        name, districtName, coords
-    })
+    const form = {
+        name,
+        coords,
+        districtName,
+        housingStats,
+        demographics,
+    };
+
+    const com = await Community.create(form)
 
     if(com){
         res.status(201).json({
@@ -43,7 +49,7 @@ const allComs = asyncHandler(async (req, res) => {
 
 const updateCom = async (req, res) =>{
     try {
-    const { name, coords } = req.body;
+    const { name, coords, housingStats, demographics } = req.body;
 
     const updated = await Community.findByIdAndUpdate(
       req.params.id,
@@ -55,6 +61,8 @@ const updateCom = async (req, res) =>{
             long: coords.long,
           },
         }),
+        ...(housingStats && { housingStats }),
+        ...(demographics && { demographics }),
       },
       { new: true }
     );

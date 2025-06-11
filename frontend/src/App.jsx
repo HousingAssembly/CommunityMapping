@@ -8,6 +8,7 @@ import Districts from './components/Districts'
 import DistrictSideBar from './components/DistrictSideBar'
 import "./index.css"
 
+//main components are rendered on our website wiht view in mind
 function App() {
   const { selectedDistrict } = AdminState();
   const[view,setView]=useState('main')

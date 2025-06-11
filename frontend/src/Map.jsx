@@ -6,7 +6,19 @@ import axios from "axios";
 import './index.css'
 import {toaster} from './assets/ui/toaster'
 
+  function ResetMapView() {
+    const map = useMap();                 
+    const { selectedDistrict } = AdminState();
 
+    useEffect(() => {
+      if (selectedDistrict == null) {
+        map.flyTo([-33.9, 18.7], 10, { duration: 1.2 });
+      }
+    }, [selectedDistrict, map]);
+
+    return null;
+  }
+  
 const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
   const map = useMap();
 
@@ -53,12 +65,16 @@ const MapClickHandler = () => {
 }
 
 const FullScreenOverlay = ({ show, onHide, community }) => {
-  const { fetchCommunities, loggedIn } = AdminState();
-  const [form, setForm]= useState({
-    name: community?.name || "",
-    lat: community?.coords.lat || "",
-    long: community?.coords.long || "",
-  })
+  const { fetchCommunities, loggedIn, user } = AdminState();
+  //state for issues
+  const [issues, setIssues] = useState([]);
+  const [form, setForm] = useState({
+  name: "",
+  lat: "",
+  long: "",
+  housing: { RDPs: "", CRUs: "", backyardDwellings: "" },
+  demo:    { total: "", black: "", coloured: "", asian: "", white: "", other: "" },
+});
   const [showEditModal, setShowEditModal]= useState(false)
   const handleModalClose = () => setShowEditModal(false)
   const handleModalOpen = () => {
@@ -66,22 +82,75 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
   }
 
   useEffect(() => {
-    if (community) {
-      setForm({
-        name: community.name,
-        lat: community.coords.lat,
-        long: community.coords.long,
-      });
-    }
+    if (!community) return;
+    setForm({
+      name: community.name,
+      lat:  community.coords.lat,
+      long:  community.coords.long,
+      housing: {
+        RDPs:              community.housingStats?.RDPs              ?? "",
+        CRUs:              community.housingStats?.CRUs              ?? "",
+        backyardDwellings: community.housingStats?.backyardDwellings ?? "",
+      },
+      demo: {
+        total:    community.demographics?.total    ?? "",
+        black:    community.demographics?.black    ?? "",
+        coloured: community.demographics?.coloured ?? "",
+        asian:    community.demographics?.asian    ?? "",
+        white:    community.demographics?.white    ?? "",
+        other:    community.demographics?.other    ?? "",
+      },
+    });
+  }, [community, showEditModal]);
+
+  //fetch issues when community opens or changes
+  useEffect(() => {
+    const fetchIssuesForCommunity = async () => {
+      if (!community?.name) {
+        //clears issues if there's no community selected
+        setIssues([]);
+        return;
+      }
+      try {
+        //GET request for issues
+        const { data } = await axios.get(
+          `http://localhost:8000/addissue/fetch?community=${encodeURIComponent(community.name)}`
+        );
+        setIssues(data);
+      } catch (err) {
+        console.error("Failed to fetch issues:", err);
+        //clears issues array if no issues fetch
+        setIssues([]);
+      }
+    };
+
+    //refetches the backend issues whne community changes
+    fetchIssuesForCommunity();
   }, [community]);
 
+  //group helper
+  const groupByCategory = (issueList) => {
+    return issueList.reduce((acc, issue) => {
+      const cat = issue.category || "Other";
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(issue);
+      return acc;
+    }, {});
+  };
 
+  //becomes an object where each cat has an array of issues
+  const issuesByCategory = groupByCategory(issues);
 
   const handleDeleteCom = async () => {
     if (!community?._id) return;
 
     try {
-      await axios.delete(`http://localhost:8000/addcom/${community._id}`);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.delete(`http://localhost:8000/addcom/${community._id}`, config);
       fetchCommunities(community.districtName)
       toaster.create({
               title: "Community Successfully Deleted",
@@ -100,13 +169,20 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
     if (!community?._id) return;
 
   try {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
     await axios.put(`http://localhost:8000/addcom/${community._id}`, {
       name: form.name,
       coords: {
         lat: form.lat,
         long: form.long,
       },
-    });
+      housingStats: form.housing,
+      demographics: form.demo,
+    }, config);
     fetchCommunities(community.districtName);
     toaster.create({
             title: "Community Successfully Updated",
@@ -121,197 +197,252 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
   }
   }
 
+  const handleDeleteIssue = async (iss) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        data : {
+          id: iss._id,
+        },
+      };
+      await axios.delete(`http://localhost:8000/addissue/delete`,config);
+
+      toaster.create({
+              title: "Issue Successfully Deleted",
+              type: "success",
+              duration: 5000,
+              isClosable: true,
+              position: "bottom",
+          });
+      onHide(); // This is a holdover from delete Com, so I'm just leavin it in for now
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+    }
+
   return (
     <>
-    <Modal
-      show={show}
-      onHide={onHide}
-      dialogClassName="modal-fullscreen-custom"
-      backdrop="static"
-      keyboard={true}
-    >
-      <Modal.Body
-        style={{
-          background: "#fff",
-          height: "100%",
-          padding: "2rem",
-        }}
+      <Modal
+        show={show}
+        onHide={onHide}
+        dialogClassName="modal-fullscreen-custom"
+        backdrop="static"
+        keyboard={true}
       >
-        <CloseButton onClick={onHide} style={{ position: "absolute", top: 20, right: 20 }}>
-        </CloseButton>
-        <h1>{community?.name +' ('+community?.districtName+')'}</h1>
-        <br />
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-around'}}>
-          <h2 style={{color:'darkred'}}> <u>Statistical Info</u> </h2>
-          
-          
-          <h2 style={{color:'darkred'}}> <u> Local Reported Issues</u> </h2>
-          
-          
-          </div>
+        <Modal.Body
+          style={{
+            background: '#fff',
+            height: '100%',
+            padding: '2rem',
+          }}
+        >
+          <CloseButton
+            onClick={onHide}
+            style={{ position: 'absolute', top: 20, right: 20 }}
+          />
+          <h1>{community?.name + ' (' + community?.districtName + ')'}</h1>
           <br />
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around',
+              gap: '2rem',
+            }}
+          >
+            <div>
+              <h2><u>Housing Stats:</u></h2>
+              <h4>RDPs:&nbsp;
+                {community?.housingStats?.RDPs || "Not Entered"}
+              </h4>
+              <h4>CRUs:&nbsp;
+                {community?.housingStats?.CRUs || "Not Entered"}
+              </h4>
+              <h4>Backyard Dwellings:&nbsp;
+                {community?.housingStats?.backyardDwellings || "Not Entered"}
+              </h4>
 
-          <div style={{display:'flex', flexDirection:'row', justifyContent:"space-around", marginLeft:"70px"}}>
-            <div style={{justifyContent:"left"}}>
-              <h2> <u> Housing Stats: </u></h2>
-            <h4> RDPs: </h4>  {/* Add Data here*/}
-            <h4> CRUs: </h4>  {/* Add Data here*/}
-            <h4> Backyard Dwellings: </h4>  {/* Add Data here*/}
-          <br />
-          <h2> <u>Demographic Stats:</u> </h2>
-            <h4> Total Population: </h4>  {/* Add Data here*/}
-            <h4> Black: </h4>  {/* Add Data here*/}
-            <h4> Coloured: </h4>  {/* Add Data here*/}
-            <h4> Asian: </h4>  {/* Add Data here*/}
-            <h4> White: </h4>  {/* Add Data here*/}
-            <h4> Other: </h4>  {/* Add Data here*/}
-            
+              <br />
+
+              <h2><u>Demographic Stats:</u></h2>
+              <h4>Total Population:&nbsp;
+                {community?.demographics?.total || "Not Entered"}
+              </h4>
+              <h4>Black:&nbsp;
+                {community?.demographics?.black || "Not Entered"}
+              </h4>
+              <h4>Coloured:&nbsp;
+                {community?.demographics?.coloured || "Not Entered"}
+              </h4>
+              <h4>Asian:&nbsp;
+                {community?.demographics?.asian || "Not Entered"}
+              </h4>
+              <h4>White:&nbsp;
+                {community?.demographics?.white || "Not Entered"}
+              </h4>
+              <h4>Other:&nbsp;
+                {community?.demographics?.other || "Not Entered"}
+              </h4>
             </div>
-            
-          
+            <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
+              <h2 style={{ color: 'darkred', textAlign: 'center' }}>
+                <u>Local Reported Issues</u>
+              </h2>
+              <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
+                {Object.entries(issuesByCategory).map(([categoryName, issueList], index) => (
+                  <Accordion.Item eventKey={String(index)} key={categoryName}>
+                    <Accordion.Header>{categoryName}</Accordion.Header>
+                    <Accordion.Body style={{ overflowY: 'auto', maxHeight: '250px' }}>
+                      {issueList.map((iss) => (
+                        <div
+                          key={iss._id}
+                          style={{
+                            marginBottom: '1rem',
+                            borderBottom: '1px solid #eee',
+                            paddingBottom: '0.5rem',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <strong><u>{iss.title}</u></strong>
+                            <p style={{ color: 'grey' }}>
+                              {new Date(iss.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <p>{iss.description}</p>
+                          {loggedIn && <Button variant="danger" onClick =  {() => handleDeleteIssue(iss)}> Delete This Issue </Button>}
+                        </div>
+                      ))}
+                      {issueList.length === 0 && (
+                        <p style={{ color: 'grey' }}>No issues in this category.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+                {Object.keys(issuesByCategory).length === 0 && (
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>No Issues Reported</Accordion.Header>
+                    <Accordion.Body style={{ textAlign: 'center' }}>
+                      <em>There are currently no reported issues for this community.</em>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                )}
+              </Accordion>
+            </div>
+          </div>
+        </Modal.Body>
 
-      <div >
-          <Accordion defaultActiveKey="0" style={{width:'600px'}}>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Food/Water/Electricity</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
+        {loggedIn && (
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalOpen}>
+              Edit
+            </Button>
+            <Button variant="danger" onClick={handleDeleteCom}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        )}
+      </Modal>
 
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>GBV</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-        <Accordion.Item eventKey="2">
-        <Accordion.Header>Eviction</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-           <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="3">
-        <Accordion.Header>Crime</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="4">
-        <Accordion.Header>Natural Disaster</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="5">
-        <Accordion.Header>Poor Housing Conditions</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-         <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="6">
-        <Accordion.Header>Other</Accordion.Header>
-        <Accordion.Body style={{overflowY:'auto', height:'250px'}}>
-          <div style={{display:'flex', justifyContent:'space-between'}}>
-            <strong><u>Issue Title</u></strong>
-            <p style={{color:'grey'}}> Date Posted </p>
-          </div>
-          Issue Description
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
-    </div>
-    </div>
-        {/* TODO: add issue form, stats, etc. */}
-      </Modal.Body>
-      {loggedIn && <Modal.Footer>
-        <Button variant="secondary" onClick={handleModalOpen}>
-                Edit
-            </Button>
-            <Button variant='danger' onClick={handleDeleteCom}>
-                Delete
-            </Button>
-      </Modal.Footer>}
-    </Modal>
-    <Modal show={showEditModal} onHide={handleModalClose}>
-            <Modal.Header closeButton style={{background:'red', color:'white'}}>
-            <Modal.Title>Edit {community?.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            <Form>
-                <Form.Group>
-                <Form.Label>Community name</Form.Label>
-                <Form.Control
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Latitude</Form.Label>
-                <Form.Control value={form.lat} onChange={(e) => setForm({ ...form, lat: e.target.value })} />
-                </Form.Group>
-                <Form.Group className="mt-3">
-                <Form.Label>Longitude</Form.Label>
-                <Form.Control value={form.long} onChange={(e) => setForm({ ...form, long: e.target.value })} />
-                </Form.Group>
-            </Form>
-            </Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleModalClose}>
-                Cancel
-            </Button>
-            <Button onClick={handleSave} disabled={!form.name.trim()} variant='danger'>
-                Save
-            </Button>
-            </Modal.Footer>
-        </Modal>
+    
+      <Modal show={showEditModal} onHide={handleModalClose}>
+        <Modal.Header closeButton style={{ background: 'red', color: 'white' }}>
+          <Modal.Title>Edit {community?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label><strong>Community Name *</strong></Form.Label>
+              <Form.Control
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-2">
+              <Form.Label>Latitude</Form.Label>
+              <Form.Control
+                value={form.lat}
+                onChange={(e) => setForm({ ...form, lat: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Longitude</Form.Label>
+              <Form.Control
+                value={form.long}
+                onChange={(e) => setForm({ ...form, long: e.target.value })}
+              />
+            </Form.Group>
+
+            <Accordion flush>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Housing Stats (optional)</Accordion.Header>
+                <Accordion.Body>
+                  {[
+                    ["RDPs", "RDPs"],
+                    ["CRUs", "CRUs"],
+                    ["Backyard Dwellings", "backyardDwellings"],
+                  ].map(([label, key]) => (
+                    <Form.Group key={key} className="mb-2">
+                      <Form.Label>{label}</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={form.housing[key]}
+                        onChange={(e) =>
+                          setForm({ ...form, housing: { ...form.housing, [key]: e.target.value }})
+                        }
+                      />
+                    </Form.Group>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Demographic Stats (optional)</Accordion.Header>
+                <Accordion.Body>
+                  {[
+                    ["Total Population", "total"],
+                    ["Black", "black"],
+                    ["Coloured", "coloured"],
+                    ["Asian", "asian"],
+                    ["White", "white"],
+                    ["Other", "other"],
+                  ].map(([label, key]) => (
+                    <Form.Group key={key} className="mb-2">
+                      <Form.Label>{label}</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={form.demo[key]}
+                        onChange={(e) =>
+                          setForm({ ...form, demo: { ...form.demo, [key]: e.target.value }})
+                        }
+                      />
+                    </Form.Group>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={!form.name.trim()}
+            variant="danger"
+          >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
-}
+};
 
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
@@ -320,7 +451,6 @@ const DistrictPinsLayer = () => {
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
     fetchCommunities(selectedDistrict);
-    console.log( communities);
   }, [selectedDistrict]);
 
   return (
@@ -380,6 +510,7 @@ const Map = () => {
       ))}
       <MapClickHandler />
       <DistrictPinsLayer />
+      <ResetMapView />
     </MapContainer>
   );
 };

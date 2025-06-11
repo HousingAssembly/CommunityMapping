@@ -13,10 +13,11 @@ const Contacts = () => {
     { name: 'Malmesbury',       info: 'https://www.swartland.org.za/pages/english/contact-us/general.php'  },
     { name: 'Ceres',            info: 'http://www.witzenberg.gov.za/contact-us' },
     { name: '',                 info: 'https://www.capetown.gov.za/City-Connect/Register/Housing-and-property/Register-on-the-housing-database/Register%20on%20the%20housing%20database' },
-
   ]
 
     const current = subcouncilInfo.find((sc) => sc.name === selectedDistrict);
+    console.log('Selected district is:', selectedDistrict);
+    console.log('Current:', current);
   return (
     <>
     <h1 style={{
@@ -26,7 +27,7 @@ const Contacts = () => {
         height:'30px',
         fontFamily: 'Arial, sans-serif'
     }}>
-      Contact Information
+      Contact Information:
     </h1>
 
     <div style = {{
@@ -45,7 +46,7 @@ const Contacts = () => {
       </a>
 
       <a 
-        style={{ marginBottom: '10px' }} 
+        style={{ marginBottom: '10px 0' }} 
         href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
         target="_blank"
         rel="noopener noreferrer"
@@ -53,6 +54,38 @@ const Contacts = () => {
         City of Cape Town About Informal Settlements 
       </a>
     </div>
+      <div>
+      <h1 style={{
+        display:'flex',
+        justifyContent:'center',
+        width:'100%',
+        height:'30px',
+        fontFamily: 'Arial, sans-serif'}}>
+
+          Emergency Services:
+        </h1>
+            <br /><br />
+        <div style = {{
+      display: 'flex',
+      flexDirection: 'column',
+      
+      fontFamily: 'Arial, sans-serif'
+    }}> <h3 style={{display:'flex', justifyContent:'left'}}> <u> Phone Numbers: </u> </h3>
+        </div>
+        <strong> Police Flying Squad: </strong> 10111 <br />
+        <strong>Crime Stop: </strong> 0860 010 111 <br />
+        <b>Ambulance:</b> 10177 <br />
+        <strong>Cell Phone Emergency: </strong>112 (MTN, Vodacom, Cell C and
+        Telkom) <br />
+        <b>Poisons Information Helpline of the
+        Western Cape: </b>
+        0861 555 777<br />
+        <b>Childline:</b> 116 <br />
+        <b>Safe Schools call centre: </b>0800 454 647<br />
+        <b>Bureau of Missing Persons: </b>021 918 3512 / 3449 / 3452<br />
+        <b>Lifeline: </b>021 461 1113<br />
+    
+        </div>
 
     <div style = {{
       padding: '10px 0'
