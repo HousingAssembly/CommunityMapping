@@ -77,7 +77,7 @@ const DistrictSideBar = () => {
             duration: 10000,
             isClosable: true,
             placement: "top",
-            type: 'error'
+            type: 'warning'
         });
 
     };
