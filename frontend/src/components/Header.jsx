@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../assets/ui/toaster"
 import { AdminState } from "../context/Context";
 import SignUp from './SignUp'
+import { SelectPositioner } from '@chakra-ui/react';
 
 const Header = () => {
     const [show, setShow] = useState(false);
@@ -83,13 +84,14 @@ const Header = () => {
             isClosable: true,
             position: "bottom",
         });
+        sleep(500)
         window.location.reload();
     };
 
 
   return (
     
-    <Navbar style={{background:'red', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
+    <Navbar style={{background:'#d32535', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
         
         <Image
           src= {HAlogo}

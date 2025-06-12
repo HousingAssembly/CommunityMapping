@@ -63,7 +63,7 @@ const DistrictSideBar = () => {
     //runs only once to fetch data from backend
     useEffect(() => {
         loadTownships();
-    }, []);
+    }, [communityDraft]);
 
     //finds curret district object that matches selected district
     const current = subcouncils.find((sc) => sc.name === selectedDistrict);
@@ -77,7 +77,7 @@ const DistrictSideBar = () => {
             duration: 10000,
             isClosable: true,
             placement: "top",
-            type: 'info'
+            type: 'error'
         });
 
     };
