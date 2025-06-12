@@ -15,6 +15,7 @@ const AdminProvider = ({ children }) => {
   const [communityDraft, setCommunityDraft] = useState(null);
   const [communities, setCommunities] = useState([]);
   const [user, setUser] = useState();
+  const [showShelters, setShowShelters] = useState(false)
 
    useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -57,7 +58,9 @@ const AdminProvider = ({ children }) => {
         communities,
         fetchCommunities,
         user,
-        setUser
+        setUser,
+        showShelters, 
+        setShowShelters
       }}
     >
       {children}
