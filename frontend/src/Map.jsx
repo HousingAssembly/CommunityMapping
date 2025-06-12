@@ -126,7 +126,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
       }
     };
 
-    //refetches the backend issues whne community changes
+    //refetches the backend issues when community changes
     fetchIssuesForCommunity();
   }, [community]);
 
@@ -218,11 +218,21 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
               isClosable: true,
               position: "bottom",
           });
-      onHide(); // This is a holdover from delete Com, so I'm just leavin it in for now
+      onHide(); 
     } catch (err) {
       console.error("Delete failed", err);
     }
     }
+
+let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) => sum + list.length, 0);
+// object.entries takes issuesByCategory, which is a map with keys of categories and values of issueLists and then
+// turns it into a list (e.g., [ ["GBV", [issue1, issue2]], ["food/water", [issue1]] ]). Reduce then works this list
+// into a single value based on a function we define. We call this single value sum. sum is supposed to be the 
+// total number of issues, i.e., the sum of the length of each issueList. 
+// Reduce deconstructs each item of this list into each key-value pair list and says, "the first part is the 
+// category, and the second one is the list"
+// Knowing which is the list, it then uses list.length to add to the sum.
+// Thus, we get the sum.
 
   return (
     <>
@@ -290,12 +300,12 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
             </div>
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
               <h2 style={{ color: 'darkred', textAlign: 'center' }}>
-                <u>Local Reported Issues</u>
+                <u>Local Reported Issues - {numIssues} Total</u>
               </h2>
               <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
                 {Object.entries(issuesByCategory).map(([categoryName, issueList], index) => (
                   <Accordion.Item eventKey={String(index)} key={categoryName}>
-                    <Accordion.Header>{categoryName}</Accordion.Header>
+                    <Accordion.Header>{categoryName + " (" + issueList.length + ")"}</Accordion.Header>
                     <Accordion.Body style={{ overflowY: 'auto', maxHeight: '250px' }}>
                       {issueList.map((iss) => (
                         <div
@@ -448,7 +458,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
 
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
-  const [activeCommunity, setActiveCommunity] = useState(null);  // the selected one
+  const [activeCommunity, setActiveCommunity] = useState(null);
   const handleOpenIssue = (c) => setActiveCommunity(c);
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
@@ -477,6 +487,9 @@ const DistrictPinsLayer = () => {
 }
 
 const ShelterPinsLayer = () => {
+  const [activeShelter, setActiveShelter] = useState(null);
+  const handleOpenShelter = (c) => setActiveShelter(c);
+  const handleCloseShelter = () => setActiveShelter(null);
   const shelterIcon = L.icon({
     iconUrl: home,
     iconSize:    [30, 40],  
@@ -494,16 +507,50 @@ const ShelterPinsLayer = () => {
         >
           <Popup >
             <div style={{display:'flex',justifyContent:'center'}}>
-              <button>
+              <button onClick={(c)=>handleOpenShelter(c)}>
                 {c.name}
               </button>
             </div>
           </Popup>
         </Marker>
       ))}
+      <SheltersScreenOverlay show={!!activeShelter} onHide={handleCloseShelter} shelter={activeShelter}/>
     </>
   );
 }
+
+const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
+  
+
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={onHide}
+        dialogClassName="modal-fullscreen-custom"
+        backdrop="static"
+        keyboard={true}
+      >
+        <Modal.Body
+          style={{
+            background: '#fff',
+            height: '100%',
+            padding: '2rem',
+          }}
+        >
+          <CloseButton
+            onClick={onHide}
+            style={{ position: 'absolute', top: 20, right: 20 }}
+          />
+        </Modal.Body>
+
+        //add info here
+
+
+      </Modal>
+    </>
+  );
+};
 
 
 const Map = () => {

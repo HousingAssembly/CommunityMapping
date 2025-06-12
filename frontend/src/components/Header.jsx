@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../assets/ui/toaster"
 import { AdminState } from "../context/Context";
 import SignUp from './SignUp'
+import { SelectPositioner } from '@chakra-ui/react';
 
 const Header = () => {
     const [show, setShow] = useState(false);
@@ -83,6 +84,7 @@ const Header = () => {
             isClosable: true,
             position: "bottom",
         });
+        sleep(500)
         window.location.reload();
     };
 
