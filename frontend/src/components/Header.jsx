@@ -89,7 +89,7 @@ const Header = () => {
 
   return (
     
-    <Navbar style={{background:'red', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
+    <Navbar style={{background:'#d32535', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
         
         <Image
           src= {HAlogo}
