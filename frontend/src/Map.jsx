@@ -309,7 +309,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <strong><u>{iss.title}</u></strong>
                             <p style={{ color: 'grey' }}>
-                              {new Date(iss.createdAt).toLocaleDateString()}
+                              {new Date(iss.createdAt).toLocaleDateString('en-GB')}
                             </p>
                           </div>
                           <p>{iss.description}</p>
@@ -497,7 +497,7 @@ const ShelterPinsLayer = () => {
         >
           <Popup >
             <div style={{display:'flex',justifyContent:'center'}}>
-              <button onClick={(c)=>handleOpenShelter(c)}>
+              <button onClick={()=>handleOpenShelter(c)}>
                 {c.name}
               </button>
             </div>
@@ -521,6 +521,7 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
         backdrop="static"
         keyboard={true}
       >
+       
         <Modal.Body
           style={{
             background: '#fff',
@@ -532,11 +533,15 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
             onClick={onHide}
             style={{ position: 'absolute', top: 20, right: 20 }}
           />
+          <h1>{shelter?.name} <span style={{color:'red'}}> (Homeless Shelter)</span></h1>
+          <br /><br />
+          <h4><b >Contact Name: </b> {shelter?.contact ? shelter?.contact : 'N/A'}</h4>
+          <h4><b >Phone Number: </b> {shelter?.tel ? shelter?.tel : 'N/A'}</h4>
+          <h4><b >Address: </b> {shelter?.address ? shelter?.address : 'N/A'}</h4>
+          <h4><b >Email: </b> {shelter?.emails ?shelter?.emails : 'N/A' }</h4>
+          <h4><b >Website: </b> <a href={shelter?.website } target="_blank" rel="noopener noreferrer">{shelter?.website ? shelter?.website : 'N/A'}</a></h4>
+
         </Modal.Body>
-
-        //add info here
-
-
       </Modal>
     </>
   );

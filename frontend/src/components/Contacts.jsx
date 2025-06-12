@@ -54,7 +54,20 @@ const Contacts = () => {
       >
         City of Cape Town About Informal Settlements 
       </a>
+      <br/><br />
+      
+        <h1 style={{
+        display:'flex',
+        justifyContent:'center',
+        width:'100%',
+        height:'30px',
+        fontFamily: 'Arial, sans-serif'}}> 
+        Homeless Shelters:
+        </h1>
+        <br /> 
+        <div style={{display:'flex', justifyContent:'center'}}>
       <Button variant={showShelters ? 'secondary' : 'danger'} onClick={()=>setShowShelters(!showShelters)}>{showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}</Button>
+      </div>
     </div>
       <div>
       <h1 style={{
