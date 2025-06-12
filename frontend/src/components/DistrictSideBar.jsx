@@ -3,6 +3,9 @@ import {CloseButton, Button, Modal, Form, Accordion, Dropdown, Offcanvas, FormGr
 import { AdminState } from "../context/Context";
 import {toaster} from '../assets/ui/toaster'
 import axios from 'axios'
+import flag from '../assets/Flag-South-Africa.webp'
+
+
 
 const DistrictSideBar = () => {
     const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
@@ -191,11 +194,15 @@ const DistrictSideBar = () => {
   const handleFormClose = () => {
     setShowIssueModal(false);
   }
+
+  // front end
+
    if (!selectedDistrict) return null;
   return (
     <>
-    {/* District Sidebar */}
+{/* District Sidebar */}
 
+    {/* X button at top-right to close sidebar */}
       <div
         style={{
           display: "flex",
@@ -207,7 +214,7 @@ const DistrictSideBar = () => {
     <CloseButton onClick={() => setSelectedDistrict(null)} />
       </div>
 
-      {/* District Header and Buttons */}
+      {/* Main sidebar wrapper – holds all sidebar content */}
       <div
         style={{
           display: "flex",
@@ -215,14 +222,38 @@ const DistrictSideBar = () => {
           alignItems: "center",
           height: "100%",
           margin: "10px",
-          
         }}
       >
+
+      {/* Box for District Name and Action Buttons */}
+      <div
+        style={{
+          border: "2px solid #ccc",
+          borderRadius: "20px",
+          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          padding: "20px",
+          marginBottom: "10px",
+          backgroundColor: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {/* District Name (e.g., "Malmesbury") */}
         <u>
           <h1>{selectedDistrict}</h1>
         </u>
 
-        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+          {/* Add Issue and Add Community */}
+        <div 
+        style={{
+          display: "flex", 
+          justifyContent: "center", 
+          padding: "5px",
+        }}
+        >
+
           <Button variant="danger" onClick={() => handleAddIssueClick()}>
             + Add Issue
           </Button>
@@ -237,6 +268,7 @@ const DistrictSideBar = () => {
             </Button>
           )}
         </div>
+      </div>
 
         {/* Info Box */}
         <div
@@ -245,16 +277,22 @@ const DistrictSideBar = () => {
             borderRadius: "20px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
             width: "100%",
-            height: "100%",
+            flex: 1,
+            height: "50%",
             display: "flex",
             flexDirection: "column",
+            backgroundColor: "white",
+            overflowY: "auto"
           }}
         >
+
+          {/* Contact Info Header */}
           <h2
-            style={{ display: "flex", margin: "10px", padding: "10px" }}
-          >
-            Local Contact Info:
+            style={{ display: "flex", margin: "10px", padding: "10px",  }}>
+              Local Contact Info:
           </h2>
+
+          {/* Contact Info Link */}
           <div style={{ marginLeft: "10px" }}>
             {current && (
               <a href={current.info}>
@@ -262,15 +300,64 @@ const DistrictSideBar = () => {
               </a>
             )}
           </div>
+
+          {/* Emergency Info Header */}
           <h2
-            style={{ display: "flex", margin: "10px", padding: "10px" }}
-          >
-            Local Emergency Services:
+            style={{ display: "flex", margin: "10px", padding: "10px" }}>
+              Local Emergency Services:
           </h2>
-        </div>
+        <div
+      style={{
+          
+          flexDirection: 'column',
+          padding: '0 20px 20px 20px',
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '14px',
+          lineHeight: '1.6',
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+        }}
+      >
+        <strong>Police Flying Squad:</strong> 10111 <br />
+        <strong>Crime Stop:</strong> 0860 010 111 <br />
+        <strong>Ambulance:</strong> 10177 <br />
+        <strong>Cell Phone Emergency:</strong> 112 (MTN, Vodacom, Cell C, Telkom) <br />
+        <strong>Poisons Information Helpline of the Western Cape:</strong> 0861 555 777 <br />
+        <strong>Childline:</strong> 116 <br />
+        <strong>Safe Schools Call Centre:</strong> 0800 454 647 <br />
+        <strong>Bureau of Missing Persons:</strong> 021 918 3512 / 3449 / 3452 <br />
+        <strong>Lifeline:</strong> 021 461 1113
+      </div>
+        
+        
+       </div>
       </div>
 
- {/* Sidebar for add Issue */}
+      {/* Image */}
+       <div
+         style={{
+           width: "100%",
+           display: "flex",
+           justifyContent: "center",
+           margin: "15px 0",
+           backgroundColor: "#f5f5f5",
+           padding: "15px"
+         }}
+       >
+         <img
+           src={flag}
+           alt="South African Flag"
+           style={{
+            maxWidth: "80%",
+            height: "auto",
+            backgroundColor: "#transparent",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.75)",
+            borderRadius: "10px"
+           }}
+         />
+       </div>
+
+  {/* Sidebar for add Issue */}
         <Offcanvas
           show={showIssueModal}
           onHide={handleFormClose}

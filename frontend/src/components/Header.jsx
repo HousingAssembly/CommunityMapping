@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import HAlogo from '../assets/HAlogo.jpg'
+import HAlogo from '../assets/HA-swhite.png'
 import { Button, Navbar, Image ,Modal, Form,  } from 'react-bootstrap';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -97,13 +97,13 @@ const Header = () => {
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{margin:"10px",height:'50px', display:'flex', marginLeft:'20px', justifyContent:'left' }}
+          style={{ width: '70px', margin:"10px", height:'60px', display:'flex', marginLeft:'30px', justifyContent:'left' }}
         />
 
         <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
-            <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleShow}>
+            <Button variant='light' style={{height:'50%', marginRight:'25px', marginBottom:'5px'}} onClick={handleShow}>
             HA Admin Login
             </Button> 
         </div>
