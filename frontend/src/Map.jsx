@@ -448,7 +448,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
 
 const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities } = AdminState();
-  const [activeCommunity, setActiveCommunity] = useState(null);  // the selected one
+  const [activeCommunity, setActiveCommunity] = useState(null);
   const handleOpenIssue = (c) => setActiveCommunity(c);
   const handleCloseIssue = () => setActiveCommunity(null);
   useEffect(() => {
@@ -477,6 +477,9 @@ const DistrictPinsLayer = () => {
 }
 
 const ShelterPinsLayer = () => {
+  const [activeShelter, setActiveShelter] = useState(null);
+  const handleOpenShelter = (c) => setActiveShelter(c);
+  const handleCloseShelter = () => setActiveShelter(null);
   const shelterIcon = L.icon({
     iconUrl: home,
     iconSize:    [30, 40],  
@@ -494,16 +497,50 @@ const ShelterPinsLayer = () => {
         >
           <Popup >
             <div style={{display:'flex',justifyContent:'center'}}>
-              <button>
+              <button onClick={(c)=>handleOpenShelter(c)}>
                 {c.name}
               </button>
             </div>
           </Popup>
         </Marker>
       ))}
+      <SheltersScreenOverlay show={!!activeShelter} onHide={handleCloseShelter} shelter={activeShelter}/>
     </>
   );
 }
+
+const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
+  
+
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={onHide}
+        dialogClassName="modal-fullscreen-custom"
+        backdrop="static"
+        keyboard={true}
+      >
+        <Modal.Body
+          style={{
+            background: '#fff',
+            height: '100%',
+            padding: '2rem',
+          }}
+        >
+          <CloseButton
+            onClick={onHide}
+            style={{ position: 'absolute', top: 20, right: 20 }}
+          />
+        </Modal.Body>
+
+        //add info here
+
+
+      </Modal>
+    </>
+  );
+};
 
 
 const Map = () => {
