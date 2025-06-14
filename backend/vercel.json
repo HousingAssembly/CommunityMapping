@@ -1,17 +1,11 @@
 {
-  "installCommand": "npm install --legacy-peer-deps",
   "version": 2,
+
   "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "src/**/*",
-      "use": "@vercel/static"
-    }
+    { "src": "api/server.js", "use": "@vercel/node" }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/" }
+
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/server.js" }
   ]
 }
