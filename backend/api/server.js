@@ -5,11 +5,11 @@ const dotenv = require("dotenv")
 //stands for cross-origin resource sharing that controls which websites (origins) are allowed to make requests to your server
 const cors  = require('cors');
 //connect to our database
-const connectDB = require('./config/databaseconfig')
+const connectDB = require('../config/databaseconfig')
 //our routes
-const adminAuth = require("./routes/adminAuth");
-const communityRoute = require("./routes/communityRoute");
-const issueRoutes = require("./routes/issueRoutes");
+const adminAuth = require("../routes/adminAuth");
+const communityRoute = require("../routes/communityRoute");
+const issueRoutes = require("../routes/issueRoutes");
 
 //reads the .env file
 dotenv.config()
@@ -40,5 +40,7 @@ app.use('/addcom', communityRoute)
 app.use('/addissue', issueRoutes)
 
 //starts sevrer on port and confirms
-const port = 8000
-const server= app.listen(port, console.log(`Server running on port ${port}`))
+// const port = 8000
+// const server= app.listen(port, console.log(`Server running on port ${port}`))
+
+module.exports = app
