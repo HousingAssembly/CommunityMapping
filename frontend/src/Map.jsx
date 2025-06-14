@@ -116,7 +116,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
       try {
         //GET request for issues
         const { data } = await axios.get(
-          `http://localhost:8000/addissue/fetch?community=${encodeURIComponent(community.name)}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addissue/fetch?community=${encodeURIComponent(community.name)}`
         );
         setIssues(data);
       } catch (err) {
@@ -152,7 +152,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      await axios.delete(`http://localhost:8000/addcom/${community._id}`, config);
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom/${community._id}`, config);
       fetchCommunities(community.districtName)
       toaster.create({
               title: "Community Successfully Deleted",
@@ -176,7 +176,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-    await axios.put(`http://localhost:8000/addcom/${community._id}`, {
+    await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom/${community._id}`, {
       name: form.name,
       coords: {
         lat: form.lat,
@@ -209,7 +209,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           id: iss._id,
         },
       };
-      await axios.delete(`http://localhost:8000/addissue/delete`,config);
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addissue/delete`,config);
 
       toaster.create({
               title: "Issue Successfully Deleted",

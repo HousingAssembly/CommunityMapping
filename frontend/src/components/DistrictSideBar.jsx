@@ -127,7 +127,7 @@ const DistrictSideBar = () => {
             Authorization: `Bearer ${user.token}`,
             },
             };
-            await axios.post("http://localhost:8000/addcom", payload, config);
+            await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom`, payload, config);
             toaster.create({
                     title: "Community Successfully Created",
                     type: "success",
@@ -153,7 +153,7 @@ const DistrictSideBar = () => {
   //backend updates with issues
   const handleSubmitIssue = async () => {
     try {
-      await axios.post("http://localhost:8000/addissue", {
+      await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addissue`, {
         title: issueForm.title,
         description: issueForm.description,
         category: issueForm.category,
