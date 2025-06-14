@@ -23,6 +23,7 @@ const app = express()
 //adds security
 app.use(cors({
   origin: 'https://housingassemblymap.vercel.app',
+  credentials: true
 }));
 
 //express middleware that allows the server to parse incoming requests with JSON payloads
