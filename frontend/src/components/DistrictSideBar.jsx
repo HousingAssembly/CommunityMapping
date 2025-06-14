@@ -50,7 +50,7 @@ const DistrictSideBar = () => {
             base.map(async (s) => {
             if (!s.name) return { ...s, townships: ['N/A'] }
             try {
-                const { data } = await axios.get(`http://localhost:8000/addcom/fetch?district=${s.name}`);
+                const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom/fetch?district=${s.name}`);
                 return { ...s, townships: data.map((c) => c.name) };
             } catch (err) {
                 console.error(`Failed to fetch townships for ${s.name}`, err);
