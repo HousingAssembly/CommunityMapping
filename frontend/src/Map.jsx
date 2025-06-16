@@ -464,7 +464,7 @@ const DistrictPinsLayer = () => {
         >
           <Popup >
             <div style={{display:'flex',justifyContent:'center'}}>
-              <button onClick={() => handleOpenIssue(c)}>
+              <button onClick={() => handleOpenIssue(c)} style={{color: 'dodgerblue', textDecoration: 'underline'}}>
                 {c.name}
               </button>
             </div>

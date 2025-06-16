@@ -40,7 +40,7 @@ app.use('/admin', adminAuth)
 app.use('/addcom', communityRoute)
 app.use('/addissue', issueRoutes)
 
-//starts sevrer on port and confirms
+// starts sevrer on port and confirms
 // const port = 8000
 // const server= app.listen(port, console.log(`Server running on port ${port}`))
 
