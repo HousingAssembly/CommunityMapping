@@ -5,8 +5,6 @@ import {toaster} from '../assets/ui/toaster'
 import axios from 'axios'
 import flag from '../assets/Flag-South-Africa.webp'
 
-
-
 const DistrictSideBar = () => {
     const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
     //whether "add community" modal shows
@@ -221,7 +219,8 @@ const DistrictSideBar = () => {
           flexDirection: "column",
           alignItems: "center",
           height: "100%",
-          margin: "10px",
+          margin: "10px auto",
+          width: "100%"
         }}
       >
 
@@ -282,7 +281,7 @@ const DistrictSideBar = () => {
             display: "flex",
             flexDirection: "column",
             backgroundColor: "white",
-            overflowY: "auto"
+            overflowY: "auto",
           }}
         >
 

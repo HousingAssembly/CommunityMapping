@@ -97,14 +97,14 @@ const Header = () => {
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{ width: '70px', margin:"10px", height:'60px', display:'flex', marginLeft:'30px', justifyContent:'left' }}
+          style={{ width:'70px', margin:"10px 20px 10px 20px", height:'60px', display:'flex', justifyContent:'left' }}
         />
 
-        <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
+        <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", textAlign: "center", margin: "0px 10px 0px 10px" }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
-            <Button variant='light' style={{height:'50%', marginRight:'25px', marginBottom:'5px'}} onClick={handleShow}>
-            HA Admin Login
+            <Button variant='light' style={{height:'50%', margin:"10px 20px 10px 20px"}} onClick={handleShow}>
+            <i> Admin Login </i>
             </Button> 
         </div>
         }

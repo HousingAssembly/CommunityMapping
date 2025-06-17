@@ -35,7 +35,7 @@ const Contacts = () => {
       flexDirection: 'column',
       padding: '45px 0',
       fontFamily: 'Arial, sans-serif',
-      justifyContent:'center'
+      justifyContent:'center',
     }}>        
       <a
         style={{ margin: '10px 0' }}
