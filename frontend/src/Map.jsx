@@ -461,20 +461,38 @@ const DistrictPinsLayer = () => {
   const [activeCommunity, setActiveCommunity] = useState(null);
   const handleOpenIssue = (c) => setActiveCommunity(c);
   const handleCloseIssue = () => setActiveCommunity(null);
+  const [buttonColor, setButtonColor] = useState(null)
+
+  const mouseOn = () => {
+    setButtonColor("LightGray")
+  }
+  
+  const mouseOff = () => {
+    setButtonColor("White")
+  }
+
   useEffect(() => {
     fetchCommunities(selectedDistrict);
   }, [selectedDistrict]);
 
+
+
   return (
     <>
+    
       {communities.map((c) => (
         <Marker
           key={c._id}
           position={[c.coords.lat, c.coords.long]}
         >
           <Popup >
-            <div style={{display:'flex',justifyContent:'center'}}>
-              <button onClick={() => handleOpenIssue(c)}>
+            <div style={{width : "100%"}}>
+              <button 
+              onClick={() => handleOpenIssue(c)} 
+                style={{ color : "black", backgroundColor: buttonColor , width : "115px",height : "30px", borderRadius : "5px",  border : "1px solid black"}}
+                onMouseOver = {mouseOn}
+                onMouseOut = {mouseOff}
+                >
                 {c.name}
               </button>
             </div>
@@ -490,6 +508,16 @@ const ShelterPinsLayer = () => {
   const [activeShelter, setActiveShelter] = useState(null);
   const handleOpenShelter = (c) => setActiveShelter(c);
   const handleCloseShelter = () => setActiveShelter(null);
+  const [buttonColor, setButtonColor] = useState(null)
+
+  const mouseOn = () => {
+    setButtonColor("LightGray")
+  }
+  
+  const mouseOff = () => {
+    setButtonColor("White")
+  }
+
   const shelterIcon = L.icon({
     iconUrl: home,
     iconSize:    [30, 40],  
@@ -506,8 +534,12 @@ const ShelterPinsLayer = () => {
           icon={shelterIcon}
         >
           <Popup >
-            <div style={{display:'flex',justifyContent:'center'}}>
-              <button onClick={(c)=>handleOpenShelter(c)}>
+            <div style={{width : "100%"}}>
+              <button onClick={(c)=>handleOpenShelter(c)}
+                style={{ color : "black", backgroundColor: buttonColor , width : "100%", padding: "10px", height : "55px", borderRadius : "5px",  border : "1px solid black"}}
+                onMouseOver = {mouseOn}
+                onMouseOut = {mouseOff}
+                >
                 {c.name}
               </button>
             </div>

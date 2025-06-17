@@ -9,6 +9,17 @@
   cursor: crosshair !important;
 }
 
+
+.leaflet-popup-content-wrapper {
+  padding: 0px ;
+}
+
+.leaflet-popup-content {
+  margin: 0px ;
+  padding: 0px ;
+}
+
+
 .main-container {
   display: flex;
   flex-wrap: wrap;
