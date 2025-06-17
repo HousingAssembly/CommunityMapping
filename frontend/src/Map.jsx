@@ -116,7 +116,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
       try {
         //GET request for issues
         const { data } = await axios.get(
-          `http://localhost:8000/addissue/fetch?community=${encodeURIComponent(community.name)}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addissue/fetch?community=${encodeURIComponent(community.name)}`
         );
         setIssues(data);
       } catch (err) {
@@ -126,7 +126,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
       }
     };
 
-    //refetches the backend issues when community changes
+    //refetches the backend issues whne community changes
     fetchIssuesForCommunity();
   }, [community]);
 
@@ -152,7 +152,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      await axios.delete(`http://localhost:8000/addcom/${community._id}`, config);
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom/${community._id}`, config);
       fetchCommunities(community.districtName)
       toaster.create({
               title: "Community Successfully Deleted",
@@ -176,7 +176,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-    await axios.put(`http://localhost:8000/addcom/${community._id}`, {
+    await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addcom/${community._id}`, {
       name: form.name,
       coords: {
         lat: form.lat,
@@ -209,7 +209,7 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
           id: iss._id,
         },
       };
-      await axios.delete(`http://localhost:8000/addissue/delete`,config);
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addissue/delete`,config);
 
       toaster.create({
               title: "Issue Successfully Deleted",
@@ -218,21 +218,11 @@ const FullScreenOverlay = ({ show, onHide, community }) => {
               isClosable: true,
               position: "bottom",
           });
-      onHide(); 
+      onHide(); // This is a holdover from delete Com, so I'm just leavin it in for now
     } catch (err) {
       console.error("Delete failed", err);
     }
     }
-
-let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) => sum + list.length, 0);
-// object.entries takes issuesByCategory, which is a map with keys of categories and values of issueLists and then
-// turns it into a list (e.g., [ ["GBV", [issue1, issue2]], ["food/water", [issue1]] ]). Reduce then works this list
-// into a single value based on a function we define. We call this single value sum. sum is supposed to be the 
-// total number of issues, i.e., the sum of the length of each issueList. 
-// Reduce deconstructs each item of this list into each key-value pair list and says, "the first part is the 
-// category, and the second one is the list"
-// Knowing which is the list, it then uses list.length to add to the sum.
-// Thus, we get the sum.
 
   return (
     <>
@@ -254,7 +244,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             onClick={onHide}
             style={{ position: 'absolute', top: 20, right: 20 }}
           />
-          <h1>{community?.name + ' (' + community?.districtName + ')'}</h1>
+          <h1>{community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span></h1>
           <br />
           <div
             style={{
@@ -300,12 +290,12 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             </div>
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
               <h2 style={{ color: 'darkred', textAlign: 'center' }}>
-                <u>Local Reported Issues - {numIssues} Total</u>
+                <u>Local Reported Issues</u>
               </h2>
               <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
                 {Object.entries(issuesByCategory).map(([categoryName, issueList], index) => (
                   <Accordion.Item eventKey={String(index)} key={categoryName}>
-                    <Accordion.Header>{categoryName + " (" + issueList.length + ")"}</Accordion.Header>
+                    <Accordion.Header>{categoryName}</Accordion.Header>
                     <Accordion.Body style={{ overflowY: 'auto', maxHeight: '250px' }}>
                       {issueList.map((iss) => (
                         <div
@@ -319,7 +309,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <strong><u>{iss.title}</u></strong>
                             <p style={{ color: 'grey' }}>
-                              {new Date(iss.createdAt).toLocaleDateString()}
+                              {new Date(iss.createdAt).toLocaleDateString('en-GB')}
                             </p>
                           </div>
                           <p>{iss.description}</p>
@@ -457,10 +447,14 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
 };
 
 const DistrictPinsLayer = () => {
-  const { selectedDistrict, communities, fetchCommunities } = AdminState();
+  const { selectedDistrict, communities, fetchCommunities, globalCommunity,setGlobalCommunity } = AdminState();
   const [activeCommunity, setActiveCommunity] = useState(null);
   const handleOpenIssue = (c) => setActiveCommunity(c);
   const handleCloseIssue = () => setActiveCommunity(null);
+  const handleCloseIssue = () => {
+    setActiveCommunity(null) 
+    setGlobalCommunity(null)
+  };
   const [buttonColor, setButtonColor] = useState(null)
 
   const mouseOn = () => {
@@ -476,6 +470,9 @@ const DistrictPinsLayer = () => {
   }, [selectedDistrict]);
 
 
+  useEffect(()=>{
+     setActiveCommunity(communities.find((c) => c.name === globalCommunity))
+  }, [globalCommunity])
 
   return (
     <>
@@ -563,6 +560,7 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
         backdrop="static"
         keyboard={true}
       >
+       
         <Modal.Body
           style={{
             background: '#fff',
@@ -574,11 +572,15 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
             onClick={onHide}
             style={{ position: 'absolute', top: 20, right: 20 }}
           />
+          <h1>{shelter?.name} <span style={{color:'red'}}> (Homeless Shelter)</span></h1>
+          <br /><br />
+          <h4><b >Contact Name: </b> {shelter?.contact ? shelter?.contact : 'N/A'}</h4>
+          <h4><b >Phone Number: </b> {shelter?.tel ? shelter?.tel : 'N/A'}</h4>
+          <h4><b >Address: </b> {shelter?.address ? shelter?.address : 'N/A'}</h4>
+          <h4><b >Email: </b> {shelter?.emails ?shelter?.emails : 'N/A' }</h4>
+          <h4><b >Website: </b> <a href={shelter?.website } target="_blank" rel="noopener noreferrer">{shelter?.website ? shelter?.website : 'N/A'}</a></h4>
+
         </Modal.Body>
-
-        //add info here
-
-
       </Modal>
     </>
   );

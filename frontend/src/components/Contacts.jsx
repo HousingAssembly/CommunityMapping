@@ -29,13 +29,13 @@ const Contacts = () => {
     }}>
       Contact Information:
     </h1>
-
+    <br/>
     <div style = {{
       display: 'flex',
       flexDirection: 'column',
-      padding: '45px 0',
       fontFamily: 'Arial, sans-serif',
-      justifyContent:'center'
+      justifyContent:'center',
+      marginBottom:'10px'
     }}>        
       <a
         style={{ margin: '10px 0' }}
@@ -47,14 +47,26 @@ const Contacts = () => {
       </a>
 
       <a 
-        style={{ marginBottom: '10px 0' }} 
+        style={{ marginBottom: '20px' }} 
         href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
         target="_blank"
         rel="noopener noreferrer"
       >
         City of Cape Town About Informal Settlements 
       </a>
-      <Button variant={showShelters ? 'secondary' : 'danger'} onClick={()=>setShowShelters(!showShelters)}>{showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}</Button>
+      <h1 style={{
+      display:'flex',
+      justifyContent:'center',
+      width:'100%',
+      fontFamily: 'Arial, sans-serif',
+      marginBottom:'20px'
+      }}> 
+      Homeless Shelters:
+      </h1>
+      <br /> 
+      <div style={{display:'flex', justifyContent:'center', marginBottom:'10px'}}>
+        <Button variant={showShelters ? 'secondary' : 'danger'} onClick={()=>setShowShelters(!showShelters)}>{showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}</Button>
+      </div>
     </div>
       <div>
       <h1 style={{

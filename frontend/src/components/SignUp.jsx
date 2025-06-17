@@ -63,7 +63,7 @@ const SignUp = ({show, setShow}) => {
         };
         console.log('test')
         const { data } = await axios.post(
-            "http://localhost:8000/admin",
+            `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/admin`,
             {
             email,
             password,

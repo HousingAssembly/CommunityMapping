@@ -16,6 +16,8 @@ const AdminProvider = ({ children }) => {
   const [communities, setCommunities] = useState([]);
   const [user, setUser] = useState();
   const [showShelters, setShowShelters] = useState(false)
+  const [globalCommunity, setGlobalCommunity] = useState(null);
+
 
    useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -35,7 +37,7 @@ const AdminProvider = ({ children }) => {
   const fetchCommunities = async (district) => {
   if (!district) return setCommunities([]);
   try {
-    const { data } = await axios.get(`http://localhost:8000/addCom/fetch?district=${district}`);
+    const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addCom/fetch?district=${district}`);
     setCommunities(data);
   } catch (err) {
     console.error(err);
@@ -60,7 +62,9 @@ const AdminProvider = ({ children }) => {
         user,
         setUser,
         showShelters, 
-        setShowShelters
+        setShowShelters,
+        globalCommunity, 
+        setGlobalCommunity
       }}
     >
       {children}
