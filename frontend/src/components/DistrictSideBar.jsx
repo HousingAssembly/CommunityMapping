@@ -6,7 +6,7 @@ import axios from 'axios'
 import flag from '../assets/Flag-South-Africa.webp'
 
 const DistrictSideBar = () => {
-    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user} = AdminState();
+    const { selectedDistrict, setSelectedDistrict, loggedIn, communityDraft, startCommunityPlacement, cancelCommunityPlacement,fetchCommunities, user, setGlobalCommunity} = AdminState();
     //whether "add community" modal shows
     const [showCommunityModal, setShowCommunityModal] = useState(false);
     //whether the “Add Issue” offcanvas shows
@@ -164,6 +164,7 @@ const DistrictSideBar = () => {
             isClosable: true,
             position: "bottom",
         });
+      setGlobalCommunity(selectedCom)
       setShowIssueModal(false);
       setForm({  name: "",
         lat: "",
