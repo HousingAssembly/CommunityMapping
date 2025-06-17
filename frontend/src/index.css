@@ -1,12 +1,20 @@
 @import "leaflet/dist/leaflet.css";
 
-
 .add-community-cursor {
   cursor: crosshair !important;
 }
 
 .add-community-cursor .leaflet-interactive {
   cursor: crosshair !important;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0px ;
+}
+
+.leaflet-popup-content {
+  margin: 0px ;
+  padding: 0px ;
 }
 
 .main-container {
