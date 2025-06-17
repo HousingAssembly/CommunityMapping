@@ -5,11 +5,11 @@ const dotenv = require("dotenv")
 //stands for cross-origin resource sharing that controls which websites (origins) are allowed to make requests to your server
 const cors  = require('cors');
 //connect to our database
-const connectDB = require('./config/databaseconfig')
+const connectDB = require('../config/databaseconfig')
 //our routes
-const adminAuth = require("./routes/adminAuth");
-const communityRoute = require("./routes/communityRoute");
-const issueRoutes = require("./routes/issueRoutes");
+const adminAuth = require("../routes/adminAuth");
+const communityRoute = require("../routes/communityRoute");
+const issueRoutes = require("../routes/issueRoutes");
 
 //reads the .env file
 dotenv.config()
@@ -22,7 +22,8 @@ const app = express()
 
 //adds security
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['https://housingassemblymap.vercel.app', "http://localhost:5173"],
+  credentials: true
 }));
 
 //express middleware that allows the server to parse incoming requests with JSON payloads
@@ -39,6 +40,8 @@ app.use('/admin', adminAuth)
 app.use('/addcom', communityRoute)
 app.use('/addissue', issueRoutes)
 
-//starts sevrer on port and confirms
-const port = 8000
-const server= app.listen(port, console.log(`Server running on port ${port}`))
+// starts sevrer on port and confirms
+// const port = 8000
+// const server= app.listen(port, console.log(`Server running on port ${port}`))
+
+module.exports = app

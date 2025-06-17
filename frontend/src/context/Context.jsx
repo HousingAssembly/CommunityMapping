@@ -35,7 +35,7 @@ const AdminProvider = ({ children }) => {
   const fetchCommunities = async (district) => {
   if (!district) return setCommunities([]);
   try {
-    const { data } = await axios.get(`http://localhost:8000/addCom/fetch?district=${district}`);
+    const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/addCom/fetch?district=${district}`);
     setCommunities(data);
   } catch (err) {
     console.error(err);

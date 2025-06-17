@@ -4,7 +4,6 @@ import { Toaster } from "./assets/ui/toaster"
 import { AdminState } from "./context/Context";
 import Map from './Map'
 import Contacts from './components/Contacts'
-import Districts from './components/Districts'
 import DistrictSideBar from './components/DistrictSideBar'
 import "./index.css"
 
