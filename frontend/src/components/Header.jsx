@@ -110,7 +110,7 @@ const Header = () => {
         }
         {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
             <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
-            HA Admin Logout
+            Admin Logout
             </Button> 
         </div> }
 
