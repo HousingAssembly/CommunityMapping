@@ -100,14 +100,38 @@ const Header = () => {
           style={{ width:'70px', margin:"10px 20px 10px 20px", height:'60px', display:'flex', justifyContent:'left' }}
         />
 
-        <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", textAlign: "center", margin: "0px 10px 0px 10px" }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
+        <header>
+            <h1 style={{
+                color:'white',
+                display:'flex',
+                alignItems:"center",
+                textAlign: "center",
+                margin: "0px 10px",
+                fontFamily: "Verdana, sans-serif",
+                fontWeight: "bold"
+            }}>
+                Housing Assembly's Townships Map
+            </h1>
+        </header>
+
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
-            <Button variant='light' style={{height:'50%', margin:"10px 20px 10px 20px"}} onClick={handleShow}>
-            <i> Admin Login </i>
+            <Button 
+            variant='light' 
+            style={{
+                height:'60%', 
+                margin:"10px 20px",
+                fontFamily: "Inter, sans-serif",
+                fontWeight: "400"
+
+            }} 
+            onClick={handleShow}
+            >
+                <i> Admin Login </i>
             </Button> 
         </div>
         }
+
         {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
             <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
             HA Admin Logout
@@ -117,7 +141,7 @@ const Header = () => {
         
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton className="bg-danger text-white">
-            <Modal.Title>Housing Assembly Admin Login</Modal.Title>
+                <Modal.Title>Housing Assembly Admin Login</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form onSubmit={handleSubmit}>

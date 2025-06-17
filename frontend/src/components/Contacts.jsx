@@ -20,71 +20,107 @@ const Contacts = () => {
    
   return (
     <>
-    <h1 style={{
+    <div>
+      <h2 style={{
         display:'flex',
         justifyContent:'center',
         width:'100%',
-        height:'30px',
-        fontFamily: 'Arial, sans-serif'
-    }}>
-      Contact Information:
-    </h1>
-    <br/>
-    <div style = {{
-      display: 'flex',
-      flexDirection: 'column',
-      fontFamily: 'Arial, sans-serif',
-      justifyContent:'center',
-      marginBottom:'10px'
-    }}>        
-      <a
-        style={{ margin: '10px 0' }}
-        href={subcouncilInfo[7].info}
-        target= "_blank"
-        rel="noopener noreferrer"
-        >
-          City of Cape Town Waiting List Registration
-      </a>
+        height:'20px',
+        fontFamily: 'Verdana',
+        fontWeight: "bold",
+        marginTop: "10px"
+        }}>
+        Contact Information
+      </h2>
 
-      <a 
-        style={{ marginBottom: '20px' }} 
-        href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        City of Cape Town About Informal Settlements 
-      </a>
-      <h1 style={{
-      display:'flex',
-      justifyContent:'center',
-      width:'100%',
-      fontFamily: 'Arial, sans-serif',
-      marginBottom:'20px'
-      }}> 
-      Homeless Shelters:
-      </h1>
-      <br /> 
-      <div style={{display:'flex', justifyContent:'center', marginBottom:'10px'}}>
-        <Button variant={showShelters ? 'secondary' : 'danger'} onClick={()=>setShowShelters(!showShelters)}>{showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}</Button>
+      <br/>
+
+      <div style = {{
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'Arial, sans-serif',
+        justifyContent:'center',
+        marginBottom:'10px'
+        }}>
+
+        <a
+          style={{ margin: '10px 0' }}
+          href={subcouncilInfo[7].info}
+          target= "_blank"
+          rel="noopener noreferrer"
+          >
+            City of Cape Town Waiting List Registration
+        </a>
+
+        <a 
+          style={{ marginBottom: '10px' }} 
+          href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          City of Cape Town About Informal Settlements 
+        </a>
       </div>
     </div>
-      <div>
-      <h1 style={{
+    
+    <br/>
+
+    <div>
+      <h2 style={{
         display:'flex',
         justifyContent:'center',
         width:'100%',
-        fontFamily: 'Arial, sans-serif'}}>
-          Emergency Services:
-        </h1>
-            <br />
-        <div style = {{
-          display: 'flex',
-          flexDirection: 'column',
-          
-          fontFamily: 'Arial, sans-serif'
-        }}> <h3 style={{display:'flex', justifyContent:'left'}}> <u> Phone Numbers: </u> </h3>
+        fontFamily: 'Verdana',
+        fontWeight: 'bold',
+        paddingBottom: '10px'
+      }}> 
+        Homeless Shelters
+      </h2>
+ 
+      <div style={{
+        display:'flex', 
+        justifyContent:'center', 
+        marginBottom:'10px'
+      }}>
 
-        </div>
+        <Button 
+          variant={showShelters ? 'secondary' : 'danger'} 
+          onClick={()=>setShowShelters(!showShelters)}
+        >
+          {showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}
+        </Button>
+      </div>
+    </div>
+    
+    <br/>
+
+    <div>
+      <h2 style={{
+        display:'flex',
+        justifyContent:'center',
+        width:'100%',
+        fontFamily: 'Verdana',
+        fontWeight: 'bold'
+        }}>
+          Emergency Services
+      </h2>
+        
+      <br/>
+
+      <div style = {{
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'Arial, sans-serif'
+      }}> 
+        
+        <h3 style={{display:'flex', justifyContent:'left'}}> 
+          
+          <u> Phone Numbers: </u> 
+          
+        </h3>
+
+      </div>
+
         <strong> Police Flying Squad: </strong> 10111 <br />
         <strong>Crime Stop: </strong> 0860 010 111 <br />
         <b>Ambulance:</b> 10177 <br />
@@ -98,7 +134,8 @@ const Contacts = () => {
         <b>Bureau of Missing Persons: </b>021 918 3512 / 3449 / 3452<br />
         <b>Lifeline: </b>021 461 1113<br />
     
-        </div>
+      </div>
+      
     <div style = {{
       padding: '10px 0'
     }}>        
