@@ -82,6 +82,18 @@ const SignUp = ({show, setShow}) => {
         setLoggedIn(true)
         history("/");
         } catch (error) {
+        if (error.message == "User already exists"){
+            toaster.create({
+            title: "There is already an admin account with this email!",
+            description: error.response.data.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+            type: 'error'
+        });
+        }
+        else {
         toaster.create({
             title: "Error Occured!",
             description: error.response.data.message,
@@ -91,6 +103,7 @@ const SignUp = ({show, setShow}) => {
             position: "bottom",
             type: 'error'
         });
+        }
         setLoading(false);
         }
     }
