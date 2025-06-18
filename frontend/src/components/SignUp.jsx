@@ -82,7 +82,7 @@ const SignUp = ({show, setShow}) => {
         setLoggedIn(true)
         history("/");
         } catch (error) {
-        if (error.message == "User already exists"){
+        if (error.response.data.message == "User already exists"){
             toaster.create({
             title: "There is already an admin account with this email!",
             description: error.response.data.message,
