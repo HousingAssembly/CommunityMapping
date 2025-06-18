@@ -249,7 +249,10 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             padding: '2rem',
           }}
         >
-
+          <CloseButton
+            onClick={onHide}
+            style={{ position: 'absolute', top: '4rem', right: '2rem' }}
+          />
           <h1 style={{ marginTop: '3rem' }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
           </h1>
@@ -500,7 +503,7 @@ const DistrictPinsLayer = () => {
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
-                <span style={{ fontFamily: "Verdana", fontWeight: 'bold', fontSize: '16px' }}>{c.name}</span>
+                <span style={{ fontFamily: "Verdana", fontWeight: 'bold', fontSize: '15px' }}>{c.name}</span>
               </button>
             </div>
           </Popup>
