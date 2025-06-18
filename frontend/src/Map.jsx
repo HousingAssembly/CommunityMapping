@@ -253,7 +253,9 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             onClick={onHide}
             style={{ position: 'absolute', top: 20, right: 20 }}
           />
-          <h1>{community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span></h1>
+          <h1 style={{ marginTop: '3rem' }}>
+            {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
+          </h1>
           <br />
           <div
             style={{
@@ -489,6 +491,10 @@ const DistrictPinsLayer = () => {
         <Marker
           key={c._id}
           position={[c.coords.lat, c.coords.long]}
+          eventHandlers={{
+            mouseover: (e) => e.target.openPopup(),
+            mouseout: (e) => e.target.closePopup(),
+          }}
         >
           <Popup >
             <div style={{width : "100%"}}>
