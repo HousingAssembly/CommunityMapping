@@ -91,13 +91,26 @@ const Header = () => {
 
   return (
     
-    <Navbar style={{background:'#d32535', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
+    <Navbar style={{
+        background:'#d32535', 
+        width:'100%', 
+        display:'flex', 
+        justifyContent:"space-between", 
+        alignItems:'center',
+        boxShadow: '0 2px 3px rgba(0, 0, 0, 0.4)'
+        }}>
         
         <Image
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{ width:'70px', margin:"10px 20px 10px 20px", height:'60px', display:'flex', justifyContent:'left' }}
+          style={{
+            width:'70px', 
+            margin:"10px 20px 10px 20px", 
+            height:'60px', 
+            display:'flex', 
+            justifyContent:'left' 
+        }}
         />
 
         <header>
