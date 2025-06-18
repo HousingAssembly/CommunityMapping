@@ -21,7 +21,7 @@ import {shelters} from './assets/resourceData'
     return null;
   }
   
-const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 13, onSelect, selectedDistrict }) => {
+const ZoomableCircle = ({ center, radius, color, name, zoomLevel = 12, onSelect, selectedDistrict }) => {
   const map = useMap();
 
   return (
@@ -498,7 +498,7 @@ const DistrictPinsLayer = () => {
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
-                {c.name}
+                <span style={{ fontWeight: 'bold', fontSize: '16px' }}>{c.name}</span>
               </button>
             </div>
           </Popup>
@@ -541,7 +541,10 @@ const ShelterPinsLayer = () => {
           <Popup >
             <div style={{width : "100%"}}>
               <button onClick={(c)=>handleOpenShelter(c)}
-                style={{ color : "black", backgroundColor: buttonColor , width : "100%", padding: "10px", height : "55px", borderRadius : "5px",  border : "1px solid black"}}
+                style={{ 
+                  color : "black", 
+                  backgroundColor: buttonColor , width : "100%", 
+                  padding: "10px", height : "55px", borderRadius : "5px",  border : "1px solid black"}}
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
@@ -593,7 +596,6 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
     </>
   );
 };
-
 
 const Map = () => {
   const { selectedDistrict, setSelectedDistrict, showShelters } = AdminState();

@@ -123,6 +123,7 @@ const Contacts = () => {
           {showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}
         </Button>
       </div>
+       <br/>
     </div>
 
     <div>
@@ -131,7 +132,6 @@ const Contacts = () => {
         borderTop: "2px solid #ccc",
         width: "90%",
         margin: "10px auto",
-        marginTop: "20px"
       }} />
 
       <h2 style={{
