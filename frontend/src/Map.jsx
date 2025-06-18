@@ -477,6 +477,7 @@ const DistrictPinsLayer = () => {
     fetchCommunities(selectedDistrict);
   }, [selectedDistrict]);
 
+
   useEffect(()=>{
      setActiveCommunity(communities.find((c) => c.name === globalCommunity))
   }, [globalCommunity])
@@ -539,7 +540,7 @@ const ShelterPinsLayer = () => {
         >
           <Popup >
             <div style={{width : "100%"}}>
-              <button onClick={()=>handleOpenShelter(c)}
+              <button onClick={(c)=>handleOpenShelter(c)}
                 style={{ color : "black", backgroundColor: buttonColor , width : "100%", padding: "10px", height : "55px", borderRadius : "5px",  border : "1px solid black"}}
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}

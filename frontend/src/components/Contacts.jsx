@@ -44,10 +44,15 @@ const Contacts = () => {
         marginBottom:'10px'
         }}>
           
-          <p>This is a normal paragraph of text. 
-            This is a normal paragraph of text.
-            This is a normal paragraph of text.
-            This is a normal paragraph of text.
+          <p>Welcome to the Housing Assembly Interactive Map! Here you can report issues you're facing and see what other residents are posting as well. To get started:
+          </p>
+          <p>
+            1.  <b>Click on one of the districts</b> (marked by the red circles) to see more information about it.
+          </p>
+          <p>          Or:
+          </p>
+          <p>
+            2. <b>Scroll below</b> for local resources' contact information, homeless shelters, and emergency services.
           </p>
       </div>
     </div>
