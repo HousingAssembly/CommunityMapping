@@ -22,14 +22,14 @@ const Contacts = () => {
     <>
         <div>
       <h2 style={{
-        display:'flex',
-        justifyContent:'center',
-        width:'100%',
-        height:'20px',
-        fontFamily: 'Verdana',
+        textAlign: "center",
+        flexWrap: "wrap",
+        whiteSpace: "normal",
+        width: "100%",
+        fontFamily: "Verdana",
         fontWeight: "bold",
         marginTop: "10px",
-        textDecoration: 'underline'
+        textDecoration: "underline"
         }}>
         Welcome!
       </h2>
@@ -40,47 +40,77 @@ const Contacts = () => {
         display: 'flex',
         flexDirection: 'column',
         fontFamily: 'Arial, sans-serif',
-        justifyContent:'center',
-        marginBottom:'10px'
+        marginBottom:'10px',
         }}>
           
-          <p>Welcome to the Housing Assembly Interactive Map! Here you can report issues you're facing and see what other residents are posting as well. To get started:
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  marginBottom: "10px" }}>Welcome to the <span style={{fontStyle: "italic"}}>Housing Assembly's Interactive Map</span>, where we are fighting for equal housing for all. </p>
+          
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  marginBottom: "10px" }}>
+            Here you can report issues you're facing in your township along with the other isssues that residents are currently facing. There's also contacts and resources for those in need.
           </p>
-          <p>
-            1.  <b>Click on one of the districts</b> (marked by the red circles) to see more information about it.
+
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
+            1.  <b>Click on one of the districts</b> (marked by the red circles) to view more distrcit based information or to add an issue.
           </p>
-          <p>          Or:
-          </p>
-          <p>
+
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
             2. <b>Scroll below</b> for local resources' contact information, homeless shelters, and emergency services.
+          </p>
+
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
+            <b>Tutorial: </b>
+            <a
+            // replace with YOUTUBE link!!!!!!
+              style={{ marginTop: '10px' }}
+              href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+               Interactive Map Youtube Tutorial
+            </a>
           </p>
       </div>
     </div>
 
-    <br/>
-
     <div>
+      <hr style={{
+        border: "none",
+        borderTop: "2px solid #ccc",
+        width: "90%",
+        margin: "10px auto",
+        marginTop: "20px"
+      }} />
+
       <h2 style={{
-        display:'flex',
-        justifyContent:'center',
-        width:'100%',
-        height:'20px',
-        fontFamily: 'Verdana',
+        textAlign: "center",
+        flexWrap: "wrap",
+        whiteSpace: "normal",
+        width: "100%",
+        fontFamily: "Verdana",
         fontWeight: "bold",
         marginTop: "10px"
         }}>
         Contact Information
       </h2>
 
-      <br/>
-
       <div style = {{
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         fontFamily: 'Arial, sans-serif',
-        justifyContent:'center',
-        marginBottom:'10px'
+        justifyContent: 'center',
+        marginBottom: '10px'
         }}>
+
+        <a
+        // replace with pdf link!!!!!!
+          style={{ marginTop: '10px' }}
+          href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Housing Assembly Agent contact pdf 
+        </a>
 
         <a
           style={{ margin: '10px 0' }}
@@ -91,8 +121,7 @@ const Contacts = () => {
             City of Cape Town Waiting List Registration
         </a>
 
-        <a 
-          style={{ marginBottom: '10px' }} 
+        <a
           href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
           target="_blank"
           rel="noopener noreferrer"
@@ -105,13 +134,21 @@ const Contacts = () => {
     <br/>
 
     <div>
+      <hr style={{
+        border: "none",
+        borderTop: "2px solid #ccc",
+        width: "90%",
+        margin: "10px auto"
+      }} />
+
       <h2 style={{
-        display:'flex',
-        justifyContent:'center',
-        width:'100%',
-        fontFamily: 'Verdana',
-        fontWeight: 'bold',
-        paddingBottom: '10px'
+        textAlign: "center",
+        flexWrap: "wrap",
+        whiteSpace: "normal",
+        width: "100%",
+        fontFamily: "Verdana",
+        fontWeight: "bold",
+        paddingBottom: "10px"
       }}> 
         Homeless Shelters
       </h2>
@@ -119,7 +156,6 @@ const Contacts = () => {
       <div style={{
         display:'flex', 
         justifyContent:'center', 
-        marginBottom:'10px'
       }}>
 
         <Button 
@@ -134,11 +170,19 @@ const Contacts = () => {
     <br/>
 
     <div>
+      <hr style={{
+        border: "none",
+        borderTop: "2px solid #ccc",
+        width: "90%",
+        margin: "10px auto"
+      }} />
+
       <h2 style={{
-        display:'flex',
-        justifyContent:'center',
-        fontFamily: 'Verdana',
-        fontWeight: 'bold'
+        textAlign: "center",
+        flexWrap: "wrap",
+        whiteSpace: "normal",
+        fontFamily: "Verdana",
+        fontWeight: "bold"
         }}>
           Emergency Services
       </h2>
@@ -152,8 +196,10 @@ const Contacts = () => {
           backgroundColor: '#f9f9f9',
           padding: '15px',
           borderRadius: '10px',
-          fontSize: '14px',
-          fontFamily: 'Arial, sans-serif'
+          fontSize: '16px',
+          fontFamily: 'Arial, sans-serif',
+          boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
+
         }}>
           <div style={{ display: 'contents' }}>
             <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Police Flying Squad:</strong></div>

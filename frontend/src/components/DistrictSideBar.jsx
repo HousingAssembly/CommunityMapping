@@ -210,7 +210,8 @@ const DistrictSideBar = () => {
         alignItems: "center",
         height: "100%",
         margin: "10px auto",
-        width: "100%"
+        width: "100%",
+        padding: "10px",
       }}
     >
 
@@ -218,7 +219,7 @@ const DistrictSideBar = () => {
       <div
         style={{
           border: "2px solid #ccc",
-          borderRadius: "20px",
+          borderRadius: "5px",
           boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
           width: "100%",
           padding: "20px",
@@ -246,8 +247,11 @@ const DistrictSideBar = () => {
         {/* District Name (e.g., "Malmesbury") */}
         <h1
         style={{
-          fontFamily: 'Verdana',
-          fontWeight: 'bold',
+          textAlign: "center",
+          flexWrap: "wrap",
+          whiteSpace: "normal",
+          fontFamily: "Verdana",
+          fontWeight: "bold",
           textDecoration: "underline"
         }}>
           {selectedDistrict}
@@ -289,9 +293,10 @@ const DistrictSideBar = () => {
         <div
           style={{
             border: "2px solid #ccc",
-            borderRadius: "20px",
+            borderRadius: "8px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
             width: "100%",
+            padding: "20px",
             flex: 1,
             height: "50%",
             display: "flex",
@@ -303,60 +308,66 @@ const DistrictSideBar = () => {
 
           <div>
           {/* Instructions Header */}
-            <h2 style={{ 
-              display: "flex",
-              marginTop: "10px",
+            <h2 style={{
+              textAlign: "center",
+              flexWrap: "wrap",
+              whiteSpace: "normal",
               padding: "10px",
-              justifyContent:'center',
-              fontFamily: 'Verdana',
-              fontWeight: 'bold'
-              }}>
-                Instructions
+              fontFamily: "Verdana",
+              fontWeight: "bold"
+            }}>
+              Instructions
             </h2>
 
-            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  margin: "10px" }}>
+            <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
               Click on one of the <b>pins</b> to view the name of the <span style={{ fontStyle: "italic" }}>township</span>.  
               Then click on the <span style={{ fontStyle: "italic" }}>township name</span> to see all the community issues.
             </p>
 
-            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  padding: "10px" }}>
+            <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  padding: "10px" }}>
               To <span style={{ fontStyle: "italic" }}>report an issue</span> in your community, click the <b>"Add Issue"</b> button
               above your selected township.
             </p>
 
-            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  margin: "10px" }}>
+            <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
               Please refer to the information below for your <b>district-specific contacts</b>.
             </p>
 
           </div>
 
-          <br></br>
-
           {/* Contact Info Header */}
           <div>
           
-            <h2 style={{ 
-              display: "flex",
-              marginTop: "10px",
+            <hr style={{
+              border: "none",
+              borderTop: "2px solid #ccc",
+              width: "90%",
+              margin: "15px auto"
+            }} />
+
+            <h2 style={{
+              textAlign: "center",
+              flexWrap: "wrap",
+              whiteSpace: "normal",
               padding: "10px",
-              justifyContent:'center',
-              fontFamily: 'Verdana',
-              fontWeight: 'bold'
-              }}>
-                Local Contact Info
+              fontFamily: "Verdana",
+              fontWeight: "bold"
+            }}>
+              Local Contact Info
             </h2>
 
           {/* Contact Info Link */}
          
           {current && (
             <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
+
               <a 
                 href={current.info} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 style={{ 
                   fontFamily: "Arial, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "17px",
                 }}
               >
                 {current.name + " Subcouncil Contact Info"}
@@ -366,19 +377,26 @@ const DistrictSideBar = () => {
           
           </div>
 
-          <br></br>
-
           {/* Emergency Info Header */}
           
           <div>
+            <hr style={{
+              border: "none",
+              borderTop: "2px solid #ccc",
+              width: "90%",
+              margin: "15px auto"
+            }} 
+          />
+
           <h2 style={{
-            display:'flex',
-            justifyContent:'center',
-            fontFamily: 'Verdana',
-            fontWeight: 'bold',
+            textAlign: "center",
+            flexWrap: "wrap",
+            whiteSpace: "normal",
+            fontFamily: "Verdana",
+            fontWeight: "bold",
             paddingBottom: "10px"
-            }}>
-              Emergency Services
+          }}>
+            Emergency Services
           </h2>
 
           </div>
@@ -391,7 +409,9 @@ const DistrictSideBar = () => {
           padding: '10px',
           borderRadius: '10px',
           fontSize: '14px',
-          fontFamily: 'Arial, sans-serif'
+          fontFamily: 'Arial, sans-serif',
+          boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
+
         }}>
           <div style={{ display: 'contents' }}>
             <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Police Flying Squad:</strong></div>
@@ -453,7 +473,7 @@ const DistrictSideBar = () => {
           <Offcanvas.Header style={{justifyContent: "center", position: "relative"}}>
             <Offcanvas.Title
               style={{
-                fontSize: '1.75rem',
+                fontSize: '1.85rem',
                 fontWeight: '730',
                 color: '#d9534f', // red
                 letterSpacing: '0.5px',
@@ -478,14 +498,14 @@ const DistrictSideBar = () => {
             <Form>
               {/* Choose Settlement */}
               <Form.Group className="mb-4">
-                <Form.Label><strong>Choose Settlement</strong></Form.Label>
+                <Form.Label><strong>Choose Township</strong></Form.Label>
                   <Dropdown>
                         <Dropdown.Toggle
                           variant="secondary"
                           id="settlement-toggle"
                           style={{ width: "100%" }}
                         >
-                          {selectedCom || "Choose Settlement"}
+                          {selectedCom || "Select Settlement"}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ width: "100%" }}>
                           {current?.townships.map((settlement, idx) => (
@@ -520,7 +540,7 @@ const DistrictSideBar = () => {
                 <Dropdown>
                   <Dropdown.Toggle 
                     variant="secondary" id="category-toggle" style={{ width: "100%" }}>
-                    {issueForm.category || "Choose Issue Category"}
+                    {issueForm.category || "Select Issue Category"}
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ width: "100%" }}>
                     {[
