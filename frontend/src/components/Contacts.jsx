@@ -127,6 +127,7 @@ const Contacts = () => {
     </div>
     
     <br/>
+    <br/>
 
     <div>
       <h2 style={{
@@ -141,32 +142,62 @@ const Contacts = () => {
         
       <br/>
 
-      <div style = {{
-        display: 'flex',
-        flexDirection: 'column',
-        fontFamily: 'Arial, sans-serif'
-      }}> 
-        
-        <h3 style={{display:'flex', justifyContent:'left'}}> 
-          
-          <u> Phone Numbers: </u> 
-          
-        </h3>
-
-      </div>
-
-        <strong> Police Flying Squad: </strong> 10111 <br />
-        <strong>Crime Stop: </strong> 0860 010 111 <br />
-        <b>Ambulance:</b> 10177 <br />
-        <strong>Cell Phone Emergency: </strong>112 (MTN, Vodacom, Cell C and
-        Telkom) <br />
-        <b>Poisons Information Helpline of the
-        Western Cape: </b>
-        0861 555 777<br />
-        <b>Childline:</b> 116 <br />
-        <b>Safe Schools call centre: </b>0800 454 647<br />
-        <b>Bureau of Missing Persons: </b>021 918 3512 / 3449 / 3452<br />
-        <b>Lifeline: </b>021 461 1113<br />
+      <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'calc(50% - 0.5px) 1px calc(50% - 0.5px)',
+          gap: '0px',
+          backgroundColor: '#f9f9f9',
+          padding: '15px',
+          borderRadius: '10px',
+          fontSize: '14px',
+          fontFamily: 'Arial, sans-serif'
+        }}>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Police Flying Squad:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>10111</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Crime Stop:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0860 010 111</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Ambulance:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>10177</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Cell Phone Emergency:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>112 (MTN, Vodacom, Cell C and Telkom)</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Poisons Info Helpline (WC):</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0861 555 777</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Childline:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>116</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Safe Schools Call Centre:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0800 454 647</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Bureau of Missing Persons:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>021 918 3512 / 3449 / 3452</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ padding: '5px 10px' }}><strong>Lifeline:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ padding: '5px 10px' }}>021 461 1113</div>
+          </div>
+        </div>
     
       </div>
       
