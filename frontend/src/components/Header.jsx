@@ -136,10 +136,11 @@ const Header = () => {
             style={{
                 height:'60%', 
                 margin:"10px 30px 10px 20px",
-                padding: '10px 15px',
+                padding: '8px 15px',
                 fontFamily: "Arial",
                 fontWeight: "400",
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+                fontSize: '16px',
             }} 
             onClick={handleShow}
             >
@@ -149,7 +150,17 @@ const Header = () => {
         }
 
         {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
-            <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
+            <Button variant='light'
+            style={{
+                height:'60%', 
+                margin:"10px 30px 10px 20px",
+                padding: '8px 15px',
+                fontFamily: "Arial",
+                fontWeight: "400",
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+                fontSize: '16px',
+                }} 
+                onClick={handleLogout}>
             Admin Logout
             </Button> 
         </div> }
@@ -157,10 +168,18 @@ const Header = () => {
         
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton className="bg-danger text-white">
-                <Modal.Title>Housing Assembly Admin Login</Modal.Title>
+                <div className="w-100 text-center">
+                    <Modal.Title style={{ fontFamily: 'Verdana', fontWeight: 'bold' }}>
+                        Housing Assembly Admin Login
+                    </Modal.Title>
+                </div> 
             </Modal.Header>
+
             <Modal.Body>
             <Form onSubmit={handleSubmit}>
+                <p style={{ fontSize: '0.95rem', color: '#555', fontStyle: 'italic' }}>
+                    *Only the Housing Assembly administrative staff can login.*
+                </p>
                 <Form.Group controlId="email">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control

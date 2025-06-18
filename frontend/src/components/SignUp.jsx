@@ -146,7 +146,7 @@ const SignUp = ({show, setShow}) => {
                     <Button variant="light" onClick={handleClose} className="me-2">
                         Cancel
                     </Button>
-                    <Button variant="success" type="submit" onClick={(e)=>handleSubmit(e)} loading={`${loading}`}>
+                    <Button variant="danger" type="submit" onClick={(e)=>handleSubmit(e)} loading={`${loading}`}>
                         Submit
                     </Button>
                     </div>
