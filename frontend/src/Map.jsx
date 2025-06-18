@@ -459,7 +459,6 @@ const DistrictPinsLayer = () => {
   const { selectedDistrict, communities, fetchCommunities, globalCommunity,setGlobalCommunity } = AdminState();
   const [activeCommunity, setActiveCommunity] = useState(null);
   const handleOpenIssue = (c) => setActiveCommunity(c);
-  const handleCloseIssue = () => setActiveCommunity(null);
   const handleCloseIssue = () => {
     setActiveCommunity(null) 
     setGlobalCommunity(null)
