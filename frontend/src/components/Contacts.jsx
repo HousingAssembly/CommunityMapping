@@ -20,6 +20,40 @@ const Contacts = () => {
    
   return (
     <>
+        <div>
+      <h2 style={{
+        display:'flex',
+        justifyContent:'center',
+        width:'100%',
+        height:'20px',
+        fontFamily: 'Verdana',
+        fontWeight: "bold",
+        marginTop: "10px",
+        textDecoration: 'underline'
+        }}>
+        Welcome!
+      </h2>
+
+      <br/>
+
+      <div style = {{
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'Arial, sans-serif',
+        justifyContent:'center',
+        marginBottom:'10px'
+        }}>
+          
+          <p>This is a normal paragraph of text. 
+            This is a normal paragraph of text.
+            This is a normal paragraph of text.
+            This is a normal paragraph of text.
+          </p>
+      </div>
+    </div>
+
+    <br/>
+
     <div>
       <h2 style={{
         display:'flex',

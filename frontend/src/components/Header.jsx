@@ -97,7 +97,7 @@ const Header = () => {
         display:'flex', 
         justifyContent:"space-between", 
         alignItems:'center',
-        boxShadow: '0 2px 3px rgba(0, 0, 0, 0.4)'
+        boxShadow: '0 2px 3px rgba(0, 0, 0, 0.3)'
         }}>
         
         <Image
@@ -106,10 +106,12 @@ const Header = () => {
           rounded
           style={{
             width:'70px', 
-            margin:"10px 20px 10px 20px", 
+            margin:"10px 20px 10px 30px", 
             height:'60px', 
             display:'flex', 
-            justifyContent:'left' 
+            justifyContent:'left',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+            
         }}
         />
 
@@ -120,7 +122,7 @@ const Header = () => {
                 alignItems:"center",
                 textAlign: "center",
                 margin: "0px 10px",
-                fontFamily: "Verdana, sans-serif",
+                fontFamily: "Verdana",
                 fontWeight: "bold"
             }}>
                 Housing Assembly's Townships Map
@@ -133,10 +135,11 @@ const Header = () => {
             variant='light' 
             style={{
                 height:'60%', 
-                margin:"10px 20px",
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "400"
-
+                margin:"10px 30px 10px 20px",
+                padding: '10px 15px',
+                fontFamily: "Arial",
+                fontWeight: "400",
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
             }} 
             onClick={handleShow}
             >
