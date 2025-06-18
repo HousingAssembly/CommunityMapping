@@ -111,7 +111,7 @@ const SignUp = ({show, setShow}) => {
                 </p>
 
                     <Form.Group controlId="email">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Email Address:</Form.Label>
                     <Form.Control
                         type="email"
                         name="email"
@@ -122,7 +122,7 @@ const SignUp = ({show, setShow}) => {
                     </Form.Group>
 
                     <Form.Group controlId="password" className="mt-3">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Password:</Form.Label>
                     <Form.Control
                         type="password"
                         name="password"

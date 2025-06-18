@@ -199,31 +199,20 @@ const DistrictSideBar = () => {
    if (!selectedDistrict) return null;
   return (
     <>
-{/* District Sidebar */}
+  
+  {/* District Sidebar */}
 
-    {/* X button at top-right to close sidebar */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: "20px",
-          marginRight: "20px",
-        }}
-      >
-    <CloseButton onClick={() => setSelectedDistrict(null)} />
-      </div>
-
-      {/* Main sidebar wrapper – holds all sidebar content */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          height: "100%",
-          margin: "10px auto",
-          width: "100%"
-        }}
-      >
+    {/* Main sidebar wrapper – holds all sidebar content */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100%",
+        margin: "10px auto",
+        width: "100%"
+      }}
+    >
 
       {/* Box for District Name and Action Buttons */}
       <div
@@ -238,37 +227,63 @@ const DistrictSideBar = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          position: "relative",
         }}
       >
-        {/* District Name (e.g., "Malmesbury") */}
-        <u>
-          <h1>{selectedDistrict}</h1>
-        </u>
 
-          {/* Add Issue and Add Community */}
+        {/* X button at top-right to close sidebar */}
+        <div
+          style={{
+            position: "absolute",
+            top: "15px",
+            right: "20px",
+          }}
+        >
+
+        <CloseButton onClick={() => setSelectedDistrict(null)} />
+        </div>
+
+        {/* District Name (e.g., "Malmesbury") */}
+        <h1
+        style={{
+          fontFamily: 'Verdana',
+          fontWeight: 'bold',
+          textDecoration: "underline"
+        }}>
+          {selectedDistrict}
+        </h1>
+
+        {/* Add Issue and Add Community */}
         <div 
         style={{
           display: "flex", 
           justifyContent: "center", 
-          padding: "5px",
+          paddingTop: "10px",
+          gap: "20px",
+          width: "100%"
         }}
         >
 
-          <Button variant="danger" onClick={() => handleAddIssueClick()}>
-            + Add Issue
-          </Button>
+        <Button 
+          variant="danger" 
+          onClick={() => handleAddIssueClick()}
+          style={{flex: 1}}
+          >
+          + Add Issue
+        </Button>
 
           {loggedIn && (
             <Button
               variant="danger"
-              style={{ marginLeft: "20px" }}
               onClick={handleAddCommunityClick}
+              style={{ flex: 1}}
             >
               + Add Community
             </Button>
           )}
         </div>
       </div>
+
 
         {/* Info Box */}
         <div
@@ -286,84 +301,147 @@ const DistrictSideBar = () => {
           }}
         >
 
-          {/* Contact Info Header */}
-          <h2 style={{ display: "flex", margin: "10px", padding: "10px",  }}>
-            Instructions:
-          </h2>
-          <p style={{ display: "flex", margin: "10px", padding: "10px",  }}><b>Click on one of the pins</b> to see the name of the settlement. Then, click on the name to view the issues of residents there.
-          </p>
-          <p style={{ display: "flex", margin: "10px", padding: "10px",  }}>
-            You can also <b>report an issue</b> using the "Add Issue" button above, and see more local resources below!
-          </p>
-          <h2
-            style={{ display: "flex", margin: "10px", padding: "10px",  }}>
-              Local Contact Info:
-          </h2>
+          <div>
+          {/* Instructions Header */}
+            <h2 style={{ 
+              display: "flex",
+              marginTop: "10px",
+              padding: "10px",
+              justifyContent:'center',
+              fontFamily: 'Verdana',
+              fontWeight: 'bold'
+              }}>
+                Instructions
+            </h2>
 
-          {/* Contact Info Link */}
-          <div style={{ marginLeft: "10px" }}>
-            {current && (
-              <a href={current.info} target= "_blank" rel="noopener noreferrer">
-                {current.name + " Subcouncil Contact Info"}
-              </a>
-            )}
+            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  margin: "10px" }}>
+              Click on one of the <b>pins</b> to view the name of the <span style={{ fontStyle: "italic" }}>township</span>.  
+              Then click on the <span style={{ fontStyle: "italic" }}>township name</span> to see all the community issues.
+            </p>
+
+            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  padding: "10px" }}>
+              To <span style={{ fontStyle: "italic" }}>report an issue</span> in your community, click the <b>"Add Issue"</b> button
+              above your selected township.
+            </p>
+
+            <p style={{ textAlign: "center", fontFamily: "Arial, sans-serif", fontSize: "17px",  margin: "10px" }}>
+              Please refer to the information below for your <b>district-specific contacts</b>.
+            </p>
+
           </div>
 
-          {/* Emergency Info Header */}
-          <h2
-            style={{ display: "flex", margin: "10px", padding: "10px" }}>
-              Local Emergency Services:
-          </h2>
-        <div
-      style={{
-          
-          flexDirection: 'column',
-          padding: '0 20px 20px 20px',
-          fontFamily: 'Arial, sans-serif',
-          fontSize: '14px',
-          lineHeight: '1.6',
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
-        }}
-      >
-        <strong>Police Flying Squad:</strong> 10111 <br />
-        <strong>Crime Stop:</strong> 0860 010 111 <br />
-        <strong>Ambulance:</strong> 10177 <br />
-        <strong>Cell Phone Emergency:</strong> 112 (MTN, Vodacom, Cell C, Telkom) <br />
-        <strong>Poisons Information Helpline of the Western Cape:</strong> 0861 555 777 <br />
-        <strong>Childline:</strong> 116 <br />
-        <strong>Safe Schools Call Centre:</strong> 0800 454 647 <br />
-        <strong>Bureau of Missing Persons:</strong> 021 918 3512 / 3449 / 3452 <br />
-        <strong>Lifeline:</strong> 021 461 1113
-      </div>
-        
-        
-       </div>
-      </div>
+          <br></br>
 
-      {/* Image */}
-       <div
-         style={{
-           width: "100%",
-           display: "flex",
-           justifyContent: "center",
-           margin: "15px 0",
-           backgroundColor: "#f5f5f5",
-           padding: "15px"
-         }}
-       >
-         <img
-           src={flag}
-           alt="South African Flag"
-           style={{
-            maxWidth: "80%",
-            height: "auto",
-            backgroundColor: "#transparent",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.75)",
-            borderRadius: "10px"
-           }}
-         />
-       </div>
+          {/* Contact Info Header */}
+          <div>
+          
+            <h2 style={{ 
+              display: "flex",
+              marginTop: "10px",
+              padding: "10px",
+              justifyContent:'center',
+              fontFamily: 'Verdana',
+              fontWeight: 'bold'
+              }}>
+                Local Contact Info
+            </h2>
+
+          {/* Contact Info Link */}
+         
+          {current && (
+            <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
+              <a 
+                href={current.info} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ 
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "16px",
+                }}
+              >
+                {current.name + " Subcouncil Contact Info"}
+              </a>
+            </div>
+          )}
+          
+          </div>
+
+          <br></br>
+
+          {/* Emergency Info Header */}
+          
+          <div>
+          <h2 style={{
+            display:'flex',
+            justifyContent:'center',
+            fontFamily: 'Verdana',
+            fontWeight: 'bold',
+            paddingBottom: "10px"
+            }}>
+              Emergency Services
+          </h2>
+
+          </div>
+
+      <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'calc(50% - 0.5px) 1px calc(50% - 0.5px)',
+          gap: '0px',
+          backgroundColor: '#f9f9f9',
+          padding: '10px',
+          borderRadius: '10px',
+          fontSize: '14px',
+          fontFamily: 'Arial, sans-serif'
+        }}>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Police Flying Squad:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>10111</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Crime Stop:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0860 010 111</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Ambulance:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>10177</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Cell Phone Emergency:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>112 (MTN, Vodacom, Cell C and Telkom)</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Poisons Info Helpline (WC):</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0861 555 777</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Childline:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>116</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Safe Schools Call Centre:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>0800 454 647</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}><strong>Bureau of Missing Persons:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ borderBottom: '1px solid #ccc', padding: '5px 10px' }}>021 918 3512 / 3449 / 3452</div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <div style={{ padding: '5px 10px' }}><strong>Lifeline:</strong></div>
+            <div style={{ borderBottom: '1px solid #ccc', backgroundColor: '#ccc', width: '1px' }} />
+            <div style={{ padding: '5px 10px' }}>021 461 1113</div>
+          </div>
+        </div>
+      </div>
+        
+      </div>
 
   {/* Sidebar for add Issue */}
         <Offcanvas

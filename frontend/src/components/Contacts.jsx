@@ -132,13 +132,11 @@ const Contacts = () => {
     </div>
     
     <br/>
-    <br/>
 
     <div>
       <h2 style={{
         display:'flex',
         justifyContent:'center',
-        width:'100%',
         fontFamily: 'Verdana',
         fontWeight: 'bold'
         }}>
