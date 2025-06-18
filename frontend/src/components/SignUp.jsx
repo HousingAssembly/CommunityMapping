@@ -85,7 +85,7 @@ const SignUp = ({show, setShow}) => {
         if (error.response.data.message == "User already exists"){
             toaster.create({
             title: "There is already an admin account with this email!",
-            description: error.response.data.message,
+            description: "",
             status: "error",
             duration: 5000,
             isClosable: true,
