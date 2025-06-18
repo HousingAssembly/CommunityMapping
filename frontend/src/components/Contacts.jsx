@@ -49,12 +49,28 @@ const Contacts = () => {
             Here you can report issues you're facing in your township along with the other isssues that residents are currently facing. There's also contacts and resources for those in need.
           </p>
 
-          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
+          <p
+            style={{
+              textAlign: "left",
+              fontFamily: "Verdana",
+              fontSize: "17px",
+              margin: "10px auto",
+              width: "90%"
+            }}
+          >
             1.  <b>Click on one of the districts</b> (marked by the red circles) to view more distrcit based information or to add an issue.
           </p>
 
-          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
-            2. <b>Scroll below</b> for local resources' contact information, homeless shelters, and emergency services.
+          <p
+            style={{
+              textAlign: "left",
+              fontFamily: "Verdana",
+              fontSize: "17px",
+              margin: "10px auto",
+              width: "90%"
+            }}
+          >
+            2. <b>Scroll below</b> for local resources contact information, homeless shelters, and emergency services.
           </p>
 
           <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
@@ -69,6 +85,43 @@ const Contacts = () => {
                Interactive Map Youtube Tutorial
             </a>
           </p>
+      </div>
+    </div>
+
+    <br/>
+
+
+    <div>
+      <hr style={{
+        border: "none",
+        borderTop: "2px solid #ccc",
+        width: "90%",
+        margin: "10px auto"
+      }} />
+
+      <h2 style={{
+        textAlign: "center",
+        flexWrap: "wrap",
+        whiteSpace: "normal",
+        width: "100%",
+        fontFamily: "Verdana",
+        fontWeight: "bold",
+        paddingBottom: "10px"
+      }}> 
+        Homeless Shelters
+      </h2>
+ 
+      <div style={{
+        display:'flex', 
+        justifyContent:'center', 
+      }}>
+
+        <Button 
+          variant={showShelters ? 'secondary' : 'danger'} 
+          onClick={()=>setShowShelters(!showShelters)}
+        >
+          {showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}
+        </Button>
       </div>
     </div>
 
@@ -128,42 +181,6 @@ const Contacts = () => {
         >
           City of Cape Town About Informal Settlements 
         </a>
-      </div>
-    </div>
-    
-    <br/>
-
-    <div>
-      <hr style={{
-        border: "none",
-        borderTop: "2px solid #ccc",
-        width: "90%",
-        margin: "10px auto"
-      }} />
-
-      <h2 style={{
-        textAlign: "center",
-        flexWrap: "wrap",
-        whiteSpace: "normal",
-        width: "100%",
-        fontFamily: "Verdana",
-        fontWeight: "bold",
-        paddingBottom: "10px"
-      }}> 
-        Homeless Shelters
-      </h2>
- 
-      <div style={{
-        display:'flex', 
-        justifyContent:'center', 
-      }}>
-
-        <Button 
-          variant={showShelters ? 'secondary' : 'danger'} 
-          onClick={()=>setShowShelters(!showShelters)}
-        >
-          {showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}
-        </Button>
       </div>
     </div>
     
