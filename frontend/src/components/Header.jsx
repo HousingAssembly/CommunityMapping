@@ -91,33 +91,73 @@ const Header = () => {
 
   return (
     
-    <Navbar style={{background:'#d32535', width:'100%', display:'flex', justifyContent:"space-between", alignItems:'center'}}>
+    <Navbar style={{
+        background:'#d32535', 
+        width:'100%', 
+        display:'flex', 
+        justifyContent:"space-between", 
+        alignItems:'center',
+        boxShadow: '0 2px 3px rgba(0, 0, 0, 0.3)'
+        }}>
         
         <Image
           src= {HAlogo}
           alt="Logo"
           rounded
-          style={{ width:'70px', margin:"10px 20px 10px 20px", height:'60px', display:'flex', justifyContent:'left' }}
+          style={{
+            width:'70px', 
+            margin:"10px 20px 10px 30px", 
+            height:'60px', 
+            display:'flex', 
+            justifyContent:'left',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+            
+        }}
         />
 
-        <header className="main-header"><h1 style={{color:'white', display:'flex', alignItems:"center", textAlign: "center", margin: "0px 10px 0px 10px" }}> <strong>Housing Assembly Interactive Map</strong> </h1></header>
+        <header>
+            <h1 style={{
+                color:'white',
+                display:'flex',
+                alignItems:"center",
+                textAlign: "center",
+                margin: "0px 10px",
+                fontFamily: "Verdana",
+                fontWeight: "bold"
+            }}>
+                Housing Assembly's Townships Map
+            </h1>
+        </header>
+
         {!loggedIn && 
         <div style={{display:'flex', flexDirection:'column', }}>
-            <Button variant='light' style={{height:'50%', margin:"10px 20px 10px 20px"}} onClick={handleShow}>
-            <i> Admin Login </i>
+            <Button 
+            variant='light' 
+            style={{
+                height:'60%', 
+                margin:"10px 30px 10px 20px",
+                padding: '10px 15px',
+                fontFamily: "Arial",
+                fontWeight: "400",
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+            }} 
+            onClick={handleShow}
+            >
+                <i> Admin Login </i>
             </Button> 
         </div>
         }
+
         {loggedIn && <div style={{display:'flex', flexDirection:'column', }}>
             <Button variant='light' style={{height:'50%', marginRight:'10px', marginBottom:'5px'}} onClick={handleLogout}>
-            HA Admin Logout
+            Admin Logout
             </Button> 
         </div> }
 
         
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton className="bg-danger text-white">
-            <Modal.Title>Housing Assembly Admin Login</Modal.Title>
+                <Modal.Title>Housing Assembly Admin Login</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form onSubmit={handleSubmit}>

@@ -295,7 +295,7 @@ const DistrictSideBar = () => {
           {/* Contact Info Link */}
           <div style={{ marginLeft: "10px" }}>
             {current && (
-              <a href={current.info}>
+              <a href={current.info} target= "_blank" rel="noopener noreferrer">
                 {current.name + " Subcouncil Contact Info"}
               </a>
             )}
