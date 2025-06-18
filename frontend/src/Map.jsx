@@ -251,7 +251,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
         >
           <CloseButton
             onClick={onHide}
-            style={{ position: 'absolute', top: 20, right: 20 }}
+            style={{ position: 'absolute', top: '4rem', right: '2rem' }}
           />
           <h1 style={{ marginTop: '3rem' }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
@@ -493,10 +493,9 @@ const DistrictPinsLayer = () => {
           position={[c.coords.lat, c.coords.long]}
           eventHandlers={{
             mouseover: (e) => e.target.openPopup(),
-            mouseout: (e) => e.target.closePopup(),
           }}
         >
-          <Popup >
+          <Popup closeOnClick={false} autoClose={true}>
             <div style={{width : "100%"}}>
               <button 
               onClick={() => handleOpenIssue(c)} 
@@ -504,7 +503,7 @@ const DistrictPinsLayer = () => {
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
-                <span style={{ fontWeight: 'bold', fontSize: '16px' }}>{c.name}</span>
+                <span style={{ fontFamily: "Verdana", fontWeight: 'bold', fontSize: '16px' }}>{c.name}</span>
               </button>
             </div>
           </Popup>
