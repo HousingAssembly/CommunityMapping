@@ -287,6 +287,14 @@ const DistrictSideBar = () => {
         >
 
           {/* Contact Info Header */}
+          <h2>
+            Instructions:
+          </h2>
+          <p><b>Click on one of the pins</b> to see the name of the settlement. Then, click on the name to view the issues of residents there.
+          </p>
+          <p>
+            You can also <b>report an issue</b> using the "Add Issue" button above, and see more local resources below!
+          </p>
           <h2
             style={{ display: "flex", margin: "10px", padding: "10px",  }}>
               Local Contact Info:
