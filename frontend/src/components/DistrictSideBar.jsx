@@ -281,7 +281,7 @@ const DistrictSideBar = () => {
               onClick={handleAddCommunityClick}
               style={{ flex: 1}}
             >
-              + Add Community
+              + Add Township
             </Button>
           )}
         </div>
