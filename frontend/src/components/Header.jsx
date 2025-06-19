@@ -125,7 +125,7 @@ const Header = () => {
                 fontFamily: "Verdana",
                 fontWeight: "bold"
             }}>
-                Housing Assembly's Interactive Map
+                Housing Assembly Interactive Map
             </h1>
         </header>
 

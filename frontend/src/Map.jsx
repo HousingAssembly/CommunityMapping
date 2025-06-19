@@ -499,7 +499,7 @@ const DistrictPinsLayer = () => {
             <div style={{width : "100%"}}>
               <button 
               onClick={() => handleOpenIssue(c)} 
-                style={{ color : "black", backgroundColor: buttonColor , width : "115px",height : "30px", borderRadius : "5px",  border : "1px solid black"}}
+                style={{ color : "black", backgroundColor: buttonColor , width : "115px",height : "30px", borderRadius : "5px"}}
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
