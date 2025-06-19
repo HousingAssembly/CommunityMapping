@@ -589,13 +589,17 @@ const DistrictSideBar = () => {
         
        <Modal show={showCommunityModal} onHide={handleModalClose} centered>
   <Modal.Header closeButton className="bg-danger text-white">
-    <Modal.Title>Add a Community</Modal.Title>
-  </Modal.Header>
+    <div className="w-100 text-center">
+        <Modal.Title style={{ fontFamily: 'Verdana', fontWeight: 'bold' }}>
+            Add a Community
+        </Modal.Title>
+    </div>
+        </Modal.Header>
 
   <Modal.Body>
     <Form>
       <Form.Group className="mb-3">
-        <Form.Label><strong>Community Name *</strong></Form.Label>
+        <Form.Label><strong>Community Name</strong></Form.Label>
         <Form.Control
           value={form.name}
           maxLength="75"
@@ -614,10 +618,10 @@ const DistrictSideBar = () => {
         <Form.Control value={form.lng} readOnly />
       </Form.Group>
 
-      <Accordion flush>
+   <Accordion flush>
         <Accordion.Item eventKey="0">
           <Accordion.Header>Housing Stats (optional)</Accordion.Header>
-          <Accordion.Body>
+          <Accordion.Body style={{ paddingLeft: 0, paddingRight: 0 }}>
             <Form.Group className="mb-2">
               <Form.Label>RDPs</Form.Label>
               <Form.Control
@@ -667,7 +671,7 @@ const DistrictSideBar = () => {
 
         <Accordion.Item eventKey="1">
           <Accordion.Header>Demographic Stats (optional)</Accordion.Header>
-          <Accordion.Body>
+          <Accordion.Body style={{ paddingLeft: 0, paddingRight: 0 }}>
             {[
               ["Total Population", "total"],
               ["Black", "black"],

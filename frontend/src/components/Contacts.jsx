@@ -20,7 +20,7 @@ const Contacts = () => {
    
   return (
     <>
-        <div>
+    <div>
       <h2 style={{
         textAlign: "center",
         flexWrap: "wrap",
@@ -157,13 +157,12 @@ const Contacts = () => {
         }}>
 
         <a
-        // replace with pdf link!!!!!!
           style={{ marginTop: '10px' }}
-          href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+          href={"https://docs.google.com/document/d/1ngjVQUXOsMjha-zCm3OyimCFZL_roEUCsrj7KsZ0H04/edit?usp=sharing"}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Housing Assembly Agent contact pdf 
+          Housing Assembly Comrade Contact Form
         </a>
 
         <a
