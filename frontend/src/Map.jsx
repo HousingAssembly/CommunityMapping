@@ -545,7 +545,7 @@ const ShelterPinsLayer = () => {
         >
           <Popup >
             <div style={{width : "100%"}}>
-              <button onClick={(c)=>handleOpenShelter(c)}
+              <button onClick={()=>handleOpenShelter(c)}
                 style={{ 
                   color : "black", 
                   backgroundColor: buttonColor , width : "100%", 
