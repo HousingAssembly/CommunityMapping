@@ -251,7 +251,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
         >
           <CloseButton
             onClick={onHide}
-            style={{ position: 'absolute', top: '4rem', right: '2rem' }}
+            style={{ position: 'absolute', top: '2rem', right: '2rem' }}
           />
           <h1 style={{ marginTop: '1rem', fontFamily:"Verdana", fontWeight: "bold" }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
