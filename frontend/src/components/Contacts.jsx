@@ -73,11 +73,11 @@ const Contacts = () => {
             2. <b>Scroll below</b> for local resources contact information, homeless shelters, and emergency services.
           </p>
 
-          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
+          <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px", fontStyle: "italic" }}>
             <b>Tutorial: </b>
             <a
             // replace with YOUTUBE link!!!!!!
-              style={{ marginTop: '10px' }}
+              style={{ marginTop: '10px', fontStyle: "normal" }}
               href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
               target="_blank"
               rel="noopener noreferrer"
@@ -119,6 +119,7 @@ const Contacts = () => {
         <Button 
           variant={showShelters ? 'secondary' : 'danger'} 
           onClick={()=>setShowShelters(!showShelters)}
+          style={{boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)"}}
         >
           {showShelters ? "Hide Homeless Shelters": "Show Homeless Shelters"}
         </Button>

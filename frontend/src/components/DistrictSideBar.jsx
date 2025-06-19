@@ -209,7 +209,6 @@ const DistrictSideBar = () => {
         flexDirection: "column",
         alignItems: "center",
         height: "100%",
-        margin: "10px auto",
         width: "100%",
         padding: "10px",
       }}
@@ -219,7 +218,7 @@ const DistrictSideBar = () => {
       <div
         style={{
           border: "2px solid #ccc",
-          borderRadius: "5px",
+          borderRadius: "10px",
           boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
           width: "100%",
           padding: "20px",
