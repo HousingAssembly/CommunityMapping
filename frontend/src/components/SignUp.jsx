@@ -128,7 +128,7 @@ const SignUp = ({show, setShow}) => {
                     <Form.Control
                         type="email"
                         name="email"
-                        placeholder="Enter email"
+                        placeholder="Enter Email"
                         required
                         onChange={(e)=>setEmail(e.target.value)}
                     />

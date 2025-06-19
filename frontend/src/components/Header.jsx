@@ -181,18 +181,18 @@ const Header = () => {
                     *Only the Housing Assembly administrative staff can login.*
                 </p>
                 <Form.Group controlId="email">
-                <Form.Label>Email address</Form.Label>
+                <Form.Label>Email Address:</Form.Label>
                 <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Enter email"
+                    placeholder="Enter Email"
                     required
                     onChange={(e)=>setEmail(e.target.value)}
                 />
                 </Form.Group>
 
                 <Form.Group controlId="password" className="mt-3">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>Password:</Form.Label>
                 <Form.Control
                     type="password"
                     name="password"
