@@ -253,7 +253,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             onClick={onHide}
             style={{ position: 'absolute', top: '4rem', right: '2rem' }}
           />
-          <h1 style={{ marginTop: '1rem', fontFamily:"Verdana" }}>
+          <h1 style={{ marginTop: '1rem', fontFamily:"Verdana", fontWeight: "bold" }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
           </h1>
           <br />
@@ -300,7 +300,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
               </h4>
             </div>
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
-              <h2 style={{ color: 'darkred', textAlign: 'center' }}>
+              <h2 style={{ fontFamily: "Verdana", color: 'darkred', textAlign: 'center' }}>
                 <u>Local Reported Issues - {numIssues} Total</u>
               </h2>
               <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
