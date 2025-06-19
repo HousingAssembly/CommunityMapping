@@ -495,7 +495,7 @@ const DistrictPinsLayer = () => {
             mouseover: (e) => e.target.openPopup(),
           }}
         >
-          <Popup closeOnClick={false} autoClose={true}>
+          <Popup closeButton={false} closeOnClick={false} autoClose={true}>
             <div style={{width : "100%"}}>
               <button 
               onClick={() => handleOpenIssue(c)} 
