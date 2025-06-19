@@ -256,7 +256,12 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
           <h1 style={{ marginTop: '1rem', fontFamily:"Verdana", fontWeight: "bold" }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
           </h1>
-          <br />
+          <hr style={{
+            border: 'none',
+            borderBottom: '1px solid #ccc',
+            margin: '0.75rem 0',
+            width: '100%'
+          }} />
           <div
             style={{
               display: 'flex',
@@ -265,7 +270,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
               gap: '2rem',
             }}
           >
-            <div>
+            <div style={{ paddingLeft: '0.5rem', marginLeft: 0 }}>
               <h2><u>Housing Stats:</u></h2>
               <h4>RDPs:&nbsp;
                 {community?.housingStats?.RDPs || "Not Entered"}
@@ -301,7 +306,8 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             </div>
             <div style={{ flex: '1 1 300px', minWidth: '300px', maxWidth: '600px' }}>
               <h2 style={{ fontFamily: "Verdana", color: 'darkred', textAlign: 'center' }}>
-                <u>Local Reported Issues - {numIssues} Total</u>
+                <u style={{ fontFamily: "Verdana"}}
+                >Local Reported Issues - {numIssues} Total</u>
               </h2>
               <Accordion defaultActiveKey="-1" style={{ width: '100%' }}>
                 {Object.entries(issuesByCategory).map(([categoryName, issueList], index) => (
