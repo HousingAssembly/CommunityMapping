@@ -326,7 +326,7 @@ const DistrictSideBar = () => {
 
             <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  padding: "10px" }}>
               To <span style={{ fontStyle: "italic" }}>report an issue</span> in your district, click the <b>"+ Add Issue"</b> button
-              above your selected township.
+              above and select your township.
             </p>
 
             <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px" }}>
