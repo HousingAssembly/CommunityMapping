@@ -620,7 +620,7 @@ const DistrictSideBar = () => {
 
    <Accordion flush>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Housing Stats (optional)</Accordion.Header>
+          <Accordion.Header style={{fontFamily: "Verdana"}}>Housing Stats (optional)</Accordion.Header>
           <Accordion.Body style={{ paddingLeft: 0, paddingRight: 0 }}>
             <Form.Group className="mb-2">
               <Form.Label>RDPs</Form.Label>
@@ -670,8 +670,8 @@ const DistrictSideBar = () => {
         </Accordion.Item>
 
         <Accordion.Item eventKey="1">
-          <Accordion.Header>Demographic Stats (optional)</Accordion.Header>
-          <Accordion.Body style={{ paddingLeft: 0, paddingRight: 0 }}>
+          <Accordion.Header style={{fontFamily: "Verdana"}}>Demographic Stats (optional)</Accordion.Header>
+          <Accordion.Body>
             {[
               ["Total Population", "total"],
               ["Black", "black"],

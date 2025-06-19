@@ -253,7 +253,7 @@ let numIssues = Object.entries(issuesByCategory).reduce((sum, [category, list]) 
             onClick={onHide}
             style={{ position: 'absolute', top: '4rem', right: '2rem' }}
           />
-          <h1 style={{ marginTop: '3rem' }}>
+          <h1 style={{ marginTop: '1rem', fontFamily:"Verdana" }}>
             {community?.name} <span style={{color:'dodgerblue'}}> {' (' + community?.districtName + ')'}</span>
           </h1>
           <br />
@@ -486,7 +486,7 @@ const DistrictPinsLayer = () => {
 
   return (
     <>
-    
+  
       {communities.map((c) => (
         <Marker
           key={c._id}
