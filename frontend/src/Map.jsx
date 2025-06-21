@@ -554,13 +554,23 @@ const ShelterPinsLayer = () => {
               <button onClick={()=>handleOpenShelter(c)}
                 style={{ 
                   color : "black", 
-                  backgroundColor: buttonColor , width : "100%", 
-                  padding: "10px", height : "55px", borderRadius : "5px",  border : "1px solid black"}}
+                  backgroundColor: buttonColor,
+                  width : "100%", 
+                  padding: "10px",
+                  height : "55px",
+                  borderRadius : "5px",
+                  border : "1px solid black",
+                  fontFamily: "Verdana", 
+                  fontWeight: "bold",
+                }}
                 onMouseOver = {mouseOn}
                 onMouseOut = {mouseOff}
                 >
-                {c.name}
+                <span style={{ fontFamily: "Verdana", fontWeight: "bold", fontSize: "14px" }}>
+                  {c.name}
+                </span>
               </button>
+              <hr style={{ border: 'none', borderBottom: '1px solid grey', marginTop: '5px' }} />
             </div>
           </Popup>
         </Marker>
@@ -594,7 +604,7 @@ const SheltersScreenOverlay = ({ show, onHide, shelter }) => {
             onClick={onHide}
             style={{ position: 'absolute', top: 20, right: 20 }}
           />
-          <h1>{shelter?.name} <span style={{color:'red'}}> (Homeless Shelter)</span></h1>
+          <h1>{shelter?.name} <span style={{color:'red', fontFamily: "Verdana", fontWeight: "bold"}}> (Homeless Shelter)</span></h1>
           <br /><br />
           <h4><b >Contact Name: </b> {shelter?.contact ? shelter?.contact : 'N/A'}</h4>
           <h4><b >Phone Number: </b> {shelter?.tel ? shelter?.tel : 'N/A'}</h4>

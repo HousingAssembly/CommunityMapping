@@ -76,9 +76,8 @@ const Contacts = () => {
           <p style={{ textAlign: "center", fontFamily: "Verdana", fontSize: "17px",  margin: "10px", fontStyle: "italic" }}>
             <b>Tutorial: </b>
             <a
-            // replace with YOUTUBE link!!!!!!
               style={{ marginTop: '10px', fontStyle: "normal" }}
-              href={"https://www.capetown.gov.za/Family%20and%20home/residential-property-and-houses/informal-housing/about-informal-housing"}
+              href={"https://youtu.be/rv7qW6hDaVE?si=IacAdUiSb9gdn3cr"}
               target="_blank"
               rel="noopener noreferrer"
             >
