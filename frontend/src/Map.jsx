@@ -556,10 +556,9 @@ const ShelterPinsLayer = () => {
                   color : "black", 
                   backgroundColor: buttonColor,
                   width : "100%", 
-                  padding: "10px",
+                  padding: "5px",
                   height : "55px",
                   borderRadius : "5px",
-                  border : "1px solid black",
                   fontFamily: "Verdana", 
                   fontWeight: "bold",
                 }}
